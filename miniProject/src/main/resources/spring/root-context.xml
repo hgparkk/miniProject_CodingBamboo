@@ -24,6 +24,6 @@
 	
 	<util:properties id="util" location="/WEB-INF/classes/spring/appconfig.properties"></util:properties>
 	
-	<mybatis-spring:scan base-package="com.spring.study" annotation="org.apache.ibatis.annotations.Mapper" />
+	<mybatis-spring:scan base-package="com.codingbamboo.miniproject" annotation="org.apache.ibatis.annotations.Mapper" />
 		
 </beans>
