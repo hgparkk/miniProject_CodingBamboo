@@ -53,19 +53,18 @@
 							<tr>
 								<td scope="row">${materialDTO.meNo}</td>
 								<td scope="row">${materialDTO.meName}</td>
-								<td scope="row">
-								<input value="${materialDTO.meEmission}">
-								 </td>
 								<td>
+									<!-- 자재 수정 -->
 									<form action="${pageContext.request.contextPath }/updateMaterial" method="POST">
-										<input type="hidden" value="${materialDTO.meNo}" name="no">
-										<input type="hidden" value="${materialDTO.meEmission}" name="emi">
-										<button type="button" class="btn" onclick="f_update()">수정</button>
+										<input type="hidden" value="${materialDTO.meNo}" name="meNo">
+										<input type="text" value="${materialDTO.meEmission}" name="meEmission">
+										<button type="button" class="btn btn-frimary" onclick="f_update()">수정</button>
 									</form>
 								</td>
 								<td>
+									<!-- 자재 삭제 -->
 									<form action="${pageContext.request.contextPath }/deleteMaterial" method="POST">
-										<input type="hidden" value="${materialDTO.meNo}" name="no">
+										<input type="hidden" value="${materialDTO.meNo}" name="meNo">
 										<button type="button" class="btn btn-danger" onclick="f_del()">삭제</button>
 									</form>
 								</td>
@@ -85,14 +84,11 @@
 		<div>
 			<div>
 				<!-- 자재 추가 -->
-				<form class="row" id="replyForm" action="${pageContext.request.contextPath }/adminView" method="GET">
-					<%-- <input type="hidden" name="memId" value="${sessionScope.login.memId }=== admin">
-					<input type="hidden" name="boardNo" value="${keyBoard.boardNo }"> --%>
+				<form class="row" id="replyForm" action="${pageContext.request.contextPath }/insertMaterial" method="POST">
 					<div class="col-10">
-						자재명:<input type="text"> kg당 탄소 배출량:<input type="text">
-						<button>자재 추가하기</button>
+						자재명:<input type="text" name="meName"> kg당 탄소 배출량:<input type="text" name="meEmission">
+						<button id="materialBtn" class="btn btn-primary col-2" type="submit">등록</button>
 					</div>
-					<button id="materialBtn" class="btn btn-primary col-2" type="button">등록</button>
 				</form>
 			</div>
 		</div>
@@ -101,7 +97,7 @@
 
 <script type="text/javascript">
 	function f_update(){
-		console.log(event.target.parentElement.parentElement.parentElement.children[2].children[0].value)
+		console.log(event.target.parentElement.children[1].value)
 		if(confirm("정말로 수정하시겠습니까?")){
 			event.target.parentElement.submit();
 		}

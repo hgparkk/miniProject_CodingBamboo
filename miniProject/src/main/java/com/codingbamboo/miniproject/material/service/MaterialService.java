@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.material.dao.IMaterialDAO;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 
@@ -38,14 +36,14 @@ public class MaterialService {
 	}
 	
 	// 자재 삭제
-	public int deleteMaterial(int no) {
-		int result = dao.deleteMaterial(no);
+	public int deleteMaterial(int meNo) {
+		int result = dao.deleteMaterial(meNo);
 		return result;
 	}
 	
 	// 자재 수정
-	public int updateMaterial(int no) {
-		int result = dao.updateMaterial(no);
+	public int updateMaterial(MaterialDTO material) {
+		int result = dao.updateMaterial( material);
 		return result;
 	}
 }
