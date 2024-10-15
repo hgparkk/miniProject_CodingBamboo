@@ -17,4 +17,6 @@ public interface IUserDAO {
 	int updateUser(UserDTO userInfo);
 
 	int deleteUser(String userId);
+
+
 }

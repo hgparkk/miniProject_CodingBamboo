@@ -1,6 +1,7 @@
 package com.codingbamboo.miniproject.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.codingbamboo.miniproject.user.dao.IUserDAO;
@@ -11,6 +12,7 @@ public class UserService {
 
 	@Autowired
 	IUserDAO dao;
+
 	
 	//회원가입 메소드
 	public int insertUser(UserDTO userInfo) {
@@ -38,5 +40,7 @@ public class UserService {
 		int result = dao.deleteUser(userId);
 		return result;
 	}
+	
+
 	
 }
