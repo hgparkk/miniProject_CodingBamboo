@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codingbamboo.miniproject.user.dao.IUserDAO">
+
+	<insert id="insertUser"
+		parameterType="com.codingbamboo.miniproject.user.dto.UserDTO">
+			INSERT INTO user_info(
+			 	 user_id
+				,user_pw
+				,user_name
+				,user_email
+				,user_ismaster
+			)VALUES(
+				 #{userId}
+				,#{userPw}
+				,#{userName}
+				,#{userEmail}
+				,#{userIsmaster}
+			)
+	</insert>
+	
+		<select id="loginUser" parameterType="com.codingbamboo.miniproject.user.dto.UserDTO" resultType="com.codingbamboo.miniproject.user.dto.UserDTO">
+			SELECT
+				 user_id
+				,user_pw
+				,user_name
+				,user_email
+				,user_ismaster
+			FROM
+				user_info
+			WHERE 1=1
+			  AND user_id = #{userId}
+			  AND user_pw = #{userPw}
+		</select>
+	
+	
+		<update id="updateUser" parameterType="com.codingbamboo.miniproject.user.dto.UserDTO" >
+			UPDATE user_info
+			SET user_id = #{userId}
+				<if test="userPw.isEmpty() == false">
+			   		, user_pw = #{userPw}
+			    </if>
+			    , usre_name = #{userName}
+				, user_phone = #{userPhone}
+				, user_email = #{userEmail}
+			WHERE user_id = #{userId}
+		
+		</update>
+	
+	
+	
+	<select id="getUser" parameterType="String" resultType="com.codingbamboo.miniproject.user.dto.UserDTO">
+	SELECT 
+			 user_id
+			,user_pw
+			,user_name
+			,user_email
+			,user_ismaster
+		FROM 
+			user_info
+		WHERE 1=1
+		  AND user_id = #{userId}
+	</select>
+	
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM user_info
+		WHERE user_id = #{userId}
+	</delete>
+
+
+
+
+
+</mapper>
+
+
+
+
