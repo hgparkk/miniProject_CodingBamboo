@@ -1,10 +1,7 @@
 package com.codingbamboo.miniproject.material.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-
-import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 
 @Mapper
@@ -19,13 +16,10 @@ public interface IMaterialDAO {
 	
 	// 자재 추가하기
 	int insertMaterial(MaterialDTO material);
-	
-	// 자재 하나 가져오기
-	MaterialDTO getMaterial();
 
 	// 자재 삭제
-	int deleteMaterial(int no);
+	int deleteMaterial(int meNo);
 	
 	// 자재 수정
-	int updateMaterial(int no);
+	int updateMaterial(MaterialDTO material);
 }

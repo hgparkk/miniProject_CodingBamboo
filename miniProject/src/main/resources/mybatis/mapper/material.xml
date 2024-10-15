@@ -40,12 +40,11 @@
 	</select>
 	
 	<!-- 자재 수정하기 -->
-<!-- 	<update id="updateMaterial" parameterType="no">
+	<update id="updateMaterial" parameterType="MaterialDTO">
 		UPDATE material_emissions
-		SET me_name = #{meName}
-		  , me_emission = #{meEmission}
+		SET me_emission = #{meEmission}
 		WHERE me_no = #{meNo}
-	</update> -->
+	</update>
 	
 	<!-- 자재 추가하기 -->
 	<insert id="insertMaterial" parameterType="MaterialDTO">
@@ -59,15 +58,6 @@
 		    , #{meEmission}
 		)
 	</insert>
-	
-	<!-- 자재 가져오기 -->
-	<select id="getMaterial" parameterType="String" resultType="MaterialDTO">
-		SELECT
-		      me_no
-		    , me_name
-		    , me_emission
-		FROM material_emissions
-	</select>
 	
 	<!-- 자재 삭제하기 -->
 	<delete id="deleteMaterial">

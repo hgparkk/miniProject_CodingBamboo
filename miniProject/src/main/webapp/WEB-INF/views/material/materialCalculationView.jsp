@@ -5,17 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Coding Bamboo</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-</head>
+<%@ include file="/WEB-INF/inc/header.jsp"%></head></head>
 <body>
+
+	<%@ include file="/WEB-INF/inc/top.jsp"%>
+	
+	<div style="height: 200px;"></div>
+
 	<div class="d-flex justify-content-center mx-auto" style="width: 1340px;">
 		<div class="d-flex justify-content-around" style="width: 100%">
 			<div class="d-flex flex-column">
 				<div class="d-flex flex-row">
-					<div class="col-3">
+					<div class="col-3 mb-3">
 						<label class="col-form-label" for="inputWord">검색어 입력</label>
 					</div>
 					<div class="ms-1 me-1 col-6">
@@ -73,8 +74,11 @@
 			</div>
 		</div>
 	</div>
-</body>
-<script>
+	
+	<div style="height: 200px;"></div>
+	
+	<%@ include file="/WEB-INF/inc/footer.jsp"%>
+	<script>
 
 	// 소수점 다섯째 자리까지 보이게 하기
 	function showFiveDecimalPlaces(number) {
@@ -213,4 +217,5 @@
 		document.getElementById("totalEmission").innerHTML = showFiveDecimalPlaces(sum)
 	}
 </script>
+</body>
 </html>

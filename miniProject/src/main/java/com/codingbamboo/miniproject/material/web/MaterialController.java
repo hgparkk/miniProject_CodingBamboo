@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 import com.codingbamboo.miniproject.material.service.MaterialService;
 import com.google.gson.Gson;
@@ -67,11 +66,9 @@ public class MaterialController {
 	}
 
 	@PostMapping("/deleteMaterial")
-	public String deleteMaterial(int no, HttpServletRequest request) {
+	public String deleteMaterial(HttpServletRequest request, int meNo) {
 
-		System.out.println("/deleteMaterial 의 no=" + no);
-
-//		materialService.deleteMaterial(no);
+		materialService.deleteMaterial(meNo);
 
 		request.setAttribute("msg", "삭제가 완료되었습니다.");
 		request.setAttribute("url", "/adminView");
@@ -79,14 +76,24 @@ public class MaterialController {
 	}
 
 	@PostMapping("/updateMaterial")
-	public String updateMaterial(int no, HttpServletRequest request) {
+	public String updateMaterial(HttpServletRequest request, MaterialDTO material) {
 
-		System.out.println("/updateMaterial 의 no=" + no);
-
-		materialService.updateMaterial(no);
+		materialService.updateMaterial(material);
 
 		request.setAttribute("msg", "수정이 완료되었습니다.");
 		request.setAttribute("url", "/adminView");
 		return "alert";
 	}
+	
+	@PostMapping("/insertMaterial")
+	public String insertMaterial(HttpServletRequest request, MaterialDTO material) {
+		
+		materialService.insertMaterial(material);
+		
+		request.setAttribute("msg", "자재가 추가되었습니다.");
+		request.setAttribute("url", "/adminView");
+		return "alert";
+	}
+	
+	
 }
