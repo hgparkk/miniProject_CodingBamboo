@@ -1,5 +1,6 @@
 package com.codingbamboo.miniproject.user.web;
 
+
 import java.net.http.HttpResponse;
 
 import javax.servlet.http.Cookie;
@@ -9,8 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 import com.codingbamboo.miniproject.user.service.UserService;
@@ -47,7 +50,7 @@ public class UserController {
 			response.addCookie(cookie);
 		}
 		
-		return "redirect:/";
+		return "user/loginYn";
 	}
 	
 	
@@ -78,6 +81,7 @@ public class UserController {
 		    }
 		}
 		
+		
 		System.out.println("id = " + id);
 		System.out.println("pw = " + pw);
 		System.out.println("name = " + name);
@@ -87,7 +91,7 @@ public class UserController {
 		UserDTO user = new UserDTO(id, pw, name, email, ismaster);
 		
 		userService.insertUser(user);
-		return "redirect:/";
+		return "user/registNotice";
 		
 	}
 	
@@ -107,17 +111,50 @@ public class UserController {
 		UserDTO login = userService.getUser(user.getUserId());
 		session.setAttribute("login", login);
 		
-		return "redirect:/userEditView";
+		return "user/userEditNotice";
 	}
 	
 	//회원수정뷰
 	@RequestMapping("/userEditView")
-	public String memberEditView() {
+	public String userEditView() {
 		return "user/userEditView";
 	}
-
 	
+	//회원삭제
+	@PostMapping("/userDelDo")
+	public String userDelDo(HttpSession session) {
+		
+		
+		UserDTO login = (UserDTO)session.getAttribute("login");
+		userService.deleteUser(login.getUserId());
+		session.invalidate();
+		
+		return "user/userDelNotice";
+	}
 	
+	//회원삭제 알림 뷰
+	
+	@RequestMapping("/userDelNotice")
+	public String userDelNotice() {
+		return "user/userDelNotice";
+	}
+	
+	@RequestMapping("/loginYn")
+	public String loginYn() {
+		return "user/loginYn";
+	}
+	
+	//회원수정 알림
+	@RequestMapping("/userEditNotice")
+	public String userEditNotice() {
+		return "user/userEditNotice";
+	}
+	
+	//회원가입 알림
+	@RequestMapping("/registNotice")
+	public String registNotice() {
+		return "user/registNotice";
+	}
 	
 	
 	

@@ -33,7 +33,7 @@ public class UserService {
 		
 		return result;
 	}
-	
+	//회원삭제 메소드
 	public int deleteUser(String userId) {
 		int result = dao.deleteUser(userId);
 		return result;

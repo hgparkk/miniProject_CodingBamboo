@@ -9,7 +9,15 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>회원수정</title>
-
+<!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="${pageContext.request.contextPath }/css/styles.css" rel="stylesheet" />
     <!-- header 부분 -->
 
 	<style type="text/css">
@@ -83,15 +91,21 @@
                         
                         <!-- Submit Button-->
                         
-                        <button class="btn btn-primary me-2" id="submitButton" type="button">수정</button>
+                        
                     </form>
                     
+                    <form id="userEditForm" action="${pageContext.request.contextPath }/userEditDo" method="POST">
+	                    <div class ="d-flex justify-content-center">
+		                    <button class="btn btn-primary me-2" id="userEditBtn" type="button">수정</button>
+	                    </div>
+                    </form>
                     <form id="userDelForm" action="${pageContext.request.contextPath }/userDelDo" method="POST">
 	                    <div class ="d-flex justify-content-center">
 		                    <button class="btn btn-danger" id="userDelBtn" type="button">회원탈퇴</button>
 	                    </div>
                     </form>
-
+                    
+					
                     
                 </div>
             </div>
@@ -126,21 +140,15 @@
 				
 		});
 		
+		document.getElementById("userEditBtn").addEventListener("click", ()=>{
+			confirm('정말로 수정하시겠습니까?');
+			document.getElementById("userEditForm").submit();
+		});
+		
+		
 	
 	</script>
-	<!-- 프로필 사진 관련 JS코드 -->
-	<script type="text/javascript">
-		//img태그 불러오기
-		const v_profileImg = document.getElementById("profileImg");
-		//input file 태그 불러오기
-		const v_inputImg = document.getElementById("inputImg");
-		
-		//img 태그 클릭시, 파일 첨부 창 열기 (=input file 태그 클릭 시)
-		v_profileImg.addEventListener("click", ()=>{
-			//input file 태그 클릭
-			v_inputImg.click();
-			
-		});
+
 		
 
 </body>

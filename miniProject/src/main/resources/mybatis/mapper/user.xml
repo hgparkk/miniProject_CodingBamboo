@@ -40,8 +40,7 @@
 				<if test="userPw.isEmpty() == false">
 			   		, user_pw = #{userPw}
 			    </if>
-			    , usre_name = #{userName}
-				, user_phone = #{userPhone}
+			    , user_name = #{userName}
 				, user_email = #{userEmail}
 			WHERE user_id = #{userId}
 		

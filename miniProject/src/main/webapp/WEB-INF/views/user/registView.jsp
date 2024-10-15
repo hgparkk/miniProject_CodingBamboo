@@ -9,7 +9,15 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>회원가입</title>
-
+<!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="${pageContext.request.contextPath }/css/styles.css" rel="stylesheet" />
     <!-- header part -->
 
 </head>
@@ -74,11 +82,7 @@
     
     <!-- footer part -->
 
-	<script type="text/javascript">
-		// input 태그 내 value값에 대한 validation 체크하는 경우
-		
-	
-	</script>
+
 </body>
 </html>
 
