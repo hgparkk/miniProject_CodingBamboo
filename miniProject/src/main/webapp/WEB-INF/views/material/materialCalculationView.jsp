@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>시스템</title>
+<title>Coding Bamboo</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="d-flex justify-content-center" style="width: 1340px; margin: auto;">
+	<div class="d-flex justify-content-center mx-auto" style="width: 1340px;">
 		<div class="d-flex justify-content-around" style="width: 100%">
 			<div class="d-flex flex-column">
 				<div class="d-flex flex-row">
@@ -76,6 +76,11 @@
 </body>
 <script>
 
+	// 소수점 다섯째 자리까지 보이게 하기
+	function showFiveDecimalPlaces(number) {
+    	return number.toString().match(/^-?\d+(?:\.\d{0,5})?/)[0];
+	}
+
 	// 검색 URL
 	const v_searchMaterial = "<c:url value='/materialSearch' />"
 	
@@ -105,7 +110,6 @@
 						'</td>' +
 						'</tr>'
 				}else{
-					document.getElementById("noSearchedList").innerHTML = ""
 					for(let i = 0; i < result.length; i++){
 						v_searchedResult.innerHTML +=
 							'<tr>' +
@@ -121,64 +125,83 @@
 		})
 	})
 	
+	// 자재 항목에 있는 자재 목록 인덱스
+	let v_material_list = []
+	
 	// 자재 불러오기 URL
 	const v_getMaterial = "<c:url value='/getMaterial' />"
 	
 	// 자재 항목에 추가
 	function addItem(){
 		let item_index = event.target.parentElement.parentElement.children[0].value
-		$.ajax({
-			type:'POST',
-			url: v_getMaterial,
-			data: { "meNo" : item_index },
-			success: function(result){
-				// 현재 테이블의 모든 input 요소의 값을 저장
-			    const inputs = document.querySelectorAll("#currentList input[type='number']");
-			    const values = Array.from(inputs).map(input => input.value);
+		if(v_material_list.includes(item_index)){
+			alert("해당 자재는 이미 항목에 있습니다.")
+		}else{
+			$.ajax({
+				type:'POST',
+				url: v_getMaterial,
+				data: { "meNo" : item_index },
+				success: function(result){
+					
+					// 자재 항목에 있는 자재 배열에 추가
+					v_material_list.push(item_index)
+					
+					// 현재 테이블의 모든 input 요소의 값을 저장
+				    const inputs = document.querySelectorAll("#currentList input[type='number']")
+				    const values = Array.from(inputs).map(input => input.value)
 
-			    // 테이블 업데이트 전 기존 값들을 초기화하지 않고 유지하기 위해 테이블을 재작성
-			    let updatedInnerHTML = '';
-			    const rows = document.querySelectorAll("#currentList tr");
-			    
-			    rows.forEach((row, index) => {
-			        updatedInnerHTML += '<tr>' +
-			            '<td scope="row">' + row.cells[0].innerText + '</td>' +
-			            '<td scope="row"><input type="number" value="' + values[index] + '" onchange="calcEmission()" ></td>' +
-			            '<input type="hidden" value="' + row.querySelector("input[type='hidden']").value + '">' +
-			            '<td class="text-center class-for-summary" scope="row">' + row.cells[2].innerText + '</td>' +
-			            '<td scope="row"><button onclick="deleteItem()">삭제</button></td>' +
-			            '</tr>';
-			    });
+				    // 테이블 업데이트 전 기존 값들을 초기화하지 않고 유지하기 위해 테이블을 재작성
+				    let updatedInnerHTML = ''
+				    const rows = document.querySelectorAll("#currentList tr");
+				    
+				    rows.forEach((row, index) => {
+				        updatedInnerHTML += '<tr>' +
+				        '<input type="hidden" value="' + row.querySelector("input[type='hidden']").value + '">' +
+				        '<input type="hidden" value="' + row.querySelectorAll("input[type='hidden']")[1].value + '">' +
+				        '<td scope="row">' + row.cells[0].innerText + '</td>' +
+				        '<td scope="row"><input type="number" value="' + values[index] + '" onchange="calcEmission()" ></td>' +
+				        '<td class="text-center class-for-summary" scope="row">' + row.cells[2].innerText + '</td>' +
+				        '<td scope="row"><button onclick="deleteItem()">삭제</button></td>' +
+				        '</tr>';
+				    });
 
-			    // 새로운 항목 추가
-			    updatedInnerHTML +=
-			        '<tr>' +
-			        '<td scope="row">' + result["meName"] + '</td>' +
-			        '<td scope="row"><input type="number" value="0" onchange="calcEmission()" ></td>' +
-			        '<input type="hidden" value="' + result["meEmission"] + '" >' +
-			        '<td class="text-center class-for-summary" scope="row">' + 0 + '</td>' +
-			        '<td scope="row"><button onclick="deleteItem()">삭제</button></td>' +
-			        '</tr>';
+				    // 새로운 항목 추가
+				    updatedInnerHTML +=
+				        '<tr>' +
+				        '<input type="hidden" value="' + result["meNo"] + '" >' +
+				        '<input type="hidden" value="' + result["meEmission"] + '" >' +
+				        '<td scope="row">' + result["meName"] + '</td>' +
+				        '<td scope="row"><input type="number" onchange="calcEmission()" ></td>' +
+				        '<td class="text-center class-for-summary" scope="row">' + 0 + '</td>' +
+				        '<td scope="row"><button onclick="deleteItem()">삭제</button></td>' +
+				        '</tr>'
 
-			    // 테이블 업데이트
-			    document.getElementById("currentList").innerHTML = updatedInnerHTML;
-			}
-		})
+				    // 테이블 업데이트
+				    document.getElementById("currentList").innerHTML = updatedInnerHTML
+				    console.log(v_material_list)
+				}
+			})
+		}
 	}
 	
 	// 자제 항목에서 제거
 	function deleteItem(){
+		const delete_index = event.target.parentElement.parentElement.children[0].value
+		const get_index = v_material_list.indexOf(delete_index)
+		v_material_list.splice(get_index,1)
 		event.target.parentElement.parentElement.remove()
 		calsTotalEmission()
+		console.log(v_material_list)
 	}
 	
-	// 자제의 탄소 배출량 계산
+	// 자재의 탄소 배출량 계산
 	function calcEmission(){
-		let emission = event.target.parentElement.parentElement.children[2].value
-		event.target.parentElement.parentElement.children[3].innerHTML = event.target.value * emission
+		let emission = event.target.parentElement.parentElement.children[1].value
+		event.target.parentElement.parentElement.children[4].innerHTML = showFiveDecimalPlaces(event.target.value * emission)
 		calsTotalEmission()
 	}
 	
+	// 항목에 있는 자재들의 총 탄소 배출량 계산
 	function calsTotalEmission(){
 		v_allResult = document.getElementsByClassName("class-for-summary")
 		
@@ -187,7 +210,7 @@
 			sum += parseFloat(v_allResult[i].innerHTML);
 		}
 		
-		document.getElementById("totalEmission").innerHTML = sum
+		document.getElementById("totalEmission").innerHTML = showFiveDecimalPlaces(sum)
 	}
 </script>
 </html>
