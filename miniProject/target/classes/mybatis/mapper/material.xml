@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.codingbamboo.miniproject.material.dao.IMaterialDAO">
+
+	<select id="selectAllMaterial" parameterType="String" resultType="com.codingbamboo.miniproject.material.dto.MaterialDTO">
+		SELECT
+			me_no,
+			me_name,
+			me_emission
+		FROM
+			material_emissions
+		WHERE
+			me_name LIKE '%'||#{word}||'%'
+	</select>
+	
+	<select id="selectMaterial" parameterType="int" resultType="com.codingbamboo.miniproject.material.dto.MaterialDTO">
+		SELECT
+			me_no,
+			me_name,
+			me_emission
+		FROM
+			material_emissions
+		WHERE
+			me_no = ${meNo}
+	</select>
+	
+</mapper>
