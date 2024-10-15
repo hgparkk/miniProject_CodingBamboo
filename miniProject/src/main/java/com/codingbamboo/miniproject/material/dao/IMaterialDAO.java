@@ -4,10 +4,20 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 
 @Mapper
 public interface IMaterialDAO {
 	List<MaterialDTO> selectAllMaterial(String word);
+
 	MaterialDTO selectMaterial(int meNo);
+
+	List<MaterialDTO> getMaterialList();
+
+	int insertMaterial(MaterialDTO material);
+
+	MaterialDTO getMaterial();
+
+	int getMaterialCount(SearchVO search);
 }

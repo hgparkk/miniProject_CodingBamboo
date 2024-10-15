@@ -1,9 +1,9 @@
 package com.codingbamboo.miniproject.material.dto;
 
 public class MaterialDTO {
-	private int meNo;
-	private String meName;
-	private double meEmission;
+	private int meNo;           /* 자재별 번호 */
+	private String meName;		/* 자재 이름 */
+	private double meEmission;	/* 자재 kg당 탄소배출량 */
 	
 	public MaterialDTO() {
 		super();
