@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>관리자 화면</title>
+<title>Coding Bamboo</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style type="text/css">
@@ -24,12 +24,10 @@
 <body>
 	<div class="admin-container">
 		<div>
+			<!-- 검색바 -->
 			<form class="d-flex justify-content-center"
 				action="${pageContext.request.contextPath }/adminView" method="GET">
-				<select class="form-select w-25" name="searchOption">
-					<option value="material">자재명</option>
-					<option value="kg">kg당 탄소 배출량</option>
-				</select> <input type="text" class="form-control w-25" name="searchWord">
+				<input type="text" class="form-control w-25" name="searchWord">
 				<button class="btn btn-primary" type="submit">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 						fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -51,21 +49,33 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${keyMaterialList}" var="adminDTO">
+						<c:forEach items="${keyMaterialList}" var="materialDTO">
 							<tr>
-								<td scope="row">${adminDTO.meNo}</td>
-								<td scope="row">${adminDTO.meName}</td>
-								<td scope="row"><input type="text"
-									placeholder="${adminDTO.meEmission}"></td>
-								<td><button class="btn">수정</button></td>
-								<td><button class="btn btn-danger">삭제</button></td>
+								<td scope="row">${materialDTO.meNo}</td>
+								<td scope="row">${materialDTO.meName}</td>
+								<td scope="row">
+								<input value="${materialDTO.meEmission}">
+								 </td>
+								<td>
+									<form action="${pageContext.request.contextPath }/updateMaterial" method="POST">
+										<input type="hidden" value="${materialDTO.meNo}" name="no">
+										<input type="hidden" value="${materialDTO.meEmission}" name="emi">
+										<button type="button" class="btn" onclick="f_update()">수정</button>
+									</form>
+								</td>
+								<td>
+									<form action="${pageContext.request.contextPath }/deleteMaterial" method="POST">
+										<input type="hidden" value="${materialDTO.meNo}" name="no">
+										<button type="button" class="btn btn-danger" onclick="f_del()">삭제</button>
+									</form>
+								</td>
 							</tr>
 						</c:forEach>
 
 						<c:if test="${keyMaterialList.size() == 0 }">
 							<tr>
 								<!-- 4개의 td를 하나의 td로 나타냄 -->
-								<td colspan="4">검색 결과를 찾을 수 없습니다.</td>
+								<td colspan="3">검색 결과를 찾을 수 없습니다.</td>
 							</tr>
 						</c:if>
 					</tbody>
@@ -74,6 +84,7 @@
 		</div>
 		<div>
 			<div>
+				<!-- 자재 추가 -->
 				<form class="row" id="replyForm" action="${pageContext.request.contextPath }/adminView" method="GET">
 					<%-- <input type="hidden" name="memId" value="${sessionScope.login.memId }=== admin">
 					<input type="hidden" name="boardNo" value="${keyBoard.boardNo }"> --%>
@@ -87,4 +98,20 @@
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+	function f_update(){
+		console.log(event.target.parentElement.parentElement.parentElement.children[2].children[0].value)
+		if(confirm("정말로 수정하시겠습니까?")){
+			event.target.parentElement.submit();
+		}
+	};
+
+	function f_del(){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			event.target.parentElement.submit();
+		}
+	};
+</script>
+
 </html>

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.codingbamboo.miniproject.material.dao.IMaterialDAO">
 
+	<!-- 계산기 -->
 	<select id="selectAllMaterial" parameterType="String" resultType="MaterialDTO">
 		SELECT
 			me_no,
@@ -17,6 +18,7 @@
 		SELECT
 			me_no,
 			me_name,
+			
 			me_emission
 		FROM
 			material_emissions
@@ -24,59 +26,41 @@
 			me_no = ${meNo}
 	</select>
 	
-	<sql id="materialSearch">
-	  <if test="searchWord != null">
-	  	<choose>
-	  		<when test="searchOption == 'material'">AND me_name LIKE '%' || #{searchWord} || '%'</when>
-	  		<when test="searchOption == 'kg'">AND me_emission LIKE '%' || #{searchWord} || '%'</when>
-	  	</choose>
-	  </if>
-	</sql>
-	
-	<!-- <select id="getMaterialList" resultType="com.codingbamboo.miniproject.admin.dto.MaterialDTO">
-		SELECT 
-		    me_no
-		    , me_name
-		    , me_emission
-		FROM material_emissions
-	</select> -->
-	
-	<select id="getMaterialList" resultType="MaterialDTO" parameterType="com.codingbamboo.miniproject.common.SearchVO">
-		SELECT *
-		FROM (
-			SELECT
-				a.*
-			FROM (
-				SELECT 
-				      me_no
-				    , me_name
-				    , me_emission
-				FROM material_emissions
-				WHERE 1=1
-					<include refid="materialSearch"/>
-			) a	
-		)
+	<!-- 관리자 -->
+	<!-- 자재 목록 가져오기 -->
+	<select id="getMaterialList" resultType="MaterialDTO" parameterType="String">
+		SELECT
+			me_no,
+			me_name,
+			me_emission
+		FROM
+			material_emissions
+		WHERE
+			me_name LIKE '%'||#{searchWord}||'%'
 	</select>
 	
-	<update id="updateMaterial" parameterType="MaterialDTO">
+	<!-- 자재 수정하기 -->
+<!-- 	<update id="updateMaterial" parameterType="no">
 		UPDATE material_emissions
 		SET me_name = #{meName}
 		  , me_emission = #{meEmission}
 		WHERE me_no = #{meNo}
-	</update>
+	</update> -->
 	
+	<!-- 자재 추가하기 -->
 	<insert id="insertMaterial" parameterType="MaterialDTO">
 		INSERT INTO material_emissions (
 		      me_no
 		    , me_name
 		    , me_emission
 		) VALUES (
-		      (SELECT COUNT(*)+1 FROM material_emissions)
+		      me_seq.NEXTVAL
 		    , #{meName}
 		    , #{meEmission}
 		)
 	</insert>
 	
+	<!-- 자재 가져오기 -->
 	<select id="getMaterial" parameterType="String" resultType="MaterialDTO">
 		SELECT
 		      me_no
@@ -85,11 +69,11 @@
 		FROM material_emissions
 	</select>
 	
-	<select id="getMaterialCount" resultType="int">
-		SELECT COUNT(*)
-		FROM material_emissions
-		WHERE 1=1
-		  <include refid="materialSearch"/>
-	</select>
+	<!-- 자재 삭제하기 -->
+	<delete id="deleteMaterial">
+		DELETE FROM
+			material_emissions
+		WHERE me_no = #{meNo}
+	</delete>
 	
 </mapper>

@@ -1,10 +1,14 @@
 package com.codingbamboo.miniproject.material.web;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,43 +42,51 @@ public class MaterialController {
 
 		return result;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/getMaterial", method = RequestMethod.POST)
 	public MaterialDTO getMaterial(int meNo) {
 		return materialService.selectMaterial(meNo);
 	}
-	
+
+	// 관리자 기능
 //	@ResponseBody
 	@RequestMapping("/adminView")
-	public String adminView(Model model, SearchVO search) {
-		List<MaterialDTO> materialList = materialService.getMaterialList();
-		
+	public String adminView(Model model, String searchWord) {
+		List<MaterialDTO> materialList = new ArrayList<>();
+
+		if (searchWord == null || searchWord.isEmpty()) {
+			materialList = materialService.getMaterialList("");
+		} else {
+			materialList = materialService.getMaterialList(searchWord);
+		}
 		model.addAttribute("keyMaterialList", materialList);
-		
-		int materialCount = materialService.getMaterialCount(search);
-		
-		search.setMaterialCount(materialCount);
-		
-		
-		model.addAttribute("keySearch", search);
-		
-		System.out.println(search);
-		
+
 		return "admin/adminView";
-		
+
 	}
-	
-//	@ResponseBody
-//	@PostMapping("/adminView")
-//	public MaterialDTO MaterialAddDo(MaterialDTO material) { 
-//		
-//		
-//		materialService.insertMaterial(material);
-//		
-//		MaterialDTO result = materialService.getMaterial();
-//		System.out.println(result);
-//		
-//		return result;
-//	}
+
+	@PostMapping("/deleteMaterial")
+	public String deleteMaterial(int no, HttpServletRequest request) {
+
+		System.out.println("/deleteMaterial 의 no=" + no);
+
+//		materialService.deleteMaterial(no);
+
+		request.setAttribute("msg", "삭제가 완료되었습니다.");
+		request.setAttribute("url", "/adminView");
+		return "alert";
+	}
+
+	@PostMapping("/updateMaterial")
+	public String updateMaterial(int no, HttpServletRequest request) {
+
+		System.out.println("/updateMaterial 의 no=" + no);
+
+		materialService.updateMaterial(no);
+
+		request.setAttribute("msg", "수정이 완료되었습니다.");
+		request.setAttribute("url", "/adminView");
+		return "alert";
+	}
 }

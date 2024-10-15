@@ -15,6 +15,7 @@ public class MaterialService {
 	@Autowired
 	IMaterialDAO dao;
 	
+	// 계산기
 	public List<MaterialDTO> selectAllMaterial(String word){
 		return dao.selectAllMaterial(word);
 	}
@@ -23,18 +24,28 @@ public class MaterialService {
 		return dao.selectMaterial(meNo);
 	}
 	
-	public List<MaterialDTO> getMaterialList(){
-		List<MaterialDTO> result = dao.getMaterialList();
+	// 관리자
+	// 검색
+	public List<MaterialDTO> getMaterialList(String searchWord){
+		List<MaterialDTO> result = dao.getMaterialList(searchWord);
 		return result;
 	}
 	
+	// 자재 추가
 	public int insertMaterial(MaterialDTO material) {
 		int result = dao.insertMaterial(material);
 		return result;
 	}
 	
-	public int getMaterialCount(SearchVO search) {
-		int result = dao.getMaterialCount(search);
+	// 자재 삭제
+	public int deleteMaterial(int no) {
+		int result = dao.deleteMaterial(no);
+		return result;
+	}
+	
+	// 자재 수정
+	public int updateMaterial(int no) {
+		int result = dao.updateMaterial(no);
 		return result;
 	}
 }
