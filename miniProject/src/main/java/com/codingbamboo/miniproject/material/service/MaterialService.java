@@ -14,10 +14,12 @@ public class MaterialService {
 	IMaterialDAO dao;
 	
 	// 계산기
+	// 검색
 	public List<MaterialDTO> selectAllMaterial(String word){
 		return dao.selectAllMaterial(word);
 	}
 	
+	// 자재 불러오기
 	public MaterialDTO selectMaterial(int meNo){
 		return dao.selectMaterial(meNo);
 	}

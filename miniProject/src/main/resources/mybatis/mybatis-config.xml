@@ -8,5 +8,6 @@
 	<typeAliases>
 		<typeAlias type="com.codingbamboo.miniproject.material.dto.MaterialDTO" alias="MaterialDTO"/>
 		<typeAlias type="com.codingbamboo.miniproject.user.dto.UserDTO" alias="UserDTO"/>
+		<typeAlias type="com.codingbamboo.miniproject.part.dto.PartDTO" alias="PartDTO"/>
 	</typeAliases>
 </configuration>

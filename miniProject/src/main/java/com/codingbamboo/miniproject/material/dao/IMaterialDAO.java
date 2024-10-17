@@ -7,7 +7,9 @@ import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 @Mapper
 public interface IMaterialDAO {
 	// 계산기 기능
-	List<MaterialDTO> selectAllMaterial(String word); 
+	// 검색
+	List<MaterialDTO> selectAllMaterial(String word);
+	// 자재 불러오기
 	MaterialDTO selectMaterial(int meNo);
 
 	// 관리자 기능

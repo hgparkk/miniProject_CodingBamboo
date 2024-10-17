@@ -23,9 +23,11 @@ public class MaterialController {
 	@Autowired
 	MaterialService materialService;
 
+	// 자재별 탄소 배출량 계산 페이지 이동
 	@RequestMapping(value = "/materialCalculation", method = RequestMethod.GET)
 	public String materialCalculation(Model model) {
 
+		// 건축자재 모두 불러오기
 		List<MaterialDTO> materialList = materialService.selectAllMaterial("");
 
 		model.addAttribute("materialList", materialList);
@@ -33,6 +35,7 @@ public class MaterialController {
 		return "material/materialCalculationView";
 	}
 
+	// 자재 검색 결과 보내기
 	@ResponseBody
 	@RequestMapping(value = "/materialSearch", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
 	public String materialSearch(String word) {
@@ -42,6 +45,7 @@ public class MaterialController {
 		return result;
 	}
 
+	// 자재의 탄소 배출량 불러오기
 	@ResponseBody
 	@RequestMapping(value = "/getMaterial", method = RequestMethod.POST)
 	public MaterialDTO getMaterial(int meNo) {
@@ -49,7 +53,8 @@ public class MaterialController {
 	}
 
 	// 관리자 기능
-//	@ResponseBody
+	
+	// 자재 관리 페이지 이동
 	@RequestMapping("/adminView")
 	public String adminView(Model model, String searchWord) {
 		List<MaterialDTO> materialList = new ArrayList<>();
@@ -65,6 +70,7 @@ public class MaterialController {
 
 	}
 
+	// 자재 삭제
 	@PostMapping("/deleteMaterial")
 	public String deleteMaterial(HttpServletRequest request, int meNo) {
 
@@ -75,6 +81,7 @@ public class MaterialController {
 		return "alert";
 	}
 
+	// 자재 수정
 	@PostMapping("/updateMaterial")
 	public String updateMaterial(HttpServletRequest request, MaterialDTO material) {
 
@@ -85,6 +92,7 @@ public class MaterialController {
 		return "alert";
 	}
 	
+	// 자재 삽입
 	@PostMapping("/insertMaterial")
 	public String insertMaterial(HttpServletRequest request, MaterialDTO material) {
 		
