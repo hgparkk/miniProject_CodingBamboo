@@ -8,17 +8,17 @@
                     <!-- Footer Social Icons-->
                     <div class="mx-auto my-auto">
                         <h4 class="text-uppercase mb-4">Contact us</h4>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-instagram"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-github"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fas fa-fw fa-phone"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="far fa-fw fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
         </footer>
         <!-- Copyright Section-->
         <div class="copyright py-4 text-center text-white">
-            <div class="container"><small>Coding Bamboo</small></div>
+            <div class="container"><small>Team . Coding Bamboo</small></div>
         </div>
         
         <!-- Bootstrap core JS-->
