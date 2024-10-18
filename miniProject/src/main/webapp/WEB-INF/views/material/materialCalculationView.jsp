@@ -5,11 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Coding Bamboo</title>
-<%@ include file="/WEB-INF/inc/header.jsp"%></head></head>
+<%@ include file="/WEB-INF/inc/header.jsp"%></head>
+</head>
 <body>
 
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
-	
+
 	<div style="height: 200px;"></div>
 
 	<div class="d-flex justify-content-center mx-auto" style="width: 1340px;">
@@ -29,9 +30,8 @@
 				<div class="table-responsive">
 					<table>
 						<thead>
-							<th scope="col" style="width: 100px;"></th>
-							<th scope="col" style="width: 150px;">자재이름</th>
-							<th scope="col" style="width: 150px;">자재별 탄소배출량</th>
+							<th scope="col" class="text-center" style="width: 150px;">자재이름</th>
+							<th scope="col" class="text-center" style="width: 200px;">자재별 탄소배출량 (kgCO2eq/kg)</th>
 							<th scope="col" style="width: 60px;"></th>
 						</thead>
 					</table>
@@ -41,7 +41,6 @@
 								<c:forEach items="${materialList}" var="meterial">
 									<tr>
 										<input type="hidden" value="${meterial.meNo}">
-										<td scope="row" style="width: 100px;"></td>
 										<td scope="row" style="width: 150px;">${meterial.meName}</td>
 										<td class="text-center" scope="row" style="width: 150px;">${meterial.meEmission}</td>
 										<td scope="row" style="width: 60px;"><button onclick="addItem()">추가</button></td>
@@ -52,31 +51,46 @@
 					</div>
 				</div>
 			</div>
-			<div>
+			<div class="ms-3 bg-light">
 				<div class="d-flex flex-column item-aligns-center" style="height: 600px;">
-					<span class="text-center">현재 목록</span>
+					<span class="text-center fw-bold fs-3 mb-3">현재 목록</span>
 					<table>
 						<thead>
-							<th scope="col" style="width: 300px;">자재이름</th>
-							<th scope="col" style="width: 200px;">총 중량</th>
-							<th scope="col" style="width: 150px;">총 탄소배출량</th>
+							<th scope="col" class="text-center" style="width: 150px;">자재이름</th>
+							<th scope="col" class="text-center" style="width: 200px;">총 중량 (kg)</th>
+							<th scope="col" class="text-center" style="width: 150px;">총 탄소배출량</th>
 							<th style="width: 60px;"></th>
 						</thead>
 						<tbody id="currentList">
 						</tbody>
 					</table>
 				</div>
-				<div>
-					<div>
-						<span>총 예상 탄소배출량 : </span> <span id="totalEmission">0</span>
-					</div>
+			</div>
+			<div class="ms-3 bg-light" style="width:450px;">
+				<div class="m-3">
+					<span class="me-2">건물 용도</span>
+					<select id="buildingUse" onchange="calcAvgEmission()">
+						<option value="1">주거용</option>
+						<option value="2">상업용</option>
+						<option value="3">공공용</option>
+					</select>
+				</div>
+				<div class="m-3">
+					<span class="me-2">건물 면적(㎡)</span>
+					<input id="structArea" type="number" onchange="calcAvgEmission()">
+				</div>
+				<div class="m-3">
+					<span>용도와 면적 대비 평균 탄소 배출량 : </span> <span id="avgEmission">0</span> <span>kgCO2eq</span>
+				</div>
+				<div class="m-3">
+					<span>총 예상 탄소배출량 : </span> <span id="totalEmission">0</span> <span>kgCO2eq</span>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div style="height: 200px;"></div>
-	
+
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 	<script>
 
@@ -215,6 +229,19 @@
 		}
 		
 		document.getElementById("totalEmission").innerHTML = showFiveDecimalPlaces(sum)
+	}
+	
+	// 평균 탄소 배출량 계산
+	function calcAvgEmission(){
+		let buildingUse = document.getElementById("buildingUse").value
+		let structArea = document.getElementById("structArea").value
+		if(buildingUse == 1){
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 1002.7)
+		}else if(buildingUse == 2){
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 2110)
+		}else if(buildingUse == 3){
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 2046)
+		}
 	}
 </script>
 </body>

@@ -15,11 +15,11 @@
 	<div class="mx-auto" style="width: 500px;">
 		<div class="border rounded-4 d-flex flex-column align-items-center mt-5">
 			<div class="mt-3">사용 전력량 대비 탄소 배출량 계산</div>
-			<div>
+			<div class="mt-3">
 				<span>사용 전력량(소비 기준)</span> <input id="inputElectric" type="number" onchange="calcMyEmission()"> <span>kWh</span>
 			</div>
 			<div class="mt-5">면적당 평균 전력량과 탄소배출량 계산</div>
-			<div class="mb-3">
+			<div class="mt-3 mb-3">
 				<span>면적</span> <input id="inputArea" type="number" onchange="calcAvgEmission()"> <span>㎡</span>
 			</div>
 		</div>
