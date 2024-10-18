@@ -170,6 +170,13 @@
 			<version>6.0.13.Final</version>
 		</dependency>
 
+		<!-- XSS를 파괴하는 메소드를 보유 한라이브러리 -->
+		<dependency>
+			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+			<artifactId>owasp-java-html-sanitizer</artifactId>
+			<version>20240325.1</version>
+		</dependency>
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -23,5 +23,8 @@ public interface IBoardDAO {
 	
 	// 글삭제
 	int deleteBoard(int quNo);
+	
+	// 글수정
+	int updateBoard(BoardDTO board);
 
 }
