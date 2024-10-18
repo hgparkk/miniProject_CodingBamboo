@@ -13,9 +13,12 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.codingbamboo.miniproject.answer.dto.AnswerDTO;
+import com.codingbamboo.miniproject.answer.service.AnswerService;
 import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.board.service.BoardService;
 import com.codingbamboo.miniproject.common.SearchVO;
+import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 
 @Controller
@@ -23,6 +26,9 @@ public class BoardController {
 
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	AnswerService answerService;
 	
 	@RequestMapping("/boardView")
 	public String boardView(Model model, SearchVO search) {
@@ -32,12 +38,12 @@ public class BoardController {
 		
 		search.setting();
 		
-		List<BoardDTO> boardList = boardService.getBoardList(search);
+		model.addAttribute("keySearch", search);
 		
+		List<BoardDTO> boardList = boardService.getBoardList(search);
 		
 		model.addAttribute("keyBoardList", boardList);
 		
-		model.addAttribute("keySearch", search);
 		
 		return "board/boardView";
 	}
@@ -67,9 +73,29 @@ public class BoardController {
 	
 	@RequestMapping("/boardDetailView")
 	public String boardDetailView(int no, Model model) {
-		BoardDTO board = boardService.getBoard(no);
+		BoardDTO board = null;
+		try {
+			board = boardService.getBoard(no);
+		} catch (BizNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			// 에러 발생 시 넣은 에러코드와 에러메시지 확인
+			String errCode = e.getErrCode();
+			String errMsg = e.getMessage();
+			
+			// 에러페이지에 에러메시지를 보여주고자 한다면 모델에 추가 
+			model.addAttribute("errMsg", errMsg);
+			
+			// 에러페이지로 보내기
+			return "errPage";
+		}
 		
 		model.addAttribute("keyBoard", board);
+		
+		List<AnswerDTO> answerList = answerService.getAnswerList(no);
+		
+		model.addAttribute("keyAnswerList", answerList);
 		
 		return "board/boardDetailView";
 	}
@@ -80,6 +106,29 @@ public class BoardController {
 		
 		request.setAttribute("msg", "질문이 삭제되었습니다.");
 		request.setAttribute("url", "/boardView");
+		return "alert";
+	}
+	
+	@PostMapping("/boardEditView")
+	public String boardEditView(int no, Model model) {
+		BoardDTO board;
+		try {
+			board = boardService.getBoard(no);
+			model.addAttribute("keyBoard", board);
+		} catch (BizNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "board/boardEditView";
+	}
+	
+	@PostMapping("/boardEditDo")
+	public String boardEditDo(BoardDTO board, HttpServletRequest request) {
+		boardService.updateBoard(board);
+		
+		request.setAttribute("msg", "질문이 수정되었습니다.");
+		request.setAttribute("url", "/boardDetailView?no=" + board.getQuNo());
 		return "alert";
 	}
 }

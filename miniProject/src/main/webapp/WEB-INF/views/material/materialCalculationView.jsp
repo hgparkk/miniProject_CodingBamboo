@@ -236,11 +236,11 @@
 		let buildingUse = document.getElementById("buildingUse").value
 		let structArea = document.getElementById("structArea").value
 		if(buildingUse == 1){
-			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 1002.7)
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * ${residentialCoefficient})
 		}else if(buildingUse == 2){
-			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 2110)
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * ${commercialCoefficient})
 		}else if(buildingUse == 3){
-			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * 2046)
+			document.getElementById("avgEmission").innerHTML = showFiveDecimalPlaces(structArea * ${publicCoefficient})
 		}
 	}
 </script>

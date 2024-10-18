@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.codingbamboo.miniproject.board.dao.IBoardDAO;
 import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.common.SearchVO;
+import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 
 @Service
 public class BoardService {
@@ -29,11 +30,17 @@ public class BoardService {
 	}
 	
 	// 게시글 불러오기
-	public BoardDTO getBoard(int no) {
+	public BoardDTO getBoard(int no) throws BizNotFoundException{
 		BoardDTO result = dao.getBoard(no);
+		
+		if(result == null) {
+			throw new BizNotFoundException("API_001", "해당 글 번호가 존재하지 않음");
+		}
 		
 		return result;
 	}
+	
+	
 	
 	// 게시글 등록
 	public int insertBoard(BoardDTO board) {
@@ -45,6 +52,12 @@ public class BoardService {
 	// 게시글 삭제
 	public int deleteBoard(int quNo) {
 		int result = dao.deleteBoard(quNo);
+		
+		return result;
+	}
+	
+	public int updateBoard(BoardDTO board) {
+		int result = dao.updateBoard(board);
 		
 		return result;
 	}
