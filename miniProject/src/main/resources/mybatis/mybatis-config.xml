@@ -10,5 +10,7 @@
 		<typeAlias type="com.codingbamboo.miniproject.user.dto.UserDTO" alias="UserDTO"/>
 		<typeAlias type="com.codingbamboo.miniproject.part.dto.PartDTO" alias="PartDTO"/>
 		<typeAlias type="com.codingbamboo.miniproject.coefficient.dto.CoefficientDTO" alias="CoefficientDTO"/>
+		<typeAlias type="com.codingbamboo.miniproject.answer.dto.AnswerDTO" alias="AnswerDTO"/>
+		<typeAlias type="com.codingbamboo.miniproject.board.dto.BoardDTO" alias="BoardDTO"/>
 	</typeAliases>
 </configuration>
