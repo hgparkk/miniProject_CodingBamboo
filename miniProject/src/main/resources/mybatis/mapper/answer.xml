@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codingbamboo.miniproject.answer.dao.IAnswerDAO">
+
+	<insert id="insertAnswer" parameterType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+	INSERT INTO answer(
+		aw_no
+		, qu_no
+		, aw_content
+	) VALUES (
+		aw_seq.NEXTVAL
+		, #{quNo}
+		, #{awContent}
+	)
+	</insert>
+	
+	<select id="getResentAnswer" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO" parameterType="int">
+		SELECT
+			aw_no,
+			qu_no,
+			aw_content
+		FROM (SELECT
+			a.aw_no
+			, a.qu_no
+			, a.aw_content
+		FROM answer a, question b
+		WHERE a.qu_no = b.qu_no
+		AND b.qu_no = #{quNo}
+		ORDER BY aw_no DESC)
+		WHERE ROWNUM= 1
+	</select>
+	
+	<select id="getAnswer" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+		SELECT
+			a.aw_no
+			, a.qu_no
+			, b.user_id
+			, a.aw_content
+		FROM answer a, question b
+		WHERE a.aw_no = #{awNo}
+	</select>
+	
+	<select id="getAnswerList" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+		SELECT
+			a.aw_no
+			, a.qu_no
+			, b.user_id
+			, a.aw_content
+		FROM answer a, question b
+		WHERE 1=1
+			AND a.qu_no = b.qu_no
+			AND a.qu_no = #{quNo}
+		ORDER BY aw_no ASC
+	</select>
+</mapper>

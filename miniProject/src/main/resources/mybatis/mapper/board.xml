@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.codingbamboo.miniproject.board.dao.IBoardDAO">
+	<sql id="boardSearch">
+	  <if test="searchWord != null">
+	  	<choose>
+	  		<when test="searchOption == 'title'">AND a.qu_title LIKE '%' || #{searchWord} || '%'</when>
+	  		<when test="searchOption == 'content'">AND a.qu_content LIKE '%' || #{searchWord} || '%'</when>
+	  		<when test="searchOption == 'name'">AND b.user_name = #{searchWord}</when>
+	  	</choose>
+	  </if>
+	</sql>
+	
 	<!-- q&a 목록 가져오기 -->
 	<select id="getBoardList" resultType="com.codingbamboo.miniproject.board.dto.BoardDTO" parameterType="com.codingbamboo.miniproject.common.SearchVO">
 		SELECT
@@ -12,9 +22,10 @@
 			, a.qu_isread
 		FROM
 			question a, user_info b
-		WHERE
-			a.user_id = b.user_id
-			ORDER BY qu_no DESC
+		WHERE 1=1
+			AND a.user_id = b.user_id
+		<include refid="boardSearch"/>
+		ORDER BY qu_no DESC
 	</select>
 	
 	<!-- q&a에 질문 추가 -->
@@ -39,6 +50,7 @@
 		FROM question a, user_info b
 		WHERE 1=1
 		  AND a.user_id = b.user_id(+)
+		  <include refid="boardSearch"/>
 	</select>
 	
 	<select id="getBoard" resultType="com.codingbamboo.miniproject.board.dto.BoardDTO">
@@ -59,6 +71,12 @@
 		WHERE qu_no = #{quNo}
 	</delete>
 	
-
+	<update id="updateBoard" parameterType="com.codingbamboo.miniproject.board.dto.BoardDTO">
+		UPDATE question
+		SET qu_title = #{quTitle}
+			, qu_content = #{quContent}
+		WHERE qu_no = #{quNo}
+	</update>
+	
 
 </mapper>
