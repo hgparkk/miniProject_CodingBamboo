@@ -1,19 +1,22 @@
 package com.codingbamboo.miniproject.user.web;
 
 
-import java.net.http.HttpResponse;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 import com.codingbamboo.miniproject.user.service.UserService;
@@ -22,6 +25,11 @@ import com.codingbamboo.miniproject.user.service.UserService;
 @Controller
 public class UserController {
 
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
+	
 	
 	@Autowired
 	UserService userService;
@@ -34,8 +42,16 @@ public class UserController {
 	
 	//로그인
 	@PostMapping("/loginDo")
-	public String loginDo(UserDTO userInfo, HttpSession session, boolean rememberId, HttpServletResponse response) {
+	public String loginDo(UserDTO userInfo, HttpSession session, boolean rememberId, HttpServletResponse response, HttpServletRequest request, Model model) {
 		UserDTO login = userService.loginUser(userInfo);
+		
+		
+		boolean isMatch = passwordEncoder.matches(userInfo.getUserPw(), login.getUserPw());
+		
+		if(!isMatch) {
+			model.addAttribute("errMsg", "비밀번호가 일치하지 않습니다.");
+			return "user/loginView";
+		}
 		
 		session.setAttribute("login", login);
 		
@@ -50,7 +66,10 @@ public class UserController {
 			response.addCookie(cookie);
 		}
 		
-		return "user/loginYn";
+		request.setAttribute("msg", "로그인 되었습니다");
+		request.setAttribute("url", "/");
+		
+		return "alert";
 	}
 	
 	
@@ -63,36 +82,62 @@ public class UserController {
 	}
 	
 	
+
+	@ResponseBody
+	@PostMapping("/idDupCheck")
+	public boolean idDupCheck(String inputId) {
+	    UserDTO idCheck = new UserDTO();
+	    idCheck.setUserId(inputId);
+	    
+	    UserDTO checked = userService.idDupCheck(idCheck);
+	    
+	    // null 체크 후 inputId와 조회된 ID를 비교
+	    return (checked != null && checked.getUserId().equals(inputId));
+	}
+
+	
 	//회원가입
 	@PostMapping("/registDo")
-	public String registDo(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		String pw = request.getParameter("pw");
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String ismasterStr = request.getParameter("adminCheck");
-		
-		int ismaster = 0;
-		if (ismasterStr != null && !ismasterStr.isEmpty()) {
-		    try {
-		    	ismaster = Integer.parseInt(ismasterStr);
-		    } catch (NumberFormatException e) {
-		        e.printStackTrace();
-		    }
-		}
-		
-		
-		System.out.println("id = " + id);
-		System.out.println("pw = " + pw);
-		System.out.println("name = " + name);
-		System.out.println("email = " + email);
-		System.out.println("adminCheck = " + ismaster);
-		
-		UserDTO user = new UserDTO(id, pw, name, email, ismaster);
-		
-		userService.insertUser(user);
-		return "user/registNotice";
-		
+	public String registDo(@Valid UserDTO user, BindingResult result, HttpServletRequest request) {
+	    // 유효성 검증에서 오류가 발생한 경우
+	    if(result.hasErrors()) {
+	        for(ObjectError error : result.getAllErrors()) {
+	            System.out.println(error.getDefaultMessage());
+	        }
+	        return "redirect:/registView";
+	    }
+
+	    // 비밀번호 암호화
+	    String encodePw = passwordEncoder.encode(user.getUserPw());
+	    user.setUserPw(encodePw);
+
+	    // 관리자인지 여부 확인 및 처리
+	    String ismasterStr = request.getParameter("adminCheck");
+	    int ismaster = 0;
+	    if (ismasterStr != null && !ismasterStr.isEmpty()) {
+	        try {
+	            ismaster = Integer.parseInt(ismasterStr);
+	        } catch (NumberFormatException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    user.setUserIsmaster(ismaster);
+
+	    // 회원 정보 출력 (디버깅용)
+	    System.out.println("id = " + user.getUserId());
+	    System.out.println("pw = " + user.getUserPw());
+	    System.out.println("name = " + user.getUserName());
+	    System.out.println("email = " + user.getUserEmail());
+	    System.out.println("adminCheck = " + user.getUserIsmaster());
+
+	    // 사용자 등록
+	    userService.insertUser(user);
+
+	    // 회원가입 성공 메시지 설정
+	    request.setAttribute("msg", "회원가입이 완료되었습니다\\n로그인 창으로 이동합니다.");
+	    request.setAttribute("url", "/loginView");
+
+	    return "alert";
 	}
 	
 	//로그아웃
@@ -104,14 +149,17 @@ public class UserController {
 	
 	//회원수정
 	@PostMapping("/userEditDo")
-	public String userEditDo(UserDTO user, HttpSession session) {
+	public String userEditDo(UserDTO user, HttpSession session, HttpServletRequest request) {
 		userService.updateUser(user);
 		
 		
 		UserDTO login = userService.getUser(user.getUserId());
 		session.setAttribute("login", login);
 		
-		return "user/userEditNotice";
+		request.setAttribute("msg", "회원수정 되었습니다");
+		request.setAttribute("url", "/");
+		
+		return "alert";
 	}
 	
 	//회원수정뷰
@@ -120,42 +168,47 @@ public class UserController {
 		return "user/userEditView";
 	}
 	
+	@RequestMapping("idpwFindView")
+	public String idpwFindView(){
+		return "user/idpwFindView";
+	}
+	
 	//회원삭제
 	@PostMapping("/userDelDo")
-	public String userDelDo(HttpSession session) {
+	public String userDelDo(HttpSession session, HttpServletRequest request) {
 		
 		
 		UserDTO login = (UserDTO)session.getAttribute("login");
 		userService.deleteUser(login.getUserId());
 		session.invalidate();
+		request.setAttribute("msg", "회원삭제 되었습니다");
+		request.setAttribute("url", "/");
 		
-		return "user/userDelNotice";
+		return "alert";
+		
 	}
 	
-	//회원삭제 알림 뷰
-	
-	@RequestMapping("/userDelNotice")
-	public String userDelNotice() {
-		return "user/userDelNotice";
+	//아이디 찾기
+	@ResponseBody
+	@PostMapping("/idFindDo")
+	public String idFindDo(UserDTO user) {
+		UserDTO result = userService.idFind(user);
+		if(result != null) {
+			return result.getUserId();
+			
+		}else {
+			return "";
+		}
 	}
 	
-	@RequestMapping("/loginYn")
-	public String loginYn() {
-		return "user/loginYn";
-	}
 	
-	//회원수정 알림
-	@RequestMapping("/userEditNotice")
-	public String userEditNotice() {
-		return "user/userEditNotice";
-	}
 	
-	//회원가입 알림
-	@RequestMapping("/registNotice")
-	public String registNotice() {
-		return "user/registNotice";
-	}
 	
+
+	
+	
+
+
 	
 	
 }

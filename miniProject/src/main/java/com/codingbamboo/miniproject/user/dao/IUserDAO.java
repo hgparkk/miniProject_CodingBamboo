@@ -10,13 +10,21 @@ public interface IUserDAO {
 
 	UserDTO getUser(String userId);
 
-	int insertUser(UserDTO userInfo);
-
 	UserDTO loginUser(UserDTO userInfo);
 
 	int updateUser(UserDTO userInfo);
 
 	int deleteUser(String userId);
+
+	UserDTO idDupCheck(UserDTO idCheck);
+
+	UserDTO idFind(UserDTO user);
+
+	UserDTO pwFind(UserDTO user);
+	
+	int pwReset(UserDTO user);
+
+	int insertUser(UserDTO userInfo);
 
 
 }

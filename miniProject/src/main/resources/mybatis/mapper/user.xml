@@ -30,7 +30,6 @@
 				user_info
 			WHERE 1=1
 			  AND user_id = #{userId}
-			  AND user_pw = #{userPw}
 		</select>
 	
 	
@@ -66,9 +65,50 @@
 		WHERE user_id = #{userId}
 	</delete>
 
+	<select id="idDupCheck" parameterType="UserDTO" resultType="UserDTO">
+	   SELECT user_id
+	   FROM user_info
+	   WHERE user_id = #{userId}
+	</select>
 
-
-
+	<select id="idFind" parameterType="UserDTO" resultType="UserDTO">
+		SELECT
+			user_id,
+			user_pw,
+			user_name,
+			user_email,
+			user_ismaster
+		FROM
+			user_info
+		WHERE 1=1
+			AND user_name = #{userName}
+			AND user_email = #{userEmail}
+	</select>
+	
+	
+	<select id="pwFind" parameterType="UserDTO" resultType="UserDTO">
+		SELECT
+			user_id,
+			user_pw,
+			user_name,
+			user_email,
+			ser_ismaster
+		FROM
+			users
+		WHERE 1=1
+			AND user_id = #{userId}
+			AND user_name = #{userName}
+			AND user_email = #{userEmail}
+	</select>
+	
+	<update id="pwReset" parameterType="UserDTO">
+		UPDATE
+			user_info
+		SET
+			user_pw = #{userPw}
+		WHERE 1=1
+			AND user_id = #{userId}
+	</update>
 
 </mapper>
 

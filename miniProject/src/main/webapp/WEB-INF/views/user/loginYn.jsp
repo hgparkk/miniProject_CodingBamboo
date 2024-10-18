@@ -18,7 +18,7 @@
 			alert("로그인에 실패하였습니다. 로그인 페이지로 이동합니다");
 			window.location.href = '/miniproject/loginView';
 		}else{
-			alert("환영합니다.")
+		
 			window.location.href = '/miniproject';
 		}
 	

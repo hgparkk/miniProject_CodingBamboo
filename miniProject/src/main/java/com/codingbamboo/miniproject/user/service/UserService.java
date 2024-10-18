@@ -41,6 +41,26 @@ public class UserService {
 		return result;
 	}
 	
+	//아이디중복체크
+	public UserDTO idDupCheck(UserDTO idCheck) {
+		return dao.idDupCheck(idCheck);
+	}
+	//아이디찾기
+	public UserDTO idFind(UserDTO user) {
+		return dao.idFind(user);
+	}
+	
+	//비번체크
+	public UserDTO pwFind(UserDTO user) {
+		return dao.pwFind(user);
+	}
+	
+	//비번리셋
+	public int pwReset(UserDTO user) {
+		return dao.pwReset(user);
+	}
+	
+	
 
 	
 }

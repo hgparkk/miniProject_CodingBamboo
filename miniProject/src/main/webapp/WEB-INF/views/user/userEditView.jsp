@@ -10,16 +10,9 @@
     <meta name="author" content="" />
     <title>회원수정</title>
 <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="${pageContext.request.contextPath }/css/styles.css" rel="stylesheet" />
-    <!-- header 부분 -->
 
+    <!-- header 부분 -->
+	<%@ include file="/WEB-INF/inc/header.jsp"%>
 	<style type="text/css">
 		.profile-box{
 			width:300px;
@@ -40,8 +33,8 @@
 </head>
 <body id="page-top">
 
-    <!-- navigation 부분 -->
-    
+    <!-- top part -->
+    <%@ include file="/WEB-INF/inc/top.jsp"%>
     <!-- Contact Section-->
     <section class="page-section" id="contact">
     	<!-- 부트스트랩으로 padding-top 을 좀 주고자 한다. -->
@@ -113,7 +106,7 @@
     </section>
     
     <!-- footer 부분 -->
-
+	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 	<script type="text/javascript">
 		
 		let v_userId = '${sessionScope.login.userId}';
