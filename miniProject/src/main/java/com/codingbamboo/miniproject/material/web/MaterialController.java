@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.codingbamboo.miniproject.coefficient.dto.CoefficientDTO;
+import com.codingbamboo.miniproject.coefficient.service.CoefficientService;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 import com.codingbamboo.miniproject.material.service.MaterialService;
 import com.google.gson.Gson;
@@ -22,6 +24,9 @@ public class MaterialController {
 
 	@Autowired
 	MaterialService materialService;
+	
+	@Autowired
+	CoefficientService coefficientService;
 
 	// 자재별 탄소 배출량 계산 페이지 이동
 	@RequestMapping(value = "/materialCalculation", method = RequestMethod.GET)
@@ -31,6 +36,15 @@ public class MaterialController {
 		List<MaterialDTO> materialList = materialService.selectAllMaterial("");
 
 		model.addAttribute("materialList", materialList);
+		
+		// 자재별 탄소 배출량 계산에 필요한 모든 계수 불러오기
+		CoefficientDTO residentialCoefficient = coefficientService.getCoefficient(1);
+		CoefficientDTO commercialCoefficient = coefficientService.getCoefficient(2);
+		CoefficientDTO publicCoefficient = coefficientService.getCoefficient(3);
+		
+		model.addAttribute("residentialCoefficient",residentialCoefficient.getAecCoefficient());
+		model.addAttribute("commercialCoefficient",commercialCoefficient.getAecCoefficient());
+		model.addAttribute("publicCoefficient",publicCoefficient.getAecCoefficient());
 
 		return "material/materialCalculationView";
 	}

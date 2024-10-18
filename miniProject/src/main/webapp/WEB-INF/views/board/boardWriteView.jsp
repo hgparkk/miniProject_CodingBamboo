@@ -72,7 +72,7 @@
 		nhn.husky.EZCreator.createInIFrame({
 			oAppRef : oEditors,
 			elPlaceHolder : "smartEditor",	// textarea의 id
-			sSkinURI : "${pageContext.request.contextPath}/nse/SmartEditor2Skin.html"
+			sSkinURI : "${pageContext.request.contextPath}/resources/nse/SmartEditor2Skin.html"
 		});
 		
 		// 글 등록 버튼 클릭

@@ -55,7 +55,7 @@
 			let myElectric = document.getElementById("inputElectric").value
 
 			// 입력한 전력량을 탄소 배출량 계산하기
-			let myEmission = myElectric * 0.443
+			let myEmission = myElectric * ${electricEmissionCoefficient}
 
 			// 탄소 배출량 보이기
 			document.getElementById("myElectricEmission").innerHTML = showFiveDecimalPlaces(myEmission)
@@ -72,13 +72,13 @@
 			let myArea = document.getElementById("inputArea").value
 
 			// 입력한 면적에 따른 평균 전력 사용량 계산
-			let avgElectric = myArea * 122
+			let avgElectric = myArea * ${avgAreaElectricCoefficient}
 
 			// 평균 전력량 보이기
 			document.getElementById("avgElectricUsage").innerHTML = avgElectric
 
 			// 평균 전력량으로 탄소 배출량 계산
-			let avgEmission = avgElectric * 0.443
+			let avgEmission = avgElectric * ${electricEmissionCoefficient}
 
 			// 예상 탄소 배출량 계산
 			document.getElementById("avgElectricEmission").innerHTML = showFiveDecimalPlaces(avgEmission)
