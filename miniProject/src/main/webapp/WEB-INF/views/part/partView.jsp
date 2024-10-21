@@ -125,35 +125,52 @@
     	
     let url = "${pageContext.request.contextPath }"
     
-    	function setMiddleField(){
-    		let largefield = document.getElementById("largefield").value;
-    		
-    		let path = "/getMiddleField"
-    		
-    		$.ajax({
-    			type:'POST',
-    			url: url + path,
-    			data: '{ peLargeField : ' + largefield + ' }',
-    			success: function(result){
-    				document.getElementById("middlefield").innerHTML = ""
-    				for(let i = 0; i< result.length; i++){
-    					document.getElementById("middlefield").innerHTML += '<option value="' +result[i]["peMiddelField"] +'">'
-    					+result[i]["peMiddelField"] + '</option>'
-    				}
-    			}
-    		})
-    	}
-    	
-    	function setSmallfield(){
-    		document.getElementById("largefield");
-    		document.getElementById("middlefield");
-    	}
-    	
-    	function setPart(){
-    		document.getElementById("largefield");
-    		document.getElementById("middlefield");
-    		document.getElementById("smallfield");
-    	}
+   	function setMiddleField(){
+   		let largefield = document.getElementById("largefield").value;
+   		
+   		let path = "/getMiddleField"
+   		
+   		$.ajax({
+   			type:'POST',
+   			url: url + path,
+   			data: { "peLargeField" : largefield},
+   			success: function(result){
+   				console.log(result)
+   				document.getElementById("middlefield").innerHTML = ""
+   				for(let i = 0; i< result.length; i++){
+   					document.getElementById("middlefield").innerHTML += '<option value="' +result[i] +'">'
+   					+result[i] + '</option>'
+   				}
+   			}
+   		})
+   	}
+   	
+   	function setSmallfield(){
+   		let largefield = document.getElementById("largefield").value;
+   		let middlefield = document.getElementById("middlefield").value;
+   		
+   		let path = "/getSmallField"
+   	   		
+   	   		$.ajax({
+   	   			type:'POST',
+   	   			url: url + path,
+   	   			data: { "peLargeField" : largefield , "peMiddelField" : middlefield },
+   	   			success: function(result){
+   	   				console.log(result)
+   	   				document.getElementById("smallfield").innerHTML = ""
+   	   				for(let i = 0; i< result.length; i++){
+   	   					document.getElementById("smallfield").innerHTML += '<option value="' +result[i] +'">'
+   	   					+result[i] + '</option>'
+   	   				}
+   	   			}
+   	   		})
+   	}
+   	
+   	function setPart(){
+   		document.getElementById("largefield");
+   		document.getElementById("middlefield");
+   		document.getElementById("smallfield");
+   	}
     	
     	
     </script>

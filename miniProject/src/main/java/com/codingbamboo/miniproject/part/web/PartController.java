@@ -27,20 +27,29 @@ public class PartController {
 	
 	@ResponseBody
 	@RequestMapping(value="/getMiddleField", method = RequestMethod.POST)
-	public List<String> getMiddleField(PartDTO part){
+	public List<String> getMiddleField(String peLargeField){
+		PartDTO part = new PartDTO();
+		part.setPeLargeField(peLargeField);
 		return partservice.PE_middleField(part);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getSmallField", method = RequestMethod.POST)
-	public List<String> getSmallField(PartDTO part){
+	public List<String> getSmallField(String peLargeField, String peMiddleField){
+		PartDTO part = new PartDTO();
+		part.setPeLargeField(peLargeField);
+		part.setPeMiddleField(peMiddleField);
 		return partservice.PE_smallField(part);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getPart", method = RequestMethod.POST)
-	public List<String> getPart(PartDTO part){
-		return partservice.PE_PART(part);
+	public List<String> getPart(String peLargeField, String peMiddleField, String peSmallField){
+		PartDTO part = new PartDTO();
+		part.setPeLargeField(peLargeField);
+		part.setPeMiddleField(peMiddleField);
+		part.setPeSmallField(peSmallField);
+		return partservice.PE_smallField(part);
 	}
 	
 	@ResponseBody

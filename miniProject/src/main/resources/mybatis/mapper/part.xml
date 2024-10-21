@@ -7,7 +7,7 @@
 	FROM
 		part_emissions
 	WHERE
-		pe_large_field = "#{peLargeField}"
+		pe_large_field = #{peLargeField}
 </select>
 <select id="PE_smallField" parameterType="PartDTO" resultType="String">
 	SELECT DISTINCT
@@ -15,9 +15,9 @@
 	FROM
 		part_emissions
 	WHERE
-		pe_large_field = "#{peLargeField}"
+		pe_large_field = #{peLargeField}
 	AND
-		pe_middle_field = "#{peMiddleField}"
+		pe_middle_field = #{peMiddleField}
 </select>
 <select id="PE_PART" parameterType="PartDTO" resultType="String">
 	SELECT DISTINCT
@@ -25,11 +25,11 @@
 	FROM
 		part_emissions
 	WHERE
-		pe_large_field = "#{peLargeField}"
+		pe_large_field = #{peLargeField}
 	AND
-		pe_middle_field = "#{peMiddleField}"
+		pe_middle_field = #{peMiddleField}
 	AND
-		pe_samll_field = "#{peSmallField}"
+		pe_samll_field = #{peSmallField}
 </select>
 <select id="result" parameterType="PartDTO" resultType="PartDTO">
 	SELECT DISTINCT
@@ -37,13 +37,13 @@
 	FROM
 		part_emissions
 	WHERE
-		pe_large_field = "#{peLargeField}"
+		pe_large_field = #{peLargeField}
 	AND
-		pe_middle_field = "#{peMiddleField}"
+		pe_middle_field = #{peMiddleField}
 	AND
-		pe_samll_field = "#{peSmallField}"
+		pe_samll_field = #{peSmallField}
 	AND
-		pe_part = "#{pePart}"
+		pe_part = #{pePart}
 	AND
 		pe_year BETWEEN #{YearFrom} AND #{YearTo}
 	ORDER BY pe_part, pe_year
