@@ -16,20 +16,20 @@ public class BoardService {
 	@Autowired
 	IBoardDAO dao;
 
-	// 게시글 목록 가져오기
+	// 질문 목록 가져오기
 	public List<BoardDTO> getBoardList(SearchVO search){
 		List<BoardDTO> result = dao.getBoardList(search);
 		return result;
 	}
 	
-	// 게시글 전체 갯수 가져오기
+	// 질문 전체 갯수 가져오기
 	public int getBoardCount(SearchVO search) {
 		int result = dao.getBoardCount(search);
 		
 		return result;
 	}
 	
-	// 게시글 불러오기
+	// 질문 불러오기
 	public BoardDTO getBoard(int no) throws BizNotFoundException{
 		BoardDTO result = dao.getBoard(no);
 		
@@ -42,23 +42,36 @@ public class BoardService {
 	
 	
 	
-	// 게시글 등록
+	// 질문 등록
 	public int insertBoard(BoardDTO board) {
 		int result = dao.insertBoard(board);
 		
 		return result;
 	}
 	
-	// 게시글 삭제
+	// 질문 삭제
 	public int deleteBoard(int quNo) {
 		int result = dao.deleteBoard(quNo);
 		
 		return result;
 	}
 	
+	// 질문 수정
 	public int updateBoard(BoardDTO board) {
 		int result = dao.updateBoard(board);
 		
+		return result;
+	}
+	
+	// 질문 답변 등록 메시지 삭제
+	public int updateBoardAnswer(int quNo) {
+		int result = dao.updateBoardAnswer(quNo);
+		return result;
+	}
+	
+	// 질문 답변 완료 메시지 출력
+	public int deleteBoardAnswer(int quNo) {
+		int result = dao.deleteBoardAnswer(quNo);
 		return result;
 	}
 }

@@ -23,7 +23,7 @@
 		FROM
 			material_emissions
 		WHERE
-			me_no = ${meNo}
+			me_no = #{meNo}
 	</select>
 	
 	<!-- 관리자 -->

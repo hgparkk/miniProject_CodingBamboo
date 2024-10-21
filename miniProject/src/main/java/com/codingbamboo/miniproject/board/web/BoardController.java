@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,6 +28,7 @@ public class BoardController {
 	@Autowired
 	AnswerService answerService;
 	
+	// q&a 게시판 가기
 	@RequestMapping("/boardView")
 	public String boardView(Model model, SearchVO search) {
 		int boardCount = boardService.getBoardCount(search);
@@ -43,6 +42,7 @@ public class BoardController {
 		List<BoardDTO> boardList = boardService.getBoardList(search);
 		
 		model.addAttribute("keyBoardList", boardList);
+		
 		
 		
 		return "board/boardView";
@@ -64,6 +64,7 @@ public class BoardController {
 	@PostMapping("/boardWriteDo")
 	public String boardWriteDo(BoardDTO board, HttpServletRequest request) {
 		boardService.insertBoard(board);
+		System.out.println(board);
 		
 		request.setAttribute("msg", "질문이 등록되었습니다.");
 		request.setAttribute("url", "/boardView");
@@ -71,6 +72,7 @@ public class BoardController {
 		return "alert";
 	}
 	
+	// 질문 자세히 보기
 	@RequestMapping("/boardDetailView")
 	public String boardDetailView(int no, Model model) {
 		BoardDTO board = null;
@@ -100,6 +102,7 @@ public class BoardController {
 		return "board/boardDetailView";
 	}
 	
+	// 질문 삭제하기
 	@PostMapping("/boardDelDo")
 	public String boardDelDo(int no, HttpServletRequest request) {
 		boardService.deleteBoard(no);
@@ -109,6 +112,7 @@ public class BoardController {
 		return "alert";
 	}
 	
+	// 질문 수정 페이지
 	@PostMapping("/boardEditView")
 	public String boardEditView(int no, Model model) {
 		BoardDTO board;
@@ -123,6 +127,7 @@ public class BoardController {
 		return "board/boardEditView";
 	}
 	
+	// 질문 수정하기
 	@PostMapping("/boardEditDo")
 	public String boardEditDo(BoardDTO board, HttpServletRequest request) {
 		boardService.updateBoard(board);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.codingbamboo.miniproject.answer.dao.IAnswerDAO">
-
-	<insert id="insertAnswer" parameterType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+	<!-- 답변 등록 -->
+	<insert id="insertAnswer" parameterType="AnswerDTO">
 	INSERT INTO answer(
 		aw_no
 		, qu_no
@@ -14,7 +14,7 @@
 	)
 	</insert>
 	
-	<select id="getResentAnswer" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO" parameterType="int">
+	<select id="getResentAnswer" resultType="AnswerDTO" parameterType="int">
 		SELECT
 			aw_no,
 			qu_no,
@@ -30,7 +30,8 @@
 		WHERE ROWNUM= 1
 	</select>
 	
-	<select id="getAnswer" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+	<!-- 최근 답변 가져오기 -->
+	<select id="getAnswer" resultType="AnswerDTO">
 		SELECT
 			a.aw_no
 			, a.qu_no
@@ -40,7 +41,8 @@
 		WHERE a.aw_no = #{awNo}
 	</select>
 	
-	<select id="getAnswerList" resultType="com.codingbamboo.miniproject.answer.dto.AnswerDTO">
+	<!-- 답변 목록 가져오기 -->
+	<select id="getAnswerList" resultType="AnswerDTO">
 		SELECT
 			a.aw_no
 			, a.qu_no
@@ -52,4 +54,11 @@
 			AND a.qu_no = #{quNo}
 		ORDER BY aw_no ASC
 	</select>
+	
+	<!-- 답변 삭제 -->
+	<delete id="delAnswer" parameterType="int">
+		DELETE FROM answer
+		WHERE 1=1 
+			AND aw_no = #{awNo}
+	</delete>
 </mapper>
