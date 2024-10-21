@@ -10,7 +10,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>로그인</title>
+<title>Coding Bamboo</title>
 <!-- Favicon-->
 <!-- header part -->
 <%@ include file="/WEB-INF/inc/header.jsp"%>
@@ -48,7 +48,7 @@
 						<!-- email 입력창 -->
 						<div class="form-floating mb-3">
 							<input class="form-control" id="inputEmailForId" type="text" name="userEmail" placeholder="이메일" />
-							<label for="inputNameForId">이메일( '@' 포함 )</label>
+							<label for="inputNameForId">이메일</label>
 						</div>
 					</form>
 					
@@ -74,7 +74,7 @@
 						<!-- email 입력창 -->
 						<div class="form-floating mb-3">
 							<input class="form-control" id="inputEmailForPw" type="text" name="userEmail" placeholder="이메일" />
-							<label for="inputEmailForPw">이메일( '@' 포함 )</label>
+							<label for="inputEmailForPw">이메일</label>
 						</div>
 					</form>
 
@@ -95,24 +95,43 @@
 
 <script type="text/javascript">
 	//아이디 찾기
-	document.getElementById("idFindBtn").addEventListener("click",()=>{
-		let v_idFindForm = $("#idFindForm")
-		let v_url = v_idFindForm.attr("action")
-		let v_data = v_idFindForm.serialize();
-		
-		$.ajax({
-			type:'POST',
-			url:v_url,
-			data: v_data,
-			success: function(data){
-				if(data){
-					alert("해당 정보와 일치하는 아이디는 "+ data + " 입니다.")
-				}else{
-					alert("해당 정보와 일치하는 아이디가 없습니다.")
-				}
-			}
-		})
-	})
+document.getElementById("idFindBtn").addEventListener("click", () => {
+    let v_idFindForm = $("#idFindForm");
+    let v_url = v_idFindForm.attr("action");
+    let v_data = v_idFindForm.serialize();
+    
+    
+    
+    // 입력값 검증
+    let userName = $("#inputNameForId").val().trim();
+    let userEmail = $("#inputEmailForId").val().trim();
+    
+    if (!userName || !userEmail) {
+        alert("이름과 이메일을 모두 입력해주세요.");
+        return; // 입력값이 유효하지 않으면 종료
+    }
+
+
+    $.ajax({
+        type: 'POST',
+        url: v_url,
+        data: v_data,
+        success: function(data) {
+            if (data) {
+                alert("해당 정보와 일치하는 아이디는 " + data + " 입니다.");
+            } else {
+                alert("해당 정보와 일치하는 아이디가 없습니다.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 요청 실패:", error);
+            alert("요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+        },
+        complete: function() {
+
+        }
+    });
+});
 	
 	//비번
 	document.getElementById("pwFindBtn").addEventListener("click",()=>{

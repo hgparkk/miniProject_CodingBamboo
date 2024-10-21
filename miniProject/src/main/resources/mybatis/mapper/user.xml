@@ -65,7 +65,7 @@
 		WHERE user_id = #{userId}
 	</delete>
 
-	<select id="idDupCheck" parameterType="UserDTO" resultType="UserDTO">
+	<select id="idDupCheck" parameterType="UserDTO" resultType="com.codingbamboo.miniproject.user.dto.UserDTO">
 	   SELECT user_id
 	   FROM user_info
 	   WHERE user_id = #{userId}
@@ -83,22 +83,24 @@
 		WHERE 1=1
 			AND user_name = #{userName}
 			AND user_email = #{userEmail}
+			AND user_ismaster = 0
 	</select>
 	
 	
-	<select id="pwFind" parameterType="UserDTO" resultType="UserDTO">
+	<select id="pwFind" parameterType="UserDTO" resultType="com.codingbamboo.miniproject.user.dto.UserDTO">
 		SELECT
 			user_id,
 			user_pw,
 			user_name,
 			user_email,
-			ser_ismaster
+			user_ismaster
 		FROM
-			users
+			user_info
 		WHERE 1=1
 			AND user_id = #{userId}
 			AND user_name = #{userName}
 			AND user_email = #{userEmail}
+			AND user_ismaster = 0
 	</select>
 	
 	<update id="pwReset" parameterType="UserDTO">
@@ -109,6 +111,20 @@
 		WHERE 1=1
 			AND user_id = #{userId}
 	</update>
+	
+	<select id="emailDupCheck" parameterType="UserDTO" resultType="com.codingbamboo.miniproject.user.dto.UserDTO">
+		SELECT
+			user_id,
+			user_pw,
+			user_name,
+			user_email,
+			user_ismaster
+		FROM
+			user_info
+		WHERE 1=1
+			AND user_email = #{userEmail}
+	</select>
+
 
 </mapper>
 

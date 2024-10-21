@@ -60,6 +60,12 @@ public class UserService {
 		return dao.pwReset(user);
 	}
 	
+	//이메일 더블체크
+	public UserDTO emailDupCheck(UserDTO emailCheck) {
+		return dao.emailDupCheck(emailCheck);
+	}
+
+	
 	
 
 	

@@ -58,5 +58,10 @@ public class UserDTO {
 	public UserDTO() {
 		super();
 	}
+    private String emailCheckCode; // 이메일 인증 코드
+    
+    public String getEmailCheckCode() { return emailCheckCode; }
+    
+    public void setEmailCheckCode(String emailCheckCode) { this.emailCheckCode = emailCheckCode; }
 	
 }

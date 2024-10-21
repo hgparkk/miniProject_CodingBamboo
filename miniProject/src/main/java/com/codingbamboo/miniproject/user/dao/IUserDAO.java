@@ -1,6 +1,9 @@
 package com.codingbamboo.miniproject.user.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.security.core.userdetails.User;
 
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 
@@ -26,5 +29,14 @@ public interface IUserDAO {
 
 	int insertUser(UserDTO userInfo);
 
+	User findByEmail(String email);
 
+	UserDTO emailDupCheck(UserDTO emailCheck);
+	
+	
+	
+	
+	
 }
+
+
