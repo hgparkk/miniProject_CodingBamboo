@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codingbamboo.miniproject.part.dao.IPartDAO">
+<select id="PE_middleField" parameterType="PartDTO" resultType="String">
+	SELECT DISTINCT
+		pe_middle_field
+	FROM
+		part_emissions
+	WHERE
+		pe_large_field = "#{peLargeField}"
+</select>
+<select id="PE_smallField" parameterType="PartDTO" resultType="String">
+	SELECT DISTINCT
+		pe_small_field
+	FROM
+		part_emissions
+	WHERE
+		pe_large_field = "#{peLargeField}"
+	AND
+		pe_middle_field = "#{peMiddleField}"
+</select>
+<select id="PE_PART" parameterType="PartDTO" resultType="String">
+	SELECT DISTINCT
+		pe_part
+	FROM
+		part_emissions
+	WHERE
+		pe_large_field = "#{peLargeField}"
+	AND
+		pe_middle_field = "#{peMiddleField}"
+	AND
+		pe_samll_field = "#{peSmallField}"
+</select>
+<select id="result" parameterType="PartDTO" resultType="PartDTO">
+	SELECT DISTINCT
+		pe_large_field, pe_middle_field, pe_samll_field, pe_part, pe_year, pe_emission
+	FROM
+		part_emissions
+	WHERE
+		pe_large_field = "#{peLargeField}"
+	AND
+		pe_middle_field = "#{peMiddleField}"
+	AND
+		pe_samll_field = "#{peSmallField}"
+	AND
+		pe_part = "#{pePart}"
+	AND
+		pe_year BETWEEN #{YearFrom} AND #{YearTo}
+	ORDER BY pe_part, pe_year
+</select>
+
+
+</mapper>

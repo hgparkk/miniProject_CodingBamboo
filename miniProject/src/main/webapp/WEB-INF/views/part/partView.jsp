@@ -15,10 +15,8 @@
 </head>
 <body>
         <%-- <%@ include file="/WEB-INF/inc/top.jsp" %> --%>
-    <form th:action="@{/emissions/search}" method="post">
-    
-        <label for="mainCategory">대분류</label>
-        <select id="mainCategory" name="mainCategory">
+    <div class="d-flex justify-content-center">
+        <select id="largefield" onchange="setMiddleField()">
             <option value="에너지">에너지</option>
             <option value="산업공정">산업공정</option>
             <option value="농업">농업</option>
@@ -27,26 +25,22 @@
             <option value="별도항목">별도항목</option>
         </select>
 
-        <label for="subCategory">중분류</label>
-        <select id="subCategory" name="subCategory">
-            <option value="연료연소">연료연소</option>
-            <!-- 중분류 옵션 추가 -->
+        <select id="middlefield" onchange="setSmallfield()">
+            <option>중분류</option>
         </select>
         
-        <label for="subCategory">소분류</label>
-        <select id="subCategory" name="subCategory">
-            <option value="연료연소">에너지 산업</option>
-            <!-- 소분류 옵션 추가 -->
+        <select id="smallfield" onchange="setPart()">
+            <option>소분류</option>
         </select>
         
-        <label for="subCategory">분야</label>
-        <select id="subCategory" name="subCategory">
-            <option value="연료연소">공공전기 및 열 생간</option>
-            <!-- 분야 옵션 추가 -->
+        <select id="part">
+            <option>분야</option>
         </select>
+        </div>
         
-        <label for="yearFrom">From</label>
-        <select id="yearFrom" name="yearFrom">
+        <div class="d-flex justify-content-around">
+        <div>
+        <select id="yearFrom">
             <option value="1990">1990</option>
             <option value="1991">1991</option>
             <option value="1992">1992</option>
@@ -81,8 +75,9 @@
             <option value="2021">2021</option>
         </select>
 
-        <label for="yearTo">To</label>
-        <select id="yearTo" name="yearTo">
+		<span>~</span>
+
+        <select id="yearTo">
             <option value="1990">1990</option>
             <option value="1991">1991</option>
             <option value="1992">1992</option>
@@ -116,29 +111,51 @@
             <option value="2020">2020</option>
             <option value="2021">2021</option>
         </select>
-
-        <button type="submit">검색</button>
+        </div>
+        
+        <span></span>
+        
+        <button type="button">검색</button>
+        </div>
     </form>
-
-<%--     <table>
-        <thead>
-            <tr>
-                <th>대분류</th>
-                <th>중분류</th>
-                <th>소분류</th>
-                <th>분야</th>
-                <th>배출량</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="data : ${results}">
-                <td th:text="${data.mainCategory}"></td>
-                <td th:text="${data.subCategory}"></td>
-                <td th:text="${data.specificCategory}"></td>
-                <td th:text="${data.field}"></td>
-                <td th:text="${data.amount}"></td>
-            </tr>
-        </tbody>
-    </table> --%>
+    
+    <div id="searchResult"></div>
+    
+    <script type="text/javascript">
+    	
+    let url = "${pageContext.request.contextPath }"
+    
+    	function setMiddleField(){
+    		let largefield = document.getElementById("largefield").value;
+    		
+    		let path = "/getMiddleField"
+    		
+    		$.ajax({
+    			type:'POST',
+    			url: url + path,
+    			data: '{ peLargeField : ' + largefield + ' }',
+    			success: function(result){
+    				document.getElementById("middlefield").innerHTML = ""
+    				for(let i = 0; i< result.length; i++){
+    					document.getElementById("middlefield").innerHTML += '<option value="' +result[i]["peMiddelField"] +'">'
+    					+result[i]["peMiddelField"] + '</option>'
+    				}
+    			}
+    		})
+    	}
+    	
+    	function setSmallfield(){
+    		document.getElementById("largefield");
+    		document.getElementById("middlefield");
+    	}
+    	
+    	function setPart(){
+    		document.getElementById("largefield");
+    		document.getElementById("middlefield");
+    		document.getElementById("smallfield");
+    	}
+    	
+    	
+    </script>
 </body>
 </html>
