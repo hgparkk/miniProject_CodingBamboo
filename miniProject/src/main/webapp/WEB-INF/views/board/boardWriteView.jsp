@@ -42,21 +42,41 @@
 			<!-- Contact Section Form-->
 			<div class="row justify-content-center">
 		 		<div class="col-lg-8 col-xl-7">
-					
-					<form id="boardWriteForm" action="${pageContext.request.contextPath }/boardWriteDo" method="POST">
-						<div class="mb-3">
-							<input class="form-control" type="text" name="quTitle" placeholder="제목을 입력해주세요" />
-						</div>
+					<c:if test="${sessionScope.login.userId != admin}">
+						<form id="boardWriteForm" action="${pageContext.request.contextPath }/boardWriteDo" method="POST">
+							
+							<input type="hidden" value="${sessionScope.login.userId}" name="userId">
 						
-						<div class="mb-3">
-							<textarea id="smartEditor" class="form-control" rows="10" name="quContent"></textarea>
-						</div>
-						
-						<div class="d-flex justify-content-end">
-							<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/boardView">취소</a>
-							<button id="writeBtn" class="btn btn-primary" type="button">등록</button>
-						</div>
-					</form>
+							<div class="mb-3">
+								<input class="form-control" type="text" name="quTitle" placeholder="제목을 입력해주세요" />
+							</div>
+							
+							<div class="mb-3">
+								<textarea id="smartEditor" class="form-control" rows="10" name="quContent"></textarea>
+							</div>
+							
+							<div class="d-flex justify-content-end">
+								<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/boardView">취소</a>
+								<button id="writeBtn" class="btn btn-primary" type="button">등록</button>
+							</div>
+						</form>
+					</c:if>
+					<c:if test="${sessionScope.login.userId == admin}">
+						<form id="boardWriteForm" action="${pageContext.request.contextPath }/boardWriteDo" method="POST">
+							<div class="mb-3">
+								<input class="form-control" type="text" name="quTitle" placeholder="제목을 입력해주세요" />
+							</div>
+							
+							<div class="mb-3">
+								<textarea id="smartEditor" class="form-control" rows="10" name="quContent"></textarea>
+							</div>
+							
+							<div class="d-flex justify-content-end">
+								<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/boardView">취소</a>
+								<button id="writeBtn" class="btn btn-primary" type="button">등록</button>
+							</div>
+						</form>
+					</c:if>
 					
 				</div>
 			</div>

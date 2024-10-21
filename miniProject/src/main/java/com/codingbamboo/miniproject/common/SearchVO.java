@@ -6,7 +6,7 @@ public class SearchVO {
 	private int boardCount;
 	
 	private int pageNo = 1;				/* 현재 페이지 번호 */
-	private int rowSizePerPage = 10;	/* 한 페이지에서 보여줄 게시글 수 */
+	private int rowSizePerPage = 30;	/* 한 페이지에서 보여줄 게시글 수 */
 	
 	// 현재 페이지 시작과 끝 글 번호
 	private int start;
@@ -26,8 +26,8 @@ public class SearchVO {
 		start = rowSizePerPage * (pageNo - 1) + 1;
 		end = rowSizePerPage * pageNo;
 		
-		firstPage = ((pageNo-1) / 10) * 10 + 1;
-		lastPage = firstPage + 9;
+		firstPage = ((pageNo-1) / 30) * 30 + 1;
+		lastPage = firstPage + 29;
 		
 		finalPage = (int)Math.ceil((double)boardCount / rowSizePerPage);
 		

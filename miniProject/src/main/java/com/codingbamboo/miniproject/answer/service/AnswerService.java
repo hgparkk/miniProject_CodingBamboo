@@ -35,8 +35,14 @@ public class AnswerService {
 	}
 
 	// 특정 게시글의 답변목록 가져오는 메소드
-	public List<AnswerDTO> getAnswerList(int qwNo) {
-		List<AnswerDTO> result = dao.getAnswerList(qwNo);
+	public List<AnswerDTO> getAnswerList(int quNo) {
+		List<AnswerDTO> result = dao.getAnswerList(quNo);
+		return result;
+	}
+	
+	// 답변 삭제
+	public int delAnswer(int awNo) {
+		int result = dao.delAnswer(awNo);
 		return result;
 	}
 }

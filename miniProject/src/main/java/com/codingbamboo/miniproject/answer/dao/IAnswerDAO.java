@@ -17,6 +17,9 @@ public interface IAnswerDAO {
 	// 가장 최근 답변 조회
 	AnswerDTO getResentAnswer(int quNo);
 	
-	// 특정 게시글 댓글 목록 조회
-	List<AnswerDTO> getAnswerList(int qwNo);
+	// 특정 게시글 답변 목록 조회
+	List<AnswerDTO> getAnswerList(int quNo);
+	
+	// 답변 삭제
+	int delAnswer(int awNo);
 }
