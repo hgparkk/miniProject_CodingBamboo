@@ -140,7 +140,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.11.0</version>
 		</dependency>
-		
+
 		<!--스프링 시큐리티 -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -175,6 +175,14 @@
 			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
 			<artifactId>owasp-java-html-sanitizer</artifactId>
 			<version>20240325.1</version>
+		</dependency>
+		
+		<!-- 메일 라이브러리 -->
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
 		</dependency>
 
 		<!-- Test -->
