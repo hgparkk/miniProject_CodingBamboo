@@ -1,53 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.codingbamboo.miniproject.part.dao.IPartDAO">
-<select id="PE_middleField" parameterType="PartDTO" resultType="String">
-	SELECT DISTINCT
-		pe_middle_field
-	FROM
-		part_emissions
-	WHERE
-		pe_large_field = #{peLargeField}
+	<select id="getMiddleField" parameterType="PartDTO" resultType="String">
+		SELECT DISTINCT
+			pe_middle_field
+		FROM
+			(
+			SELECT
+				*
+			FROM
+				part_emissions
+			ORDER BY pe_no ASC 
+			)
+		WHERE
+			pe_large_field = #{peLargeField}
+	</select>
+	<select id="getSmallField" parameterType="PartDTO" resultType="String">
+		SELECT DISTINCT
+			pe_small_field
+		FROM
+			(
+			SELECT
+				*
+			FROM
+				part_emissions
+			ORDER BY pe_no ASC 
+			)
+		WHERE
+			pe_large_field = #{peLargeField}
+		AND
+			pe_middle_field = #{peMiddleField}
+	</select>
+	<select id="getPart" parameterType="PartDTO" resultType="String">
+		SELECT DISTINCT
+			pe_part
+		FROM
+			(
+			SELECT
+				*
+			FROM
+				part_emissions
+			ORDER BY pe_no ASC 
+			)
+		WHERE
+			pe_large_field = #{peLargeField}
+		AND
+			pe_middle_field = #{peMiddleField}
+		AND
+			pe_small_field = #{peSmallField}
+	</select>
+	
+	<select id="getResult" parameterType="PartDTO" resultType="PartDTO">
+    SELECT
+        pe_large_field, pe_middle_field, pe_small_field, pe_part, pe_year, pe_emission
+    FROM
+        (
+        SELECT
+            *
+        FROM
+            part_emissions
+        ORDER BY pe_no ASC 
+        )
+    WHERE 1=1
+    <if test='peLargeField != null and peLargeField != ""'>
+        AND pe_large_field = #{peLargeField}
+    </if>
+    <if test='peMiddleField != null and peMiddleField != ""'>
+        AND pe_middle_field = #{peMiddleField}
+    </if>
+    <if test='peSmallField != null and peSmallField != ""'>
+        AND pe_small_field = #{peSmallField}
+    </if>
+    <if test='pePart != null and pePart != ""'>
+        AND pe_part = #{pePart}
+    </if>
+    AND
+        pe_year BETWEEN #{yearFrom} AND #{yearTo}
 </select>
-<select id="PE_smallField" parameterType="PartDTO" resultType="String">
-	SELECT DISTINCT
-		pe_small_field
-	FROM
-		part_emissions
-	WHERE
-		pe_large_field = #{peLargeField}
-	AND
-		pe_middle_field = #{peMiddleField}
-</select>
-<select id="PE_PART" parameterType="PartDTO" resultType="String">
-	SELECT DISTINCT
-		pe_part
-	FROM
-		part_emissions
-	WHERE
-		pe_large_field = #{peLargeField}
-	AND
-		pe_middle_field = #{peMiddleField}
-	AND
-		pe_samll_field = #{peSmallField}
-</select>
-<select id="result" parameterType="PartDTO" resultType="PartDTO">
-	SELECT DISTINCT
-		pe_large_field, pe_middle_field, pe_samll_field, pe_part, pe_year, pe_emission
-	FROM
-		part_emissions
-	WHERE
-		pe_large_field = #{peLargeField}
-	AND
-		pe_middle_field = #{peMiddleField}
-	AND
-		pe_samll_field = #{peSmallField}
-	AND
-		pe_part = #{pePart}
-	AND
-		pe_year BETWEEN #{YearFrom} AND #{YearTo}
-	ORDER BY pe_part, pe_year
-</select>
-
-
 </mapper>

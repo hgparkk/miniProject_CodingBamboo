@@ -9,12 +9,12 @@ import com.codingbamboo.miniproject.part.dto.PartDTO;
 @Mapper
 public interface IPartDAO {
 
-	List<String> PE_middleField(PartDTO part);
+	List<String> getMiddleField(PartDTO part);
 	
-	List<String> PE_smallField(PartDTO part);
+	List<String> getSmallField(PartDTO part);
 	
-	List<String> PE_PART(PartDTO part);
+	List<String> getPart(PartDTO part);
 	
-	List<PartDTO> result(PartDTO part);
+	List<PartDTO> getResult(PartDTO part);
 	
 }

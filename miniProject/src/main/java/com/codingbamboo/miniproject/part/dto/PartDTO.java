@@ -7,33 +7,32 @@ public class PartDTO {
 	private String peSmallField;
 	private String pePart;
 	private int peYear;
-	private int YearTo;
-	private int YearFrom;
-	private double peEmissions;
+	private int yearTo;
+	private int yearFrom;
+	private double peEmission;
 	
 	public PartDTO() {
 		super();
 	}
 	public PartDTO(String peLargeField, String peMiddleField, String peSmallField, String pePart, int peYear,
-			int yearTo, int yearFrom, double peEmissions) {
+			int yearTo, int yearFrom, double peEmission) {
 		super();
 		this.peLargeField = peLargeField;
 		this.peMiddleField = peMiddleField;
 		this.peSmallField = peSmallField;
 		this.pePart = pePart;
 		this.peYear = peYear;
-		YearTo = yearTo;
-		YearFrom = yearFrom;
-		this.peEmissions = peEmissions;
+		this.yearTo = yearTo;
+		this.yearFrom = yearFrom;
+		this.peEmission = peEmission;
 	}
 	
 	@Override
 	public String toString() {
 		return "PartDTO [peLargeField=" + peLargeField + ", peMiddleField=" + peMiddleField + ", peSmallField="
-				+ peSmallField + ", pePart=" + pePart + ", peYear=" + peYear + ", YearTo=" + YearTo + ", YearFrom="
-				+ YearFrom + ", peEmissions=" + peEmissions + "]";
+				+ peSmallField + ", pePart=" + pePart + ", peYear=" + peYear + ", yearTo=" + yearTo + ", yearFrom="
+				+ yearFrom + ", peEmission=" + peEmission + "]";
 	}
-	
 	public String getPeLargeField() {
 		return peLargeField;
 	}
@@ -65,25 +64,21 @@ public class PartDTO {
 		this.peYear = peYear;
 	}
 	public int getYearTo() {
-		return YearTo;
+		return yearTo;
 	}
 	public void setYearTo(int yearTo) {
-		YearTo = yearTo;
+		this.yearTo = yearTo;
 	}
 	public int getYearFrom() {
-		return YearFrom;
+		return yearFrom;
 	}
 	public void setYearFrom(int yearFrom) {
-		YearFrom = yearFrom;
+		this.yearFrom = yearFrom;
 	}
-	public double getPeEmissions() {
-		return peEmissions;
+	public double getPeEmission() {
+		return peEmission;
 	}
-	public void setPeEmissions(double peEmissions) {
-		this.peEmissions = peEmissions;
+	public void setPeEmission(double peEmission) {
+		this.peEmission = peEmission;
 	}
-	
-	
 }
-
-
