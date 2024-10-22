@@ -182,7 +182,7 @@ public class UserController {
 	public String logoutDo(HttpSession session, HttpServletRequest request) {
 		String fromUrl = request.getHeader("Referer");
 		session.invalidate();
-		if (fromUrl.contains("/carbonMarketIntro") || fromUrl.contains("/simulationIntro")) {
+		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView")|| fromUrl.contains("/materialCalculation")|| fromUrl.contains("/electricCalculation")) {
 			return "redirect:" + fromUrl;
 		} else {
 			return "redirect:/";
@@ -237,20 +237,34 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/idFindDo")
 	public String idFindDo(UserDTO user) {
-		UserDTO result = userService.idFind(user);
-		if (result != null) {
-			return result.getUserId();
+	    UserDTO result = userService.idFind(user);
+	    
+	    if (result != null) {
+	        // 유저 ID
+	        String v_userId = result.getUserId();
+	        
+	        
+	        // 첫 4글자만 추출
+	        String cutedUserId = v_userId.substring(0, 4);
 
-		} else {
-			return "";
-		}
+	        // 나머지 글자수를 구해서 해당 길이만큼 '*' 추가
+	        StringBuilder masked = new StringBuilder(cutedUserId);
+	        for (int i = 4; i < v_userId.length(); i++) {
+	            masked.append("*");
+	        }
+
+	        // 마스킹된 ID 반환
+	        return masked.toString();
+	    } else {
+	        return ""; // ID를 찾지 못했을 경우 빈 문자열 반환
+	    }
 	}
 
 	// PWreset 화면으로 이동
 	@PostMapping("/pwResetView")
 	public String pwResetView(String resetId, Model model) {
 		model.addAttribute("resetId", resetId);
-		return "user/pwResetView";
+		return "user/loginView";
 	}
 
 	// PW 초기화
@@ -279,19 +293,57 @@ public class UserController {
 	// PW 찾기
 	@ResponseBody
 	@PostMapping("/pwFindDo")
-	public String pwFindDo(UserDTO user) {
-		try {
-			UserDTO result = userService.pwFind(user);
-			if (result != null) {
-				return result.getUserId();
-			} else {
-				return "";
-			}
-		} catch (Exception e) {
-			e.printStackTrace(); // 에러를 콘솔에 출력
-			return "error"; // 실패 시 "error"를 반환
+	public String pwFindDo(UserDTO user, String userEmail, HttpSession session) {
+		int length = 8;
+		 String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		    StringBuilder code = new StringBuilder();
+		    SecureRandom random = new SecureRandom();
+
+		    for (int i = 0; i < length; i++) {
+		        int randomIndex = random.nextInt(characters.length());
+		        code.append(characters.charAt(randomIndex));
+		    }
+
+		    String changedPw = code.toString(); // 생성된 랜덤 비번
+		    System.out.println(userEmail);
+		    
+		    if (user == null) {
+		        return "fail"; // 이메일이 존재하지 않을 경우 실패 반환
+		    }
+		    
+		    // 비밀번호 암호화
+		    String encodedPw = passwordEncoder.encode(changedPw);
+		    user.setUserPw(encodedPw);
+		    
+		    // 비밀번호 업데이트
+		    userService.updateUserPw(user);
+		    
+		    userEmail = userEmail.replace("&#64;", "@");
+		    System.out.println(userEmail);
+		    
+		    // 세션에 인증 코드 저장
+		    session.setAttribute("changedPw", changedPw);
+		    
+		    
+		    
+		    Email email = new SimpleEmail();
+		    email.setHostName("smtp.naver.com");
+		    email.setSmtpPort(465);
+		    email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
+		    email.setSSL(true);
+		    try {
+		        email.setFrom("jm86245@naver.com", "CodingBamboo");
+		        email.setSubject("비밀번호가 변경되었습니다");
+		        email.setMsg("변경된 비밀번호 : " + changedPw + "입니다. 해당 비밀번호로 로그인후 회원수정을 통해 비밀번호를 바꿔주세요."); // 이메일 내용에 인증 코드를 포함
+		        email.addTo(userEmail, "");
+		        email.send();
+		        return "success";
+		    } catch (EmailException e) {
+		        e.printStackTrace();
+		    }
+		    return "fail";
 		}
-	}
+	
 	//인증메일 전송
 	@ResponseBody
 	@PostMapping("/sendEmail")
@@ -324,10 +376,10 @@ public class UserController {
 	    email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
 	    email.setSSL(true);
 	    try {
-	        email.setFrom("jm86245@naver.com", "오승재");
+	        email.setFrom("jm86245@naver.com", "CodingBamboo");
 	        email.setSubject("인증메일");
 	        email.setMsg("인증 코드 : " + emailCheckCode); // 이메일 내용에 인증 코드를 포함
-	        email.addTo(inputEmail, "nickname");
+	        email.addTo(inputEmail, "");
 	        email.send();
 	        return "success";
 	    } catch (EmailException e) {

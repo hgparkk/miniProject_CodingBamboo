@@ -125,6 +125,12 @@
 			AND user_email = #{userEmail}
 	</select>
 
+	<update id="updateUserPw" parameterType="UserDTO">
+	    UPDATE user_info
+	    SET user_pw = #{userPw}
+	    WHERE user_email = #{userEmail}
+	</update>
+
 
 </mapper>
 

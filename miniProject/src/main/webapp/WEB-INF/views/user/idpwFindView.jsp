@@ -78,7 +78,7 @@
 						</div>
 					</form>
 
-					<form id="pwResetView" action="<c:url value="/pwResetView" />" method="POST">
+					<form id="pwResetView" action="<c:url value="/loginView" />" method="POST">
 						<input id="resetId" type="hidden" name="resetId">
 					</form>
 
