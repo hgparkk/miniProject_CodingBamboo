@@ -69,8 +69,8 @@ public class MaterialController {
 	// 관리자 기능
 	
 	// 자재 관리 페이지 이동
-	@RequestMapping("/adminView")
-	public String adminView(Model model, String searchWord) {
+	@RequestMapping("/adminMaterialView")
+	public String adminMaterialView(Model model, String searchWord) {
 		List<MaterialDTO> materialList = new ArrayList<>();
 
 		if (searchWord == null || searchWord.isEmpty()) {
@@ -80,7 +80,7 @@ public class MaterialController {
 		}
 		model.addAttribute("keyMaterialList", materialList);
 
-		return "admin/adminView";
+		return "admin/adminMaterialView";
 
 	}
 
@@ -91,7 +91,7 @@ public class MaterialController {
 		materialService.deleteMaterial(meNo);
 
 		request.setAttribute("msg", "삭제가 완료되었습니다.");
-		request.setAttribute("url", "/adminView");
+		request.setAttribute("url", "/adminMaterialView");
 		return "alert";
 	}
 
@@ -102,7 +102,7 @@ public class MaterialController {
 		materialService.updateMaterial(material);
 
 		request.setAttribute("msg", "수정이 완료되었습니다.");
-		request.setAttribute("url", "/adminView");
+		request.setAttribute("url", "/adminMaterialView");
 		return "alert";
 	}
 	
@@ -113,9 +113,7 @@ public class MaterialController {
 		materialService.insertMaterial(material);
 		
 		request.setAttribute("msg", "자재가 추가되었습니다.");
-		request.setAttribute("url", "/adminView");
+		request.setAttribute("url", "/adminMaterialView");
 		return "alert";
 	}
-	
-	
 }

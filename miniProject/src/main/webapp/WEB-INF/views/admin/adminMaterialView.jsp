@@ -6,8 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Coding Bamboo</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <style type="text/css">
 .admin-container {
 	margin: auto;
@@ -20,8 +18,11 @@
 	overflow-y: scroll;
 }
 </style>
+<%@ include file="/WEB-INF/inc/header.jsp" %>
 </head>
 <body>
+	<%@ include file="/WEB-INF/inc/top.jsp" %>
+
 	<div class="admin-container">
 		<div>
 			<!-- 검색바 -->
@@ -93,9 +94,9 @@
 			</div>
 		</div>
 	</div>
-</body>
-
-<script type="text/javascript">
+	
+	<%@ include file="/WEB-INF/inc/footer.jsp"%>
+	<script type="text/javascript">
 	function f_update(){
 		console.log(event.target.parentElement.children[1].value)
 		if(confirm("정말로 수정하시겠습니까?")){
@@ -109,5 +110,6 @@
 		}
 	};
 </script>
+</body>
 
 </html>

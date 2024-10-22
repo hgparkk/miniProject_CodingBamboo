@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Coding Bamboo</title>
-<%@ include file="/WEB-INF/inc/header.jsp"%></head>
+<%@ include file="/WEB-INF/inc/header.jsp"%>
+</head>
 <body>
 
 	<%@ include file="/WEB-INF/inc/top.jsp"%>

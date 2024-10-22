@@ -12,4 +12,20 @@
 		WHERE
 			aec_no = #{aecNo}
 	</select>
+	
+	<select id="getCoefficientList" resultType="CoefficientDTO">
+		SELECT
+			aec_no,
+			aec_name,
+			aec_coefficient
+		FROM
+			avg_emission_coefficient
+		ORDER BY aec_no ASC
+	</select>
+	
+	<update id="updateCoefficient" parameterType="CoefficientDTO">
+		UPDATE avg_emission_coefficient
+		SET aec_coefficient = #{aecCoefficient}
+		WHERE aec_no = #{aecNo}
+	</update>
 </mapper>
