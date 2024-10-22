@@ -17,6 +17,7 @@
 		FROM (
 			SELECT 
 				A.*
+				, ROWNUM AS rnum
 			FROM (
 				SELECT
 					a.qu_no
@@ -30,6 +31,29 @@
 				WHERE 1=1
 					AND a.user_id = b.user_id
 				<include refid="boardSearch"/>
+				ORDER BY qu_no DESC
+			) A
+		)
+		WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getNoticeList" resultType="BoardDTO" parameterType="com.codingbamboo.miniproject.common.SearchVO">
+		SELECT *
+		FROM (
+			SELECT 
+				A.*
+			FROM (
+				SELECT
+					a.qu_no
+					, a.user_id
+					, b.user_name
+					, a.qu_title
+					, a.qu_content
+				FROM
+					question a, user_info b
+				WHERE 1=1
+					AND a.user_id = 'admin'
+					AND b.user_name = '시스템관리자'
 				ORDER BY qu_no DESC
 			) A
 		)

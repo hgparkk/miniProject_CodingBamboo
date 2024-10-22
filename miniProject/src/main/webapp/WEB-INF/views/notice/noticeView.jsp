@@ -80,12 +80,7 @@
 											<td class="text-center"><a class="text-decoration-none d-flex"
 												href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
 													${boardDTO.quTitle } </a></td>
-											<c:if test="${boardDTO.quIsread == 0}">
 												<td class="text-center"></td>
-											</c:if>
-											<c:if test="${boardDTO.quIsread == 1}">
-												<td class="text-center text-success fw-bold">답변 완료</td>
-											</c:if>
 											<td class="text-center">${boardDTO.userName }</td>
 										</tr>
 									</c:if>

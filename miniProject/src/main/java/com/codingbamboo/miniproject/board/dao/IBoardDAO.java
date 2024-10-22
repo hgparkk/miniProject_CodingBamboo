@@ -16,6 +16,9 @@ public interface IBoardDAO {
 	// 게시글 전체 갯수 가져오기
 	int getBoardCount(SearchVO search);
 	
+	// 공지사항 전체 갯수 가져오기
+	List<BoardDTO> getNoticeList(SearchVO saerch);
+	
 	// 글쓰기
 	int insertBoard(BoardDTO board);
 	

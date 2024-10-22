@@ -43,7 +43,11 @@ public class BoardController {
 		
 		model.addAttribute("keyBoardList", boardList);
 		
+		List<BoardDTO> getNoticeList = boardService.getNoticeList(search);
 		
+		model.addAttribute("keyGetNoticeList", getNoticeList);
+		
+		System.out.println(search.getStart() + "," + search.getEnd());
 		
 		return "board/boardView";
 	}

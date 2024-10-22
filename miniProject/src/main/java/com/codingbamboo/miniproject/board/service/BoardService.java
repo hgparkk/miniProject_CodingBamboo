@@ -22,6 +22,12 @@ public class BoardService {
 		return result;
 	}
 	
+	// 공지사항 목록 가져오기
+	public List<BoardDTO> getNoticeList(SearchVO saerch){
+		List<BoardDTO> result = dao.getNoticeList(saerch);
+		return result;
+	}
+	
 	// 질문 전체 갯수 가져오기
 	public int getBoardCount(SearchVO search) {
 		int result = dao.getBoardCount(search);
