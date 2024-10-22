@@ -4,21 +4,22 @@ public class NoticeDTO {
 	private int noNo;
 	private String noTitle;
 	private String noContent;
+	private int noTop;
 	
 	public NoticeDTO() {
-		super();
 	}
 
-	public NoticeDTO(int noNo, String noTitle, String noContent) {
-		super();
+	public NoticeDTO(int noNo, String noTitle, String noContent, int noTop) {
 		this.noNo = noNo;
 		this.noTitle = noTitle;
 		this.noContent = noContent;
+		this.noTop = noTop;
 	}
 
 	@Override
 	public String toString() {
-		return "NoticeDTO [noNo=" + noNo + ", noTitle=" + noTitle + ", noContent=" + noContent + "]";
+		return "NoticeDTO [noNo=" + noNo + ", noTitle=" + noTitle + ", noContent=" + noContent + ", noTop=" + noTop
+				+ "]";
 	}
 
 	public int getNoNo() {
@@ -44,4 +45,14 @@ public class NoticeDTO {
 	public void setNoContent(String noContent) {
 		this.noContent = noContent;
 	}
+
+	public int getNoTop() {
+		return noTop;
+	}
+
+	public void setNoTop(int noTop) {
+		this.noTop = noTop;
+	}
+
+	
 }

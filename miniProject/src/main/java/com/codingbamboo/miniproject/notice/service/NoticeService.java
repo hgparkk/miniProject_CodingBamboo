@@ -19,6 +19,11 @@ public class NoticeService {
 		return result;
 	}
 	
+	public List<NoticeDTO> getNoticeTopList(SearchVO search){
+		List<NoticeDTO> result = dao.getNoticeTopList(search);
+		return result;
+	} 
+	
 	public int getNoticeCount(SearchVO search) {
 		int result = dao.getNoticeCount(search);
 		return result;

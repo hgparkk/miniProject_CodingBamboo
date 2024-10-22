@@ -13,6 +13,9 @@ public interface INoticeDAO {
 	// 공지사항 게시글 목록 가져오기
 	List<NoticeDTO> getNoticeList(SearchVO search);
 	
+	// 공지사항 탑 게시글 목록 가져오기
+	List<NoticeDTO> getNoticeTopList(SearchVO search);
+	
 	// 공지사항 게시글 전체 갯수 가져오기
 	int getNoticeCount(SearchVO search);
 	

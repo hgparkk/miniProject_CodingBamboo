@@ -3,7 +3,8 @@ package com.codingbamboo.miniproject.common;
 public class SearchVO {
 	private String searchOption;		/* 검색 종류(제목title, 내용content, 작성자name) */
 	private String searchWord;			/* 검색어 */
-	private int boardCount;
+	private int boardCount;				/* Q&A 게시글 숫자 */
+	private int noticeCount;			/* 공지사항 게시글 숫자 */
 	
 	private int pageNo = 1;				/* 현재 페이지 번호 */
 	private int rowSizePerPage = 30;	/* 한 페이지에서 보여줄 게시글 수 */
@@ -36,11 +37,13 @@ public class SearchVO {
 		}
 	}
 
-	public SearchVO(String searchOption, String searchWord, int boardCount, int pageNo, int rowSizePerPage, int start,
-			int end, int firstPage, int lastPage, int finalPage) {
+	public SearchVO(String searchOption, String searchWord, int boardCount, int noticeCount, int pageNo,
+			int rowSizePerPage, int start, int end, int firstPage, int lastPage, int finalPage) {
+		super();
 		this.searchOption = searchOption;
 		this.searchWord = searchWord;
 		this.boardCount = boardCount;
+		this.noticeCount = noticeCount;
 		this.pageNo = pageNo;
 		this.rowSizePerPage = rowSizePerPage;
 		this.start = start;
@@ -53,8 +56,9 @@ public class SearchVO {
 	@Override
 	public String toString() {
 		return "SearchVO [searchOption=" + searchOption + ", searchWord=" + searchWord + ", boardCount=" + boardCount
-				+ ", pageNo=" + pageNo + ", rowSizePerPage=" + rowSizePerPage + ", start=" + start + ", end=" + end
-				+ ", firstPage=" + firstPage + ", lastPage=" + lastPage + ", finalPage=" + finalPage + "]";
+				+ ", noticeCount=" + noticeCount + ", pageNo=" + pageNo + ", rowSizePerPage=" + rowSizePerPage
+				+ ", start=" + start + ", end=" + end + ", firstPage=" + firstPage + ", lastPage=" + lastPage
+				+ ", finalPage=" + finalPage + "]";
 	}
 
 	public String getSearchOption() {
@@ -79,6 +83,14 @@ public class SearchVO {
 
 	public void setBoardCount(int boardCount) {
 		this.boardCount = boardCount;
+	}
+
+	public int getNoticeCount() {
+		return noticeCount;
+	}
+
+	public void setNoticeCount(int noticeCount) {
+		this.noticeCount = noticeCount;
 	}
 
 	public int getPageNo() {
@@ -136,4 +148,6 @@ public class SearchVO {
 	public void setFinalPage(int finalPage) {
 		this.finalPage = finalPage;
 	}
+
+	
 }

@@ -16,7 +16,7 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-	.board-container{
+	.Notice-container{
 		width: 1200px;
 	}
 	
@@ -44,59 +44,56 @@
 			<!-- Contact Section Heading-->
 			<div style="height: 200px;"></div>
 			<h2
-				class="page-section-heading text-center text-uppercase text-secondary mb-0">Q&A
+				class="page-section-heading text-center text-uppercase text-secondary mb-0">공지사항
 				게시판</h2>
 			<!-- Contact Section Form-->
 			<div class="mt-5 ">
-				<div class="board-container col-lg-8 col-xl-7">
+				<div class="Notice-container col-lg-8 col-xl-7">
 					<!-- 게시글 그리기 -->
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th scope="col" class="text-center">글번호</th>
-								<th scope="col" class="text-center">제목</th>
-								<th scope="col" class="text-center"></th>
-								<th scope="col" class="text-center">작성자</th>
+								<th scope="col" colspan="1" class="text-center">글번호</th>
+								<th scope="col" colspan="2" class="text-center">제목</th>
+								<th scope="col" colspan="1" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${keyBoardList.size() != 0 }">
+							<c:if test="${keyNoticeList.size() != 0 }">
 								<!-- 공지 -->
-								<c:forEach items="${keyGetNoticeList }" var="boardDTO">
-									<c:if test='${boardDTO.userId == "admin" }'>
+								<c:forEach items="${keyGetNoticeTopList }" var="NoticeDTO">
+									<c:if test="${NoticeDTO.noTop == 1 }">
 										<tr class="notice">
 											<td class="text-center"><span class="notice-name">공지</span></td>
 											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
-												href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
-													${boardDTO.quTitle } </a></td>
-											<td class="text-center">${boardDTO.userName }</td>
+												href="${pageContext.request.contextPath }/NoticeDetailView?no=${NoticeDTO.noNo }">
+													${NoticeDTO.noTitle } </a></td>
+											<td class="text-center"><span>시스템 관리자</span></td>
 										</tr>
 									</c:if>
 								</c:forEach>
-								<c:forEach items="${keyBoardList }" var="boardDTO">
-									<c:if test="${boardDTO.userId != 'admin' }">
+								<c:forEach items="${keyNoticeList }" var="NoticeDTO">
+									<c:if test="${NoticeDTO.noTop != 1 }">
 										<tr>
-											<td class="text-center">${boardDTO.quNo }</td>
-											<td class="text-center"><a class="text-decoration-none d-flex"
-												href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
-													${boardDTO.quTitle } </a></td>
-												<td class="text-center"></td>
-											<td class="text-center">${boardDTO.userName }</td>
+											<td colspan="1" class="text-center">${NoticeDTO.noNo }</td>
+											<td class="text-center" colspan="2"><a class="text-decoration-none d-flex"
+												href="${pageContext.request.contextPath }/noticeDetailView?no=${NoticeDTO.noNo }">
+													${NoticeDTO.noTitle } </a></td>
+											<td colspan="1" class="text-center">시스템 관리자</td>
 										</tr>
 									</c:if>
 								</c:forEach>
 							</c:if>
-							<!-- keyBoardList 의 사이즈가 0이면 검색 결과를 찾을 수 없습니다. -->
 							
-							<c:if test="${keyBoardList.size() == 0 }">
-								<c:forEach items="${keyGetNoticeList }" var="boardDTO">
-									<c:if test='${boardDTO.userId == "admin" }'>
+							<!-- keyNoticeList 의 사이즈가 0이면 검색 결과를 찾을 수 없습니다. -->
+							<c:if test="${keyNoticeList.size() == 0 }">
+								<c:forEach items="${keyGetNoticeTopList }" var="NoticeDTO">
+									<c:if test="${NoticeDTO.noTop == 1 }">
 										<tr class="notice">
 											<td class="text-center"><span class="notice-name">공지</span></td>
 											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
-												href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
-													${boardDTO.quTitle } </a></td>
-											<td class="text-center">${boardDTO.userName }</td>
+												href="${pageContext.request.contextPath }/noticeDetailView?no=${NoticeDTO.noNo }">
+													${NoticeDTO.noTitle } </a></td>
 										</tr>
 									</c:if>
 								</c:forEach>
@@ -108,14 +105,16 @@
 						</tbody>
 					</table>
 
-					<!-- 글쓰기 버튼 -->
-					<div class="d-flex justify-content-end">
-						<button id="writeBtn" class="btn btn-primary">질문 등록</button>
-					</div>
+					<!-- 공지사항 작성 버튼 -->
+					<c:if test="${sessionScope.login.userId == 'admin' }">
+						<div class="d-flex justify-content-end">
+							<button id="writeBtn" class="btn btn-primary">공지사항 등록</button>
+						</div>
+					</c:if>
 
 					<!-- 페이지 부분 -->
 					<!-- 페이징 -->
-					<c:if test="${keyBoardList.size() != 0 }">
+					<c:if test="${keyNoticeList.size() != 0 }">
 						<div class="d-flex justify-content-center">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
@@ -124,12 +123,12 @@
 										class="page-item ${keySearch.firstPage == 1 ? 'disabled' : '' }">
 										<c:if test="${searchWord == null }">
 											<a class="page-link"
-												href="${pageContext.request.contextPath }/boardView?pageNo=${keySearch.firstPage - 1 }"
+												href="${pageContext.request.contextPath }/noticeView?pageNo=${keySearch.firstPage - 1 }"
 												aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 											</a>
 										</c:if> <c:if test="${searchWord != null }">
 											<a class="page-link"
-												href="${pageContext.request.contextPath }/boardView?pageNo=${keySearch.firstPage - 1 }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}"
+												href="${pageContext.request.contextPath }/noticeView?pageNo=${keySearch.firstPage - 1 }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}"
 												aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 											</a>
 										</c:if>
@@ -142,10 +141,10 @@
 											class="page-item ${keySearch.pageNo == num ? 'active' : ''}">
 											<c:if test="${keySearch.searchWord == null }">
 												<a class="page-link"
-													href="${pageContext.request.contextPath }/boardView?pageNo=${num }">${num }</a>
+													href="${pageContext.request.contextPath }/noticeView?pageNo=${num }">${num }</a>
 											</c:if> <c:if test="${keySearch.searchWord != null }">
 												<a class="page-link"
-													href="${pageContext.request.contextPath }/boardView?pageNo=${num }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}">${num }</a>
+													href="${pageContext.request.contextPath }/noticeView?pageNo=${num }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}">${num }</a>
 											</c:if>
 										</li>
 									</c:forEach>
@@ -155,12 +154,12 @@
 										class="page-item ${keySearch.lastPage == keySearch.finalPage ? 'disabled' : '' }">
 										<c:if test="${keySearch.searchWord == null }">
 											<a class="page-link"
-												href="${pageContext.request.contextPath }/boardView?pageNo=${keySearch.lastPage + 1 }"
+												href="${pageContext.request.contextPath }/noticeView?pageNo=${keySearch.lastPage + 1 }"
 												aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 											</a>
 										</c:if> <c:if test="${keySearch.searchWord != null }">
 											<a class="page-link"
-												href="${pageContext.request.contextPath }/boardView?pageNo=${keySearch.lastPage + 1 }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}"
+												href="${pageContext.request.contextPath }/noticeView?pageNo=${keySearch.lastPage + 1 }&searchOption=${keySearch.searchOption}&searchWord=${keySearch.searchWord}"
 												aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 											</a>
 										</c:if>
@@ -174,7 +173,7 @@
 					<!-- 검색바 -->
 					<div>
 						<form class="d-flex justify-content-center"
-							action="${pageContext.request.contextPath }/boardView"
+							action="${pageContext.request.contextPath }/noticeView"
 							method="GET">
 							<select class="form-select w-25" name="searchOption">
 								<option value="title">제목</option>
@@ -202,7 +201,7 @@
 
 	<script type="text/javascript">
 		document.getElementById('writeBtn').addEventListener('click',()=>{
-			location.href = "${pageContext.request.contextPath}/boardWriteView";
+			location.href = "${pageContext.request.contextPath}/noticeWriteView";
 		});
 	</script>
 </body>

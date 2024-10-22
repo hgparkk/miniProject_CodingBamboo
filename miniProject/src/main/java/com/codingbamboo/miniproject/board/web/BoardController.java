@@ -17,6 +17,8 @@ import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.board.service.BoardService;
 import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
+import com.codingbamboo.miniproject.notice.dto.NoticeDTO;
+import com.codingbamboo.miniproject.notice.service.NoticeService;
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 
 @Controller
@@ -26,7 +28,11 @@ public class BoardController {
 	BoardService boardService;
 	
 	@Autowired
+	NoticeService noticeService;
+	
+	@Autowired
 	AnswerService answerService;
+	
 	
 	// q&a 게시판 가기
 	@RequestMapping("/boardView")
@@ -39,13 +45,13 @@ public class BoardController {
 		
 		model.addAttribute("keySearch", search);
 		
-		List<BoardDTO> boardList = boardService.getBoardList(search);
+		// q&a 게시글 목록 가져오기
+		List<NoticeDTO> getNoticeTopList = noticeService.getNoticeTopList(search);
 		
-		model.addAttribute("keyBoardList", boardList);
+		model.addAttribute("keyGetNoticeTopList", getNoticeTopList);
+		List<BoardDTO> getBoardList = boardService.getBoardList(search);
 		
-		List<BoardDTO> getNoticeList = boardService.getNoticeList(search);
-		
-		model.addAttribute("keyGetNoticeList", getNoticeList);
+		model.addAttribute("keyBoardList", getBoardList);
 		
 		System.out.println(search.getStart() + "," + search.getEnd());
 		
