@@ -13,8 +13,8 @@
 
 	<div style="height: 200px;"></div>
 
-	<div class="mx-auto" style="width: 700px;">
-		<div class="border rounded-4 d-flex flex-column mt-5">
+	<div class="mx-auto" style="width: 800px;">
+		<div class="border rounded-4 d-flex flex-column mt-5 p-5">
 			<table>
 				<tbody>
 					<c:forEach items="${coefficientList}" var="coefficient">
@@ -22,27 +22,27 @@
 							<c:if test="${coefficient.aecNo == 1}">
 								<td><span>주거용 건물의 건물 면적(㎡)당 탄소배출량 계수</span></td>
 								<td><input id="residential" type="number" value="${coefficient.aecCoefficient}"> <span>kgCO2eq</span></td>
-								<td><button onclick="updateCoefficient(1)">수정</button></td>
+								<td><button class="mt-2 mb-2" onclick="updateCoefficient(1)">수정</button></td>
 							</c:if>
 							<c:if test="${coefficient.aecNo == 2}">
 								<td><span>상업용 건물의 건물 면적(㎡)당 탄소배출량 계수</span></td>
 								<td><input id="commercial" type="number" value="${coefficient.aecCoefficient}"> <span>kgCO2eq</span></td>
-								<td><button onclick="updateCoefficient(2)">수정</button></td>
+								<td><button class="mt-2 mb-2" onclick="updateCoefficient(2)">수정</button></td>
 							</c:if>
 							<c:if test="${coefficient.aecNo == 3}">
 								<td><span>공공용 건물의 건물 면적(㎡)당 탄소배출량 계수</span></td>
 								<td><input id="public" type="number" value="${coefficient.aecCoefficient}"> <span>kgCO2eq</span></td>
-								<td><button onclick="updateCoefficient(3)">수정</button></td>
+								<td><button class="mt-2 mb-2" onclick="updateCoefficient(3)">수정</button></td>
 							</c:if>
 							<c:if test="${coefficient.aecNo == 4}">
 								<td><span>면적(㎡)당 평균 전력 사용량 계수</span></td>
 								<td><input id="avgAreaElectric" type="number" value="${coefficient.aecCoefficient}"> <span>kWh</span></td>
-								<td><button onclick="updateCoefficient(4)">수정</button></td>
+								<td><button class="mt-2 mb-2" onclick="updateCoefficient(4)">수정</button></td>
 							</c:if>
 							<c:if test="${coefficient.aecNo == 5}">
 								<td><span>전력 사용량(kWh) 대비 탄소 배출량 계수</span></td>
 								<td><input id="electricEmission" type="number" value="${coefficient.aecCoefficient}"><span>kgCO2eq</span></td>
-								<td><button onclick="updateCoefficient(5)">수정</button></td>
+								<td><button class="mt-2 mb-2" onclick="updateCoefficient(5)">수정</button></td>
 							</c:if>
 						</tr>
 					</c:forEach>

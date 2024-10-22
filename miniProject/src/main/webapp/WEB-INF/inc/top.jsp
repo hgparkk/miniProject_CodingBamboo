@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top flex-column" id="mainNav">
+<nav class="navbar navbar-expand-lg text-uppercase bg-black fixed-top flex-column" id="mainNav">
 	<div class="container">
 		<a class="navbar-brand" href="${pageContext.request.contextPath }/">Coding Bamboo</a>
 		<c:if test="${sessionScope.login == null}">

@@ -2,12 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <!-- Footer-->
-        <footer class="footer text-center">
+        <footer class="footer text-center bg-dark">
             <div class="container">
                 <div class="row">
                     <!-- Footer Social Icons-->
                     <div class="mx-auto my-auto">
-                        <h4 class="text-uppercase mb-4">Contact us</h4>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-instagram"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-github"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fas fa-fw fa-phone"></i></a>

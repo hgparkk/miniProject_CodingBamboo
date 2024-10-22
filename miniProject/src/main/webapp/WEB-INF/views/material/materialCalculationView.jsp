@@ -30,7 +30,7 @@
 				<div class="table-responsive">
 					<table>
 						<thead>
-							<th scope="col" class="text-center" style="width: 150px;">자재이름</th>
+							<th scope="col" class="text-center" style="width: 250px;">자재이름</th>
 							<th scope="col" class="text-center" style="width: 200px;">자재별 탄소배출량 (kgCO2eq/kg)</th>
 							<th scope="col" style="width: 60px;"></th>
 						</thead>
@@ -41,7 +41,7 @@
 								<c:forEach items="${materialList}" var="meterial">
 									<tr>
 										<input type="hidden" value="${meterial.meNo}">
-										<td scope="row" style="width: 150px;">${meterial.meName}</td>
+										<td scope="row" style="width: 250px;">${meterial.meName}</td>
 										<td class="text-center" scope="row" style="width: 150px;">${meterial.meEmission}</td>
 										<td scope="row" style="width: 60px;"><button onclick="addItem()">추가</button></td>
 									</tr>
@@ -56,7 +56,7 @@
 					<span class="text-center fw-bold fs-3 mb-3">현재 목록</span>
 					<table>
 						<thead>
-							<th scope="col" class="text-center" style="width: 150px;">자재이름</th>
+							<th scope="col" class="text-center" style="width: 250px;">자재이름</th>
 							<th scope="col" class="text-center" style="width: 200px;">총 중량 (kg)</th>
 							<th scope="col" class="text-center" style="width: 150px;">총 탄소배출량</th>
 							<th style="width: 60px;"></th>

@@ -116,8 +116,8 @@ public class UserController {
 			// 에러 메시지를 request에 추가
 			request.setAttribute("msg", errorMessage.toString());
 			request.setAttribute("url", "/registView");
-
 			return "alert"; // alert 페이지로 이동
+			
 		} else if (userService.emailDupCheck(emailCheck) != null) {
 			request.setAttribute("msg", "이미 등록된 이메일 입니다. 다른 이메일을 입력하여 주세요");
 			request.setAttribute("url", "/registView");
