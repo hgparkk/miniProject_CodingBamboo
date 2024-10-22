@@ -14,9 +14,13 @@
 
 </head>
 <body>
-        <%-- <%@ include file="/WEB-INF/inc/top.jsp" %> --%>
+    <%@ include file="/WEB-INF/inc/top.jsp" %>
+    
+    <div style="height:200px;"></div>
+    
     <div class="d-flex justify-content-center">
         <select id="largefield" onchange="setMiddleField()">
+        	<option value="대분류">대분류</option>
             <option value="에너지">에너지</option>
             <option value="산업공정">산업공정</option>
             <option value="농업">농업</option>
@@ -115,11 +119,14 @@
         
         <span></span>
         
-        <button type="button">검색</button>
+        <button id="resultSearchButton" type="button">검색</button>
         </div>
-    </form>
     
-    <div id="searchResult"></div>
+    <div id="searchResult" class="overflow-scroll" style="height:500px;"></div>
+    
+    <div style="height: 200px;"></div>
+
+	<%@ include file="/WEB-INF/inc/footer.jsp"%>
     
     <script type="text/javascript">
     	
@@ -135,11 +142,15 @@
    			url: url + path,
    			data: { "peLargeField" : largefield},
    			success: function(result){
-   				console.log(result)
    				document.getElementById("middlefield").innerHTML = ""
+   				document.getElementById("smallfield").innerHTML = "<option>소분류</option>"
+   				document.getElementById("part").innerHTML = "<option>분야</option>"
    				for(let i = 0; i< result.length; i++){
    					document.getElementById("middlefield").innerHTML += '<option value="' +result[i] +'">'
    					+result[i] + '</option>'
+   				}
+   				if(result.length == 1){
+   					setSmallfield()
    				}
    			}
    		})
@@ -151,28 +162,108 @@
    		
    		let path = "/getSmallField"
    	   		
-   	   		$.ajax({
-   	   			type:'POST',
-   	   			url: url + path,
-   	   			data: { "peLargeField" : largefield , "peMiddelField" : middlefield },
-   	   			success: function(result){
-   	   				console.log(result)
-   	   				document.getElementById("smallfield").innerHTML = ""
-   	   				for(let i = 0; i< result.length; i++){
-   	   					document.getElementById("smallfield").innerHTML += '<option value="' +result[i] +'">'
-   	   					+result[i] + '</option>'
-   	   				}
-   	   			}
-   	   		})
+	   	$.ajax({
+	   		type:'POST',
+	   		url: url + path,
+	   		data: { "peLargeField" : largefield , "peMiddleField" : middlefield },
+	   		success: function(result){
+	   			document.getElementById("smallfield").innerHTML = ""
+	   			document.getElementById("part").innerHTML = "<option>분야</option>"
+	   			for(let i = 0; i< result.length; i++){
+	   				document.getElementById("smallfield").innerHTML += '<option value="' +result[i] +'">'
+	   				+result[i] + '</option>'
+	   			}
+	   			if(result.length == 1){
+	   				setPart()
+   				}
+	   		}
+	   	})
    	}
    	
    	function setPart(){
-   		document.getElementById("largefield");
-   		document.getElementById("middlefield");
-   		document.getElementById("smallfield");
+   		let largefield =  document.getElementById("largefield").value;
+   		let middlefield = document.getElementById("middlefield").value;
+   		let smallfield = document.getElementById("smallfield").value;
+   		
+		let path = "/getPart"
+   	   		
+   	   	$.ajax({
+   	   		type:'POST',
+   	   		url: url + path,
+   	   		data: { "peLargeField" : largefield , "peMiddleField" : middlefield , "peSmallField" : smallfield },
+   	   		success: function(result){
+   	   			document.getElementById("part").innerHTML = ""
+   	   			for(let i = 0; i< result.length; i++){
+   	   				document.getElementById("part").innerHTML += '<option value="' +result[i] +'">'
+   	   				+result[i] + '</option>'
+   	   			}
+   	   		}
+   	   	})
    	}
-    	
-    	
+   	
+   	document.getElementById("resultSearchButton").addEventListener("click",()=>{
+   		let largefield =  document.getElementById("largefield").value;
+   		let middlefield = document.getElementById("middlefield").value;
+   		let smallfield = document.getElementById("smallfield").value;
+   		let part = document.getElementById("part").value;
+   		let yearFrom = parseInt(document.getElementById("yearFrom").value);
+   		let yearTo = parseInt(document.getElementById("yearTo").value);
+   		
+   		if(largefield == "대분류"){
+   			largefield = ""
+   		}
+   		
+   		if(middlefield == "중분류"){
+   			middlefield = ""
+   		}
+   		
+   		if(smallfield == "소분류"){
+   			smallfield = ""
+   		}
+   		
+   		if(part == "분야"){
+   			part = ""
+   		}
+   		
+   		let path = "/getResult"
+   		
+   		yearLength = yearTo - yearFrom + 1
+   	   		
+   	   	$.ajax({
+   	   	   type:'POST',
+   	   	   	url: url + path,
+   	   	   	data: { "peLargeField" : largefield , "peMiddleField" : middlefield , "peSmallField" : smallfield ,
+   	   	   		"pePart" : part , "yearFrom" : yearFrom, "yearTo" : yearTo},
+   	   	   	success: function(result){
+   	   	   		console.log(result)
+   	   	  		document.getElementById("searchResult").innerHTML = ""
+   	   	  		let makeTable = '<table>' 
+   	   	  		+ '<thead>'
+   	   	  		+ '<th scope="col">대분류</th>'
+   	   	  		+ '<th scope="col">중분류</th>'
+				+ '<th scope="col">소분류</th>'
+				+ '<th scope="col">분야</th>'
+				for(let j = 0; j < yearLength; j++){
+					makeTable += '<th scope="col">'+(yearFrom+j)+'</th>'
+	   	  		}
+				+ '</thead>' + '<tbody>'
+   	   	  		for(let i = 0; i < result.length; i = i+yearLength){
+   	   	  			let oneLine = '<tr><td>'+ result[i]["peLargeField"] +'</td>'
+   	   	  			+ '<td>' + result[i]["peMiddleField"] + '</td>'
+   	   	  			+ '<td>' + result[i]["peSmallField"] + '</td>'
+   	   	  			+ '<td>' + result[i]["pePart"] + '</td>'
+   	   	  			for(let j = 0; j < yearLength; j++){
+   	   	  				oneLine += '<td>' + result[i+j]["peEmission"] + '</td>'
+   	   	  			}
+   	   	  			oneLine += '</tr>'
+   	   	  		    makeTable += oneLine
+   	   	  		}
+				makeTable += '</tbody> </table>'
+				document.getElementById("searchResult").innerHTML = makeTable
+   	   	   	}
+   	   	})
+   	})
+   	
     </script>
 </body>
 </html>

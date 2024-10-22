@@ -14,20 +14,20 @@ public class PartService {
 	@Autowired
 	IPartDAO dao;
 	
-	public List<String> PE_middleField(PartDTO part){
-		return dao.PE_middleField(part);
+	public List<String> getMiddleField(PartDTO part){
+		return dao.getMiddleField(part);
 	}
 	
-	public List<String> PE_smallField(PartDTO part){
-		return dao.PE_smallField(part);
+	public List<String> getSmallField(PartDTO part){
+		return dao.getSmallField(part);
 	}
 	
-	public List<String> PE_PART(PartDTO part){
-		return dao.PE_PART(part);
+	public List<String> getPart(PartDTO part){
+		return dao.getPart(part);
 	}
 	
-	public List<PartDTO> result(PartDTO part){
-		return dao.result(part);
+	public List<PartDTO> getResult(PartDTO part){
+		return dao.getResult(part);
 	}
 	
 }
