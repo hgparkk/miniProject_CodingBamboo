@@ -219,6 +219,7 @@ public class UserController {
 
 		return "alert";
 	}
+	
 
 	// 아이디 찾기
 	@ResponseBody
