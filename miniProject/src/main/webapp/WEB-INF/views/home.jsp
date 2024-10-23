@@ -14,9 +14,8 @@
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
 
 
-		<img class="z-0 position-absolute" style="width: 100%; height: 160%; filter: brightness(40%)" alt="..." src="assets/img/main-bg.jpg" >
+		<img class="z-0 position-absolute" style="width: 100%; filter: brightness(40%)" alt="..." src="assets/img/main-bg.jpg" >
 	<div class="z-1 position-absolute" style="width: 100%;">
-		<div style="height: 150px;"></div>
 		<div style="width: 1340px; margin:auto;">
 			<!-- Masthead-->
 			<header class="masthead text-white text-center">
