@@ -78,10 +78,6 @@
 						</div>
 					</form>
 
-					<form id="pwResetView" action="<c:url value="/loginView" />" method="POST">
-						<input id="resetId" type="hidden" name="resetId">
-					</form>
-
 					<div class="d-flex flex-column align-items-center mb-5">
 						<button id="pwFindBtn" class="btn btn-primary btn-lg" type="button">비밀번호 찾기</button>
 					</div>
@@ -110,6 +106,8 @@ document.getElementById("idFindBtn").addEventListener("click", () => {
         alert("이름과 이메일을 모두 입력해주세요.");
         return; // 입력값이 유효하지 않으면 종료
     }
+    
+
 
 
     $.ajax({
@@ -145,6 +143,7 @@ document.getElementById("idFindBtn").addEventListener("click", () => {
 			data: v_data,
 			success: function(data){
 				if(data){
+					alert("비밀번호가 성공적으로 변경되었으며, 이메일로 발송되었습니다.");
 					document.getElementById("resetId").value = data
 					document.getElementById("pwResetView").submit()
 				}else{
