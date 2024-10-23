@@ -11,7 +11,7 @@
 
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
 
-	<div style="height: 200px;"></div>
+	<div style="height: 150px;"></div>
 
 	<div class="mx-auto" style="width: 800px;">
 		<div class="border rounded-4 d-flex flex-column mt-5 p-5">
@@ -55,7 +55,7 @@
 		<input id="aecCoefficientForForm" type="hidden" name="aecCoefficient">
 	</form>
 
-	<div style="height: 200px;"></div>
+	<div style="height: 150px;"></div>
 
 	<script>
 		function updateCoefficient(aecNo){

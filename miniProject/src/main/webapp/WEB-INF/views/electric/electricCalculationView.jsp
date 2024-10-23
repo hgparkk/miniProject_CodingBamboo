@@ -11,7 +11,7 @@
 
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
 
-	<div style="height: 200px;"></div>
+	<div style="height: 150px;"></div>
 
 	<div class="mx-auto" style="width: 500px;">
 		<div class="border rounded-4 d-flex flex-column align-items-center mt-5">
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	
-	<div style="height: 200px;"></div>
+	<div style="height: 150px;"></div>
 
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 
