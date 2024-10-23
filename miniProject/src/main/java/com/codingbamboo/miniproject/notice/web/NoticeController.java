@@ -25,6 +25,7 @@ public class NoticeController {
 	// 공지사항 게시판 가기
 	@RequestMapping("noticeView")
 	public String getNoticeList(SearchVO search, Model model){
+		// 공지사항 전체 가져오기
 		int noticeCount = noticeService.getNoticeCount(search);
 		
 		search.setNoticeCount(noticeCount);
@@ -33,17 +34,15 @@ public class NoticeController {
 		
 		model.addAttribute("keySearch", search);
 		
-		List<NoticeDTO> noticeList = noticeService.getNoticeList(search);
-		
-		model.addAttribute("keyNoticeList", noticeList);
-		
-		List<NoticeDTO> noticeTopList = noticeService.getNoticeTopList(search);
-		
-		model.addAttribute("keyGetNoticeTopList", noticeTopList);
-		
+		// 공지사항 목록 가져오기
 		List<NoticeDTO> getNoticeList = noticeService.getNoticeList(search);
 		
 		model.addAttribute("keyGetNoticeList", getNoticeList);
+		
+		// 공지사항 top 목록 가져오기
+		List<NoticeDTO> noticeTopList = noticeService.getNoticeTopList(search);
+		
+		model.addAttribute("keyGetNoticeTopList", noticeTopList);
 		
 		return "notice/noticeView";
 	}
