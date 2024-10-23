@@ -13,6 +13,11 @@ public class UserDTO {
     @Pattern(regexp = "^[°¡-ÆRa-zA-Z]*$", message = "¿Ã¹Ù¸£Áö ¾ÊÀº ÀÌ¸§ÀÔ´Ï´Ù. ÀÌ¸§Àº ¼ıÀÚ³ª Æ¯¼ö¹®ÀÚ¸¦ Æ÷ÇÔÇÏÁö ¾Ê¾Æ¾ß ÇÕ´Ï´Ù.")
     private String userName;
 	
+	@Override
+	public String toString() {
+		return "UserDTO [userId=" + userId + ", userPw=" + userPw + ", userName=" + userName + ", userEmail="
+				+ userEmail + ", userIsmaster=" + userIsmaster + ", emailCheckCode=" + emailCheckCode + "]";
+	}
 	private String userEmail;
 	private int userIsmaster;
 	

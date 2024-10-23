@@ -135,6 +135,23 @@
 		
 	let v_userId = '${sessionScope.login.userId}';
 
+	document.getElementById("userEditBtn").addEventListener("click", () => {
+	    // 비밀번호 일치 확인
+	    if (!v_pwCheck) {
+	        alert("비밀번호가 일치하지 않습니다.");
+	        return;
+	    }
+	    
+	    // 비밀번호 확인 후 수정 폼 제출
+	    let result = confirm("회원 정보를 수정하시겠습니까?");
+	    if (result) {
+	        // action=/userEditDo인 form 태그의 submit 실행
+	        document.getElementById("userEditForm").submit();
+	    } else {
+	        alert("수정이 취소되었습니다.");
+	    }
+	});
+	
 	document.getElementById("userDelBtn").addEventListener("click", () => {
 	    // 사용자에게 아이디 입력 요청
 	    let v_input = prompt('정말로 삭제하시겠습니까? 삭제를 원하시면 아이디를 입력해주세요.');

@@ -1,6 +1,7 @@
 package com.codingbamboo.miniproject.user.web;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.codingbamboo.miniproject.answer.service.AnswerService;
+import com.codingbamboo.miniproject.board.service.BoardService;
 import com.codingbamboo.miniproject.user.dto.UserDTO;
 import com.codingbamboo.miniproject.user.service.UserService;
 
@@ -36,6 +39,12 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	BoardService boardService;
+
+	@Autowired
+	AnswerService answerService;
 
 	// 로그인 창
 	@RequestMapping("/loginView")
@@ -52,9 +61,17 @@ public class UserController {
 	@PostMapping("/loginDo")
 	public String loginDo(String fromUrl, UserDTO userInfo, HttpSession session, boolean rememberId,
 			HttpServletResponse response, HttpServletRequest request, Model model, RedirectAttributes attr) {
+
 		UserDTO login = userService.loginUser(userInfo);
 
+		if (login == null) {
+			model.addAttribute("errMsg", "아이디나 비밀번호가 일치하지 않습니다.");
+			attr.addAttribute("fromUrl", fromUrl);
+			return "user/loginView";
+		}
+
 		boolean isMatch = passwordEncoder.matches(userInfo.getUserPw(), login.getUserPw());
+
 		if (!isMatch) {
 			model.addAttribute("errMsg", "아이디나 비밀번호가 일치하지 않습니다.");
 			attr.addAttribute("fromUrl", fromUrl);
@@ -76,6 +93,7 @@ public class UserController {
 
 		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView")
 				|| fromUrl.contains("/materialCalculation") || fromUrl.contains("/electricCalculation")) {
+			fromUrl = fromUrl.replace("&#61;", "=");
 			return "redirect:" + fromUrl;
 		} else {
 			return "redirect:/";
@@ -118,7 +136,7 @@ public class UserController {
 			request.setAttribute("msg", errorMessage.toString());
 			request.setAttribute("url", "/registView");
 			return "alert"; // alert 페이지로 이동
-			
+
 		} else if (userService.emailDupCheck(emailCheck) != null) {
 			request.setAttribute("msg", "이미 등록된 이메일 입니다. 다른 이메일을 입력하여 주세요");
 			request.setAttribute("url", "/registView");
@@ -172,6 +190,7 @@ public class UserController {
 		session.invalidate();
 		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView")
 				|| fromUrl.contains("/materialCalculation") || fromUrl.contains("/electricCalculation")) {
+			fromUrl = fromUrl.replace("&#61;", "=");
 			return "redirect:" + fromUrl;
 		} else {
 			return "redirect:/";
@@ -210,8 +229,13 @@ public class UserController {
 	// 회원탈퇴
 	@PostMapping("/userDelDo")
 	public String userDelDo(HttpSession session, HttpServletRequest request) {
-
 		UserDTO login = (UserDTO) session.getAttribute("login");
+		List<Integer> userBoardList = boardService.getUserBoardList(login.getUserId());
+		for (int i = 0; i < userBoardList.size(); i++) {
+			System.out.println(userBoardList.get(i));
+			answerService.delAllAnswer(userBoardList.get(i));
+			boardService.deleteBoard(userBoardList.get(i));
+		}
 		userService.deleteUser(login.getUserId());
 		session.invalidate();
 		request.setAttribute("msg", "회원탈퇴가 완료되었습니다");
@@ -219,7 +243,6 @@ public class UserController {
 
 		return "alert";
 	}
-	
 
 	// 아이디 찾기
 	@ResponseBody
@@ -280,7 +303,17 @@ public class UserController {
 	// PW 찾기
 	@ResponseBody
 	@PostMapping("/pwFindDo")
-	public String pwFindDo(UserDTO user, String userEmail, HttpSession session) {
+	public String pwFindDo(UserDTO user, HttpSession session) {
+
+		UserDTO getUser = userService.getUser(user.getUserId());
+		
+		System.out.println(user);
+		System.out.println(getUser);
+
+		if (getUser == null || !user.getUserEmail().equals(getUser.getUserEmail())) {
+			return "fail";
+		}
+
 		int length = 8;
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder code = new StringBuilder();
@@ -292,11 +325,6 @@ public class UserController {
 		}
 
 		String changedPw = code.toString(); // 생성된 랜덤 비번
-		System.out.println(userEmail);
-
-		if (user == null) {
-			return "fail"; // 이메일이 존재하지 않을 경우 실패 반환
-		}
 
 		// 비밀번호 암호화
 		String encodedPw = passwordEncoder.encode(changedPw);
@@ -305,7 +333,7 @@ public class UserController {
 		// 비밀번호 업데이트
 		userService.updateUserPw(user);
 
-		userEmail = userEmail.replace("&#64;", "@");
+		String userEmail = user.getUserEmail().replace("&#64;", "@");
 		System.out.println(userEmail);
 
 		// 세션에 인증 코드 저장
@@ -316,48 +344,24 @@ public class UserController {
 		email.setSmtpPort(465);
 		email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
 		email.setSSL(true);
-		String msg = "<!DOCTYPE html>\r\n"
-		        + "<html lang=\"en\">\r\n"
-		        + "<head>\r\n"
-		        + "    <meta charset=\"UTF-8\">\r\n"
-		        + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
-		        + "    <title>인증 메일</title>\r\n"
-		        + "</head>\r\n"
-		        + "<body style=\"font-family: Arial, sans-serif;\r\n"
-		        + "background-color: #f4f4f4;\r\n"
-		        + "color: #333;\">\r\n"
-		        + "    <div style=\"max-width: 600px;\r\n"
-		        + "    margin: 0 auto;\r\n"
-		        + "    padding: 20px;\r\n"
-		        + "    background-color: #ffffff;\r\n"
-		        + "    border-radius: 10px;\r\n"
-		        + "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align: center;\" class=\"container\">\r\n"
-		        + "        <div style=\"text-align: center; margin-bottom: 20px;\">\r\n"
-		        + "            <img style=\"width: 100px; \r\n"
-		        + "                margin-bottom: 20px;\r\n"
-		        + "                margin-left: auto; margin-right: auto; display: block;\"\r\n"
-		        + "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\"\r\n"
-		        + "                alt=\"Logo\">\r\n"
-		        + "        </div>\r\n"
-		        + "        <h1 style=\"color: #4CAF50; margin-bottom: 15px;\">임시 비밀번호</h1>\r\n"
-		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">안녕하세요! 아래의 임시 비밀번호로 로그인 하신후</p>\r\n"
-		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">회원수정을 통해 비밀번호를 변경하시길 바랍니다.</p>\r\n"
-		        + "        <div style=\"font-size: 24px;\r\n"
-		        + "        font-weight: bold;\r\n"
-		        + "        color: #4CAF50;\r\n"
-		        + "        padding: 10px;\r\n"
-		        + "        background-color: #f9f9f9;\r\n"
-		        + "        border: 1px solid #ddd;\r\n"
-		        + "        border-radius: 5px;\r\n"
-		        + "        width: 200px;\r\n"
-		        + "        display: inline-block; text-align:center; margin: 0 auto; margin-bottom: 20px;\">" + changedPw + "</div>\r\n"
-		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">감사합니다!</p>\r\n"
-		        + "        <div style=\"padding-top: 20px;\r\n"
-		        + "        font-size: 12px;\r\n"
-		        + "        color: #aaa; margin-top: 10px;\" class=\"footer\">© 2024 CodingBamboo. All rights reserved.</div>\r\n"
-		        + "    </div>\r\n"
-		        + "</body>\r\n"
-		        + "</html>";
+		String msg = "<!DOCTYPE html>\r\n" + "<html lang=\"ko\">\r\n" + "<head>\r\n"
+				+ "    <meta charset=\"UTF-8\">\r\n"
+				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
+				+ "    <title>임시 비밀번호</title>\r\n" + "</head>\r\n"
+				+ "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;\">\r\n"
+				+ "    <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;\" class=\"container\">\r\n"
+				+ "        <div style=\"margin-bottom: 20px;\">\r\n"
+				+ "            <img style=\"width: 100px; margin: 0 auto; display: block;\" \r\n"
+				+ "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\" alt=\"Logo\">\r\n"
+				+ "        </div>\r\n" + "        <h1 style=\"color: #4CAF50; margin-bottom: 10px;\">임시 비밀번호</h1>\r\n"
+				+ "        <p style=\"font-size: 16px; margin-bottom: 10px;\">안녕하세요! 아래의 임시 비밀번호로 로그인 하신 후</p>\r\n"
+				+ "        <p style=\"font-size: 16px; margin-bottom: 10px;\">회원수정을 통해 비밀번호를 변경하시길 바랍니다.</p>\r\n"
+				+ "        <div style=\"font-size: 24px; font-weight: bold; color: #4CAF50; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; width: 200px; margin: 0 auto; margin-bottom: 20px;\">\r\n"
+				+ changedPw + "\r\n" + "        </div>\r\n"
+				+ "        <p style=\"font-size: 16px; margin-bottom: 10px;\">감사합니다!</p>\r\n"
+				+ "        <div style=\"padding-top: 20px; font-size: 12px; color: #aaa; margin-top: 10px;\" class=\"footer\">© 2024 CodingBamboo. All rights reserved.</div>\r\n"
+				+ "    </div>\r\n" + "</body>\r\n" + "</html>";
+
 		try {
 			email.setFrom("jm86245@naver.com", "CodingBamboo");
 			email.setSubject("비밀번호가 변경되었습니다");
@@ -401,52 +405,23 @@ public class UserController {
 		email.setSmtpPort(465);
 		email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
 		email.setSSL(true);
-		String msg = "<!DOCTYPE html>\r\n"
-		        + "<html lang=\"en\">\r\n"
-		        + "\r\n"
-		        + "<head>\r\n"
-		        + "    <meta charset=\"UTF-8\">\r\n"
-		        + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
-		        + "    <title>인증 메일</title>\r\n"
-		        + "\r\n"
-		        + "</head>\r\n"
-		        + "\r\n"
-		        + "<body style=\"font-family: Arial, sans-serif;\r\n"
-		        + "background-color: #f4f4f4;\r\n"
-		        + "color: #333;\">\r\n"
-		        + "    <div style=\"max-width: 600px;\r\n"
-		        + "    margin: 0 auto;\r\n"
-		        + "    padding: 20px;\r\n"
-		        + "    background-color: #ffffff;\r\n"
-		        + "    border-radius: 10px;\r\n"
-		        + "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align: center;\" class=\"container\">\r\n"
-		        + "        <div style=\"text-align: center; margin-bottom: 20px;\">\r\n" // Centering the logo with bottom margin
-		        + "            <img style=\"width: 100px; \r\n"
-		        + "                margin-bottom: 20px;\r\n"
-		        + "                margin-left: auto; margin-right: auto; display: block;\"\r\n" // Centering the logo
-		        + "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\"\r\n"
-		        + "                alt=\"Logo\">\r\n"
-		        + "        </div>\r\n"
-		        + "        <h1 style=\"color: #4CAF50; margin-bottom: 15px;\">이메일 인증</h1>\r\n" // Margin below the heading
-		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">안녕하세요! 아래의 인증 코드를 입력하여 이메일 인증을 완료해 주세요.</p>\r\n" // Margin below the paragraph
-		        + "        <div style=\"font-size: 24px;\r\n"
-		        + "        font-weight: bold;\r\n"
-		        + "        color: #4CAF50;\r\n"
-		        + "        padding: 10px;\r\n"
-		        + "        background-color: #f9f9f9;\r\n"
-		        + "        border: 1px solid #ddd;\r\n"
-		        + "        border-radius: 5px;\r\n"
-		        + "        width: 200px;\r\n"
-		        + "        display: inline-block; text-align:center; margin: 0 auto; margin-bottom: 20px;\">" + emailCheckCode + "</div>\r\n" // Centering the code
-		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">감사합니다!</p>\r\n" // Margin below the thank you message
-		        + "        <div style=\"padding-top: 20px;\r\n"
-		        + "        font-size: 12px;\r\n"
-		        + "        color: #aaa; margin-top: 10px;\" class=\"footer\">© 2024 CodingBamboo. All rights reserved.</div>\r\n" // Margin above the footer
-		        + "    </div>\r\n"
-		        + "</body>\r\n"
-		        + "\r\n"
-		        + "</html>";
-		
+		String msg = "<!DOCTYPE html>\r\n" + "<html lang=\"ko\">\r\n" + "<head>\r\n"
+				+ "    <meta charset=\"UTF-8\">\r\n"
+				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
+				+ "    <title>이메일 인증</title>\r\n" + "</head>\r\n"
+				+ "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;\">\r\n"
+				+ "    <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;\" class=\"container\">\r\n"
+				+ "        <div style=\"margin-bottom: 20px;\">\r\n"
+				+ "            <img style=\"width: 100px; margin-bottom: 1px; margin-left: auto; margin-right: auto; display: block;\" \r\n"
+				+ "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\" alt=\"Logo\">\r\n"
+				+ "        </div>\r\n" + "        <h1 style=\"color: #4CAF50; margin-bottom: 10px;\">이메일 인증</h1>\r\n"
+				+ "        <p style=\"font-size: 16px; margin-bottom: 10px;\">안녕하세요! 아래의 인증 코드를 입력하여 이메일 인증을 완료해 주세요.</p>\r\n"
+				+ "        <div style=\"font-size: 24px; font-weight: bold; color: #4CAF50; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; width: 200px; margin: 0 auto; margin-bottom: 20px;\">\r\n"
+				+ emailCheckCode + "\r\n" // 인증 코드 삽입
+				+ "        </div>\r\n" + "        <p style=\"font-size: 16px; margin-bottom: 10px;\">감사합니다!</p>\r\n"
+				+ "        <div style=\"padding-top: 20px; font-size: 12px; color: #aaa; margin-top: 10px;\" class=\"footer\">© 2024 CodingBamboo. All rights reserved.</div>\r\n"
+				+ "    </div>\r\n" + "</body>\r\n" + "</html>";
+
 		try {
 			email.setFrom("jm86245@naver.com", "CodingBamboo");
 			email.setSubject("인증메일");
@@ -460,15 +435,14 @@ public class UserController {
 		}
 		return "fail";
 	}
-	
+
 	@PostMapping("/emailDupCheck")
 	@ResponseBody
 	public UserDTO emailDupCheck(@RequestParam String inputEmail) {
-	    UserDTO emailCheck = new UserDTO();
-	    emailCheck.setUserEmail(inputEmail);
-	    
-	    return userService.emailDupCheck(emailCheck);  // 중복 여부 반환 (중복되면 true, 중복 아니면 false)
+		UserDTO emailCheck = new UserDTO();
+		emailCheck.setUserEmail(inputEmail);
+
+		return userService.emailDupCheck(emailCheck); // 중복 여부 반환 (중복되면 true, 중복 아니면 false)
 	}
-	
-	
+
 }

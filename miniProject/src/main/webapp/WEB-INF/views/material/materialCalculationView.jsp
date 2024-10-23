@@ -27,34 +27,34 @@
 						<button class="btn btn-dark" id="materialSearch" type="button">검색</button>
 					</div>
 				</div>
-				<div class="table-responsive">
-					<table style="table-layout: fixed; width:430px;">
+				<div>
+					<table style="table-layout: fixed; width: 430px;">
 						<thead>
 							<th scope="col" class="text-center" style="width: 170px;">자재이름</th>
 							<th scope="col" class="text-center" style="width: 200px;">자재별 탄소배출량 (kgCO2eq/kg)</th>
 							<th scope="col" style="width: 60px;"></th>
 						</thead>
 					</table>
-					<div class="overflow-y-scroll" style="height: 600px;">
-						<table style="table-layout: fixed; width:430px;">
-							<tbody id="searchedResult">
-								<c:forEach items="${materialList}" var="meterial">
-									<tr>
-										<input type="hidden" value="${meterial.meNo}">
-										<td scope="row" style="width: 170px;">${meterial.meName}</td>
-										<td class="text-center" scope="row" style="width: 200px;">${meterial.meEmission}</td>
-										<td scope="row" style="width: 60px;"><button class="mt-2 mb-2" onclick="addItem()">추가</button></td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
+				</div>
+				<div class="overflow-y-scroll table-responsive" style="width: 430px; height: 600px;">
+					<table style="table-layout: fixed; width: 430px;">
+						<tbody id="searchedResult">
+							<c:forEach items="${materialList}" var="meterial">
+								<tr>
+									<input type="hidden" value="${meterial.meNo}">
+									<td scope="row" style="width: 170px;">${meterial.meName}</td>
+									<td scope="row" style="width: 200px;">${meterial.meEmission}</td>
+									<td scope="row" style="width: 60px;"><button class="mt-2 mb-2" onclick="addItem()">추가</button></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class="ms-3 bg-light">
 				<div class="d-flex flex-column item-aligns-center" style="height: 600px;">
 					<span class="text-center fw-bold fs-3 mb-3">현재 목록</span>
-					<table style="table-layout: fixed; width:520px;">
+					<table style="table-layout: fixed; width: 520px;">
 						<thead>
 							<th scope="col" class="text-center" style="width: 170px;">자재이름</th>
 							<th scope="col" class="text-center" style="width: 150px;">총 중량 (kg)</th>
@@ -66,18 +66,16 @@
 					</table>
 				</div>
 			</div>
-			<div class="ms-3 bg-light" style="width:450px;">
+			<div class="ms-3 bg-light" style="width: 450px;">
 				<div class="m-3">
-					<span class="me-2">건물 용도</span>
-					<select id="buildingUse" onchange="calcAvgEmission()">
+					<span class="me-2">건물 용도</span> <select id="buildingUse" onchange="calcAvgEmission()">
 						<option value="1">주거용</option>
 						<option value="2">상업용</option>
 						<option value="3">공공용</option>
 					</select>
 				</div>
 				<div class="m-3">
-					<span class="me-2">건물 면적(㎡)</span>
-					<input id="structArea" type="number" onchange="calcAvgEmission()">
+					<span class="me-2">건물 면적(㎡)</span> <input id="structArea" type="number" onchange="calcAvgEmission()">
 				</div>
 				<div class="m-3">
 					<span>용도와 면적 대비 평균 탄소 배출량 : </span> <br> <span id="avgEmission">0</span> <span>kgCO2eq</span>
@@ -134,7 +132,7 @@
 							'<input type="hidden" value="'+ result[i]["meNo"] +'">' +
 							'<td scope="row"></td>' +
 							'<td scope="row">'+ result[i]["meName"] + '</td>' +
-							'<td class="text-center" scope="row">'+ result[i]["meEmission"] + '</td>' +
+							'<td scope="row">'+ result[i]["meEmission"] + '</td>' +
 							'<td scope="row"><button class="mt-2 mb-2" onclick="addItem()">추가</button></td>' +
 							'</tr>'
 					}
@@ -177,7 +175,7 @@
 				        '<input type="hidden" value="' + row.querySelector("input[type='hidden']").value + '">' +
 				        '<input type="hidden" value="' + row.querySelectorAll("input[type='hidden']")[1].value + '">' +
 				        '<td scope="row">' + row.cells[0].innerText + '</td>' +
-				        '<td scope="row"><input type="number" value="' + values[index] + '" onchange="calcEmission()" ></td>' +
+				        '<td scope="row"><input type="number" style="width:150px;" value="' + values[index] + '" onchange="calcEmission()" ></td>' +
 				        '<td class="text-center class-for-summary" scope="row">' + row.cells[2].innerText + '</td>' +
 				        '<td scope="row"><button class="mt-2 mb-2" onclick="deleteItem()">삭제</button></td>' +
 				        '</tr>';
@@ -189,7 +187,7 @@
 				        '<input type="hidden" value="' + result["meNo"] + '" >' +
 				        '<input type="hidden" value="' + result["meEmission"] + '" >' +
 				        '<td scope="row">' + result["meName"] + '</td>' +
-				        '<td scope="row"><input type="number" onchange="calcEmission()" ></td>' +
+				        '<td scope="row"><input type="number" style="width:150px;" onchange="calcEmission()" ></td>' +
 				        '<td class="text-center class-for-summary" scope="row">' + 0 + '</td>' +
 				        '<td scope="row"><button class="mt-2 mb-2" onclick="deleteItem()">삭제</button></td>' +
 				        '</tr>'

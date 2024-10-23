@@ -83,6 +83,15 @@
 		WHERE qu_no = #{quNo}
 	</delete>
 	
+	<select id="getUserBoardList" resultType="int" parameterType="String">
+		SELECT
+			qu_no
+		FROM
+			question
+		WHERE 1=1
+			AND user_id = #{userId}
+	</select>
+	
 	<!-- 질문 수정 -->
 	<update id="updateBoard" parameterType="BoardDTO">
 		UPDATE question

@@ -61,4 +61,12 @@
 		WHERE 1=1 
 			AND aw_no = #{awNo}
 	</delete>
+	
+	<!-- 모든 답변 삭제 -->
+	<delete id="delAllAnswer" parameterType="int">
+		DELETE FROM answer
+		WHERE 1=1 
+			AND qu_no = #{quNo}
+	</delete>
+	
 </mapper>
