@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.codingbamboo.miniproject.coefficient.dto.CoefficientDTO;
 import com.codingbamboo.miniproject.coefficient.service.CoefficientService;
 import com.codingbamboo.miniproject.material.dto.MaterialDTO;
 import com.codingbamboo.miniproject.material.service.MaterialService;
+import com.codingbamboo.miniproject.user.dto.UserDTO;
 import com.google.gson.Gson;
 
 @Controller
@@ -67,10 +69,15 @@ public class MaterialController {
 	}
 
 	// 관리자 기능
-	
 	// 자재 관리 페이지 이동
 	@RequestMapping("/adminMaterialView")
-	public String adminMaterialView(Model model, String searchWord) {
+	public String adminMaterialView(Model model, String searchWord, HttpSession session) {
+		
+		UserDTO login = (UserDTO)session.getAttribute("login");
+		if (login == null || !login.getUserId().equals("admin")) {
+			return "redirect:/";
+		}
+		
 		List<MaterialDTO> materialList = new ArrayList<>();
 
 		if (searchWord == null || searchWord.isEmpty()) {
@@ -79,7 +86,7 @@ public class MaterialController {
 			materialList = materialService.getMaterialList(searchWord);
 		}
 		model.addAttribute("keyMaterialList", materialList);
-
+		
 		return "admin/adminMaterialView";
 
 	}

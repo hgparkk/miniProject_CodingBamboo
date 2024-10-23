@@ -38,7 +38,7 @@
 					<c:if test="${sessionScope.login.userId == 'admin'}">
 						<form id="noticeWriteForm" action="${pageContext.request.contextPath }/noticeWriteDo" method="POST">
 							<div class="mb-3">
-								<input class="form-control" type="text" name="noTitle" placeholder="제목을 입력해주세요" />
+								<input class="form-control" type="text" name="noTitle" id="title" placeholder="제목을 입력해주세요" />
 							</div>
 							
 							<div class="mb-3">
@@ -69,10 +69,26 @@
 			sSkinURI : "${pageContext.request.contextPath}/resources/nse/SmartEditor2Skin.html"
 		});
 		
+		v_title = document.getElementById('title');
+		v_content = document.getElementById("smartEditor")
+		
 		// 글 등록 버튼 클릭
 		document.getElementById("writeBtn").addEventListener('click', ()=>{
 			// 에디터에 작성된 내용을 숨겨진 textarea에 반영
 			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
+			
+			v_titleValue = v_title.value
+			v_contentValue = v_content.value
+			
+			v_contentValue = v_contentValue.replaceAll("&nbsp;"," ")
+			
+			v_title.value = v_titleValue.trim()
+			v_content.value = v_contentValue.trim()
+			
+			if(!v_title.value || !v_content.value){
+				alert("입력된 내용이 없습니다")
+				return
+			}
 			
 			// form 태그의 submit 실행
 			document.getElementById('noticeWriteForm').submit();

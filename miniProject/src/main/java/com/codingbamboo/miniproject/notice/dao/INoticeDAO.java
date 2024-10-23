@@ -30,4 +30,13 @@ public interface INoticeDAO {
 
 	// 공지사항 수정
 	int updateNotice(NoticeDTO notice);
+	
+	// 공지사항 top에 등록
+	int registTopNotice(int noNo);
+	
+	// 공지사항 top에서 삭제
+	int deleteTopNotice(int noNo);
+	
+	// 공지사항 top 갯수 확인
+	int getNoticeTopCount();
 }

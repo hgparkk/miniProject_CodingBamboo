@@ -39,7 +39,7 @@ public class NoticeController {
 		
 		List<NoticeDTO> noticeTopList = noticeService.getNoticeTopList(search);
 		
-		model.addAttribute("keyNoticeTopList", noticeTopList);
+		model.addAttribute("keyGetNoticeTopList", noticeTopList);
 		
 		List<NoticeDTO> getNoticeList = noticeService.getNoticeList(search);
 		
@@ -74,7 +74,8 @@ public class NoticeController {
 	// 공지글 자세히 보기
 	@RequestMapping("/noticeDetailView")
 	public String noticeDetailView(int no, Model model) {
-		NoticeDTO notice = null;
+		NoticeDTO notice = new NoticeDTO();
+		
 		notice = noticeService.getNotice(no);
 		
 		model.addAttribute("keyNotice", notice);
@@ -109,6 +110,36 @@ public class NoticeController {
 		
 		request.setAttribute("msg", "공지사항이 수정되었습니다.");
 		request.setAttribute("url", "/noticeDetailView?no=" + notice.getNoNo());
+		return "alert";
+	}
+	
+	// 공지사항 top에 등록하기
+	@PostMapping("/registTopNoticeDo")
+	public String registTopNoticeDo(int no, HttpServletRequest request) {
+		int count = 0;
+		
+		count = noticeService.getNoticeTopCount();
+		
+		if(count >= 5) {
+			request.setAttribute("msg", "공지사항 top에 더는 등록할 수 없습니다.");
+			request.setAttribute("url", "/noticeDetailView?no="+no);
+			return "alert";
+		}
+		
+		noticeService.registTopNotice(no);
+		
+		request.setAttribute("msg", "공지사항이 등록되었습니다.");
+		request.setAttribute("url", "/noticeView");
+		return "alert";
+	}
+	
+	// 공지사항 top에서 내리기
+	@PostMapping("/deleteTopNoticeDo")
+	public String deleteTopNoticeDo(int no, HttpServletRequest request) {
+		noticeService.deleteTopNotice(no);
+		
+		request.setAttribute("msg", "공지사항 top에서 삭제되었습니다.");
+		request.setAttribute("url", "/noticeView");
 		return "alert";
 	}
 	

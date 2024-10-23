@@ -3,6 +3,7 @@ package com.codingbamboo.miniproject.coefficient.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.codingbamboo.miniproject.coefficient.dto.CoefficientDTO;
 import com.codingbamboo.miniproject.coefficient.service.CoefficientService;
+import com.codingbamboo.miniproject.user.dto.UserDTO;
 
 @Controller
 public class CoefficientController {
@@ -20,9 +22,16 @@ public class CoefficientController {
 	CoefficientService coefficientService;
 	
 	@RequestMapping(value="/adminCoefficientView", method=RequestMethod.GET)
-	public String adminCoefficientView(Model model) {
+	public String adminCoefficientView(Model model, HttpSession session) {
+		
+		UserDTO login = (UserDTO)session.getAttribute("login");
+		if (login == null || !login.getUserId().equals("admin")) {
+			return "redirect:/";
+		}
+		
 		List<CoefficientDTO> coefficientList = coefficientService.getCoefficientList();
 		model.addAttribute("coefficientList",coefficientList);
+		
 		return "admin/adminCoefficientView";
 	}
 	
