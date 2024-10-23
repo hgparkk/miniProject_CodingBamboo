@@ -34,26 +34,27 @@
 		WHERE rnum BETWEEN #{start} AND #{end}
 	</select>
 	
+	<select id="getNoticeTopCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			notice
+		WHERE 1=1
+			AND no_top = 1
+	</select>
+	
 	<!-- 공지사항 top에 등록된 게시글 가져오기 -->
 	<select id="getNoticeTopList" resultType="com.codingbamboo.miniproject.notice.dto.NoticeDTO" parameterType="com.codingbamboo.miniproject.common.SearchVO">
-		SELECT *
-		FROM (
-			SELECT 
-				A.*
-			FROM (
-				SELECT
-					no_no
-					, no_title
-					, no_content
-					, no_top
-				FROM
-					notice
-				WHERE 1=1
-					AND no_top = 1
-				ORDER BY no_no ASC
-			) A
-		)
-		WHERE ROWNUM BETWEEN #{start} AND #{end}
+		SELECT
+			no_no
+			, no_title
+			, no_content
+			, no_top
+		FROM
+			notice
+		WHERE 1=1
+			AND no_top = 1
+		ORDER BY no_no DESC
 	</select>
 	
 	<!-- 공지사항에 공지글 추가 -->
@@ -83,7 +84,8 @@
 		SELECT 
 		      no_no
 		    , no_title 
-		    , no_content 
+		    , no_content
+		    , no_top
 		FROM notice
 		WHERE 1=1
 		  AND no_no = #{no}
@@ -100,6 +102,19 @@
 		UPDATE notice
 		SET no_title = #{noTitle}
 			, no_content = #{noContent}
+		WHERE no_no = #{noNo}
+	</update>
+	
+	<update id="registTopNotice" parameterType="int">
+		UPDATE notice
+		SET no_top = 1
+		WHERE 1=1
+			AND no_no = #{noNo}
+	</update>
+	
+	<update id="deleteTopNotice" parameterType="int">
+		UPDATE notice
+		SET no_top = 0
 		WHERE no_no = #{noNo}
 	</update>
 </mapper>

@@ -94,17 +94,6 @@
 							
 							<!-- keyBoardList 의 사이즈가 0이면 검색 결과를 찾을 수 없습니다. -->
 							<c:if test="${keyBoardList.size() == 0 }">
-								<c:forEach items="${keyGetNoticeTopList }" var="noticeDTO">
-									<c:if test='${noticeDTO.noTop == 1 }'>
-										<tr class="notice">
-											<td class="text-center"><span class="notice-name">공지</span></td>
-											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
-												href="${pageContext.request.contextPath }/boardDetailView?no=${noticeDTO.noNo }">
-													${noticeDTO.noTitle } </a></td>
-											<td class="text-center">시스템 관리자</td>
-										</tr>
-									</c:if>
-								</c:forEach>
 								<tr>
 									<td colspan="4">검색 결과를 찾을 수 없습니다.</td>
 								</tr>
@@ -114,9 +103,11 @@
 					</table>
 
 					<!-- 글쓰기 버튼 -->
-					<div class="d-flex justify-content-end">
-						<button id="writeBtn" class="btn btn-primary">질문 등록</button>
-					</div>
+					<c:if test="${sessionScope.login.userId != 'admin' }">
+						<div class="d-flex justify-content-end">
+							<button id="writeBtn" class="btn btn-primary">질문 등록</button>
+						</div>
+					</c:if>
 
 					<!-- 페이지 부분 -->
 					<!-- 페이징 -->

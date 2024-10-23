@@ -69,7 +69,8 @@
 		    , a.qu_title 
 		    , a.user_id
 		    , b.user_name
-		    , a.qu_content 
+		    , a.qu_content
+		    , a.qu_isread
 		FROM question a, user_info b
 		WHERE 1=1
 		  AND a.user_id = b.user_id(+)

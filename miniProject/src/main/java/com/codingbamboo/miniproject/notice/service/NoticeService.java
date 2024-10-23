@@ -48,5 +48,20 @@ public class NoticeService {
 		int result = dao.updateNotice(notice);
 		return result;
 	}
+	
+	public int registTopNotice(int noNo) {
+		int result = dao.registTopNotice(noNo);
+		return result;
+	}
+	
+	public int deleteTopNotice(int noNo) {
+		int result = dao.deleteTopNotice(noNo);
+		return result;
+	}
+	
+	public int getNoticeTopCount() {
+		int result = dao.getNoticeTopCount();
+		return result;
+	}
 
 }

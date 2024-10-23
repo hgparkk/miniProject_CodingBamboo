@@ -61,27 +61,25 @@
 						<tbody>
 							<c:if test="${keyNoticeList.size() != 0 }">
 								<!-- 공지 -->
-								<c:forEach items="${keyGetNoticeTopList }" var="NoticeDTO">
-									<c:if test="${NoticeDTO.noTop == 1 }">
+								<c:forEach items="${keyGetNoticeTopList }" var="noticeDTO">
+									<c:if test="${noticeDTO.noTop == 1 }">
 										<tr class="notice">
 											<td class="text-center"><span class="notice-name">공지</span></td>
 											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
-												href="${pageContext.request.contextPath }/NoticeDetailView?no=${NoticeDTO.noNo }">
-													${NoticeDTO.noTitle } </a></td>
+												href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
+													${noticeDTO.noTitle } </a></td>
 											<td class="text-center"><span>시스템 관리자</span></td>
 										</tr>
 									</c:if>
 								</c:forEach>
-								<c:forEach items="${keyNoticeList }" var="NoticeDTO">
-									<c:if test="${NoticeDTO.noTop != 1 }">
-										<tr>
-											<td colspan="1" class="text-center">${NoticeDTO.noNo }</td>
-											<td class="text-center" colspan="2"><a class="text-decoration-none d-flex"
-												href="${pageContext.request.contextPath }/noticeDetailView?no=${NoticeDTO.noNo }">
-													${NoticeDTO.noTitle } </a></td>
-											<td colspan="1" class="text-center">시스템 관리자</td>
-										</tr>
-									</c:if>
+								<c:forEach items="${keyNoticeList }" var="noticeDTO">
+									<tr>
+										<td colspan="1" class="text-center">${noticeDTO.noNo }</td>
+										<td class="text-center" colspan="2"><a class="text-decoration-none d-flex"
+											href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
+												${noticeDTO.noTitle } </a></td>
+										<td colspan="1" class="text-center">시스템 관리자</td>
+									</tr>
 								</c:forEach>
 							</c:if>
 							

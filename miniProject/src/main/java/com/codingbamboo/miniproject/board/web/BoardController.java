@@ -49,11 +49,10 @@ public class BoardController {
 		List<NoticeDTO> getNoticeTopList = noticeService.getNoticeTopList(search);
 		
 		model.addAttribute("keyGetNoticeTopList", getNoticeTopList);
+		
 		List<BoardDTO> getBoardList = boardService.getBoardList(search);
 		
 		model.addAttribute("keyBoardList", getBoardList);
-		
-		System.out.println(search.getStart() + "," + search.getEnd());
 		
 		return "board/boardView";
 	}
@@ -74,7 +73,6 @@ public class BoardController {
 	@PostMapping("/boardWriteDo")
 	public String boardWriteDo(BoardDTO board, HttpServletRequest request) {
 		boardService.insertBoard(board);
-		System.out.println(board);
 		
 		request.setAttribute("msg", "질문이 등록되었습니다.");
 		request.setAttribute("url", "/boardView");
@@ -91,7 +89,6 @@ public class BoardController {
 		} catch (BizNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 			// 에러 발생 시 넣은 에러코드와 에러메시지 확인
 			String errCode = e.getErrCode();
 			String errMsg = e.getMessage();

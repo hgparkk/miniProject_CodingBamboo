@@ -86,16 +86,21 @@
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /boardEditView에 같이 보냄 -->
 								<input type="hidden" value="${keyBoard.quNo }" name="no">
-								<button class="btn btn-warning me-2" type="submit">수정</button>
+								<c:if test="${keyBoard.quIsread != 1}">
+									<button class="btn btn-warning me-2" type="submit">수정</button>
+								</c:if>
 							</form>
-	
+						</c:if>
+						<c:if test="${sessionScope.login.userId ne null and (sessionScope.login.userId eq 'admin' or sessionScope.login.userId eq keyBoard.userId)}">
 							<form id="delForm"
 								action="${pageContext.request.contextPath }/boardDelDo"
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /boardDeleteDo에 같이 보냄 -->
 								<input type="hidden" value="${keyBoard.quNo }" name="no">
 								<!-- 삭제버튼 클릭시 삭제확인 메시지를 띄움 -->
-								<button id="delBtn" class="btn btn-danger" type="button">삭제</button>
+								<c:if test="${keyBoard.quIsread != 1}">
+									<button id="delBtn" class="btn btn-danger" type="button">삭제</button>
+								</c:if>
 							</form>
 						</c:if>
 					</div>
@@ -164,15 +169,11 @@
 			let v_formData = $('#answerForm').serialize();
 			let v_url = $('#answerForm').attr('action');
 			
-			console.log(v_formData);
-			
 			$.ajax({
 				type: 'POST',
 				url: v_url,
 				data: v_formData,
 				success: function(resp){
-					console.log(resp);  // JSON 객체 (jQuery에서 자동으로 parse 해줌)
-					
 					// 답변 입력창 비우기
 					document.getElementById('inputAnswer').value = "";
 					
@@ -197,8 +198,6 @@
 		});
 		
 		function f_delete(){
-			console.log(event.target.parentElement.parentElement.children[0].value);
-			
 			v_parent = event.target.parentElement.parentElement;
 			
 			v_awNo = event.target.parentElement.parentElement.children[0].value;

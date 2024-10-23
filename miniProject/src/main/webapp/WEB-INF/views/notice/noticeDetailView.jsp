@@ -81,7 +81,25 @@
 					</div>
 					<div class="d-flex justify-content-end">
 						<c:if test="${sessionScope.login.userId eq 'admin'}">
-							<!-- POST 요청을 위해 버튼을 form 태그로 감싼다 -->
+							<!-- POST 요청을 위해 버튼을 form 태그로 감쌈 -->
+							<form action="${pageContext.request.contextPath }/registTopNoticeDo"
+								method="POST">
+								<!-- 현재 페이지의 글번호를 /noticeEditDo에 같이 보냄 -->
+								<input type="hidden" value="${keyNotice.noNo }" name="no">
+								<c:if test="${keyNotice.noTop != 1 }">
+									<button class="btn btn-warning me-2" type="submit">top 등록</button>
+								</c:if>
+							</form>
+							
+							<form action="${pageContext.request.contextPath }/deleteTopNoticeDo"
+								method="POST">
+								<!-- 현재 페이지의 글번호를 /noticeEditView에 같이 보냄 -->
+								<input type="hidden" value="${keyNotice.noNo }" name="no">
+								<c:if test="${keyNotice.noTop == 1 }">
+									<button class="btn btn-warning me-2" type="submit">top 삭제</button>
+								</c:if>
+							</form>
+							
 							<form action="${pageContext.request.contextPath }/noticeEditView"
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /noticeEditView에 같이 보냄 -->

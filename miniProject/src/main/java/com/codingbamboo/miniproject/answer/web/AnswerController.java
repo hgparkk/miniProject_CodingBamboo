@@ -27,8 +27,6 @@ public class AnswerController {
 	@ResponseBody
 	@RequestMapping("/answerWriteDo")
 	public AnswerDTO answerWriteDo(AnswerDTO answer, int quNo) {
-		System.out.println(answer);
-
 		// 답변 DB에 등록
 		answerService.insertAnswer(answer);
 
@@ -44,7 +42,6 @@ public class AnswerController {
 	@ResponseBody
 	@PostMapping("/delAnswerDo")
 	public String delAnswer(int awNo, int quNo) {
-		System.out.println("awNo = " + awNo + "quNo =" + quNo);
 		String result = "fail";
 
 		int cnt = answerService.delAnswer(awNo);

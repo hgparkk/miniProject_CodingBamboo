@@ -7,26 +7,36 @@
 <meta charset="UTF-8">
 <title>Coding Bamboo</title>
 <style type="text/css">
-.admin-container {
-	margin: auto;
-	width: 1200px;
-}
-
-.material-container {
-	border: 2px solid black;
-	height: 800px;
-	overflow-y: scroll;
+	.admin-container {
+		margin: auto;
+		width: 1200px;
+	}
+	
+	.material-container {
+		border: 2px solid black;
+		height: 800px;
+		overflow-y: scroll;
+	}
+	
+	.material-plus{
+		border: 1px solid black;
+		border-radius: 5px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 }
 </style>
 <%@ include file="/WEB-INF/inc/header.jsp" %>
 </head>
 <body>
 	<%@ include file="/WEB-INF/inc/top.jsp" %>
+	
+	<div style="height: 200px;"></div>
 
 	<div class="admin-container">
 		<div>
 			<!-- 검색바 -->
-			<form class="d-flex justify-content-center"
+			<form class="d-flex justify-content-center mb-3"
 				action="${pageContext.request.contextPath }/adminView" method="GET">
 				<input type="text" class="form-control w-25" name="searchWord">
 				<button class="btn btn-primary" type="submit">
@@ -82,23 +92,20 @@
 				</table>
 			</div>
 		</div>
-		<div>
-			<div>
-				<!-- 자재 추가 -->
-				<form class="row" id="replyForm" action="${pageContext.request.contextPath }/insertMaterial" method="POST">
-					<div class="col-10">
-						자재명:<input type="text" name="meName"> kg당 탄소 배출량:<input type="text" name="meEmission">
-						<button id="materialBtn" class="btn btn-primary col-2" type="submit">등록</button>
-					</div>
-				</form>
-			</div>
+		<div class="material-plus">
+			<!-- 자재 추가 -->
+			<form class="row" id="replyForm" <%-- action="${pageContext.request.contextPath }/insertMaterial" --%> method="POST">
+				<div class="col-10 align-items-center">
+					자재명:<input class="me-5 ms-2" type="text" name="meName"> kg당 탄소 배출량:<input class="me-5 ms-2" type="text" name="meEmission">
+					<button id="materialBtn" class="btn btn-primary col-2">등록</button>
+				</div>
+			</form>
 		</div>
 	</div>
 	
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 	<script type="text/javascript">
 	function f_update(){
-		console.log(event.target.parentElement.children[1].value)
 		if(confirm("정말로 수정하시겠습니까?")){
 			event.target.parentElement.submit();
 		}
@@ -109,6 +116,16 @@
 			event.target.parentElement.submit();
 		}
 	};
+	
+	v_materialBtn = document.getElemtById('materialBtn')
+	v_meEmission = document.querySelector('.meEmission').value
+	
+	v_materialBtn.addEventListener('click', ()=>{
+		if(!isNaN(v_meEmission)){
+			confirm("탄소 배출량에는 숫자만 입력할 수 있습니다.")
+		}
+		event.target.submit();
+	});
 </script>
 </body>
 
