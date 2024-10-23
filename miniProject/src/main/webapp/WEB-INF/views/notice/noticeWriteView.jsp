@@ -36,7 +36,7 @@
 			<div class="row justify-content-center">
 		 		<div class="col-lg-8 col-xl-7">
 					<c:if test="${sessionScope.login.userId == 'admin'}">
-						<form id="noticeWriteForm" action="${pageContext.request.contextPath }/noticeWriteDo" method="POST">
+						<form id="noticeWriteForm" action="${pageContext.request.contextPath }/noticeWriteDo" method="POST" enctype="multiparh/form-data">
 							<!-- 제목 -->
 							<div class="mb-3">
 								<input class="form-control" type="text" name="noTitle" id="title" placeholder="제목을 입력해주세요" />

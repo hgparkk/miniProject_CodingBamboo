@@ -73,5 +73,11 @@ public class NoticeService {
 		int result = dao.getNoticeTopCount();
 		return result;
 	}
+	
+	// 공지사항 번호 미리 알기
+	public int getNoticeNo() {
+		int result = dao.getNoticeNo();
+		return result;
+	}
 
 }

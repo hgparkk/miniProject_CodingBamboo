@@ -105,6 +105,7 @@
 		WHERE no_no = #{noNo}
 	</update>
 	
+	<!-- 공지사항 top에 등록 -->
 	<update id="registTopNotice" parameterType="int">
 		UPDATE notice
 		SET no_top = 1
@@ -112,9 +113,18 @@
 			AND no_no = #{noNo}
 	</update>
 	
+	<!-- 공지사항 top에서 삭제 -->
 	<update id="deleteTopNotice" parameterType="int">
 		UPDATE notice
 		SET no_top = 0
 		WHERE no_no = #{noNo}
 	</update>
+	
+	<!-- 공지사항 번호 가져오기 -->
+	<select id="getNoticeNo" resultType="int">
+		SELECT
+			COUNT(*) + 1
+		FROM
+			notice
+	</select>
 </mapper>

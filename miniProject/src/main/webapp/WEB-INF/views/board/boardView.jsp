@@ -16,20 +16,20 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-	.board-container{
-		width: 1200px;
-	}
-	
-	.notice{
-		background-color: #EEEEEE;
-	}
-	
-	.notice-name{
-		border-radius: 5px;
-		background-color: red;
-		color: white;
-		padding: 5px;
-	}
+.board-container {
+	width: 1200px;
+}
+
+.notice {
+	background-color: #EEEEEE;
+}
+
+.notice-name {
+	border-radius: 5px;
+	background-color: red;
+	color: white;
+	padding: 5px;
+}
 </style>
 </head>
 <body id="page-top">
@@ -60,38 +60,36 @@
 							</tr>
 						</thead>
 						<tbody>
-<%-- 							<c:if test="${keyBoardList.size() != 0 }"> --%>
-								<!-- 공지 -->
-								<c:forEach items="${keyGetNoticeTopList }" var="noticeDTO">
-									<c:if test='${noticeDTO.noTop == 1 }'>
-										<tr class="notice">
-											<td class="text-center"><span class="notice-name">공지</span></td>
-											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold"
-												href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
-													${noticeDTO.noTitle } </a></td>
-											<td class="text-center">시스템 관리자</td>
-										</tr>
+							<!-- 공지 -->
+							<c:forEach items="${keyGetNoticeTopList }" var="noticeDTO">
+								<c:if test='${noticeDTO.noTop == 1 }'>
+									<tr class="notice">
+										<td class="text-center"><span class="notice-name">공지</span></td>
+										<td colspan="2"><a
+											class="text-decoration-none d-flex text-danger fw-bold"
+											href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
+												${noticeDTO.noTitle } </a></td>
+										<td class="text-center">시스템 관리자</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+							<c:forEach items="${keyBoardList }" var="boardDTO">
+								<tr>
+									<td class="text-center">${boardDTO.quNo }</td>
+									<td class="text-center"><a
+										class="text-decoration-none d-flex"
+										href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
+											${boardDTO.quTitle } </a></td>
+									<c:if test="${boardDTO.quIsread == 0}">
+										<td class="text-center"></td>
 									</c:if>
-								</c:forEach>
-								<c:forEach items="${keyBoardList }" var="boardDTO">
-									<c:if test="${boardDTO.userId != 'admin' }">
-										<tr>
-											<td class="text-center">${boardDTO.quNo }</td>
-											<td class="text-center"><a class="text-decoration-none d-flex"
-												href="${pageContext.request.contextPath }/boardDetailView?no=${boardDTO.quNo }">
-													${boardDTO.quTitle } </a></td>
-											<c:if test="${boardDTO.quIsread == 0}">
-												<td class="text-center"></td>
-											</c:if>
-											<c:if test="${boardDTO.quIsread == 1}">
-												<td class="text-center text-success fw-bold">답변 완료</td>
-											</c:if>
-											<td class="text-center">${boardDTO.userName }</td>
-										</tr>
+									<c:if test="${boardDTO.quIsread == 1}">
+										<td class="text-center text-success fw-bold">답변 완료</td>
 									</c:if>
-								</c:forEach>
-							<%-- </c:if> --%>
-							
+									<td class="text-center">${boardDTO.userName }</td>
+								</tr>
+							</c:forEach>
+
 							<!-- keyBoardList 의 사이즈가 0이면 검색 결과를 찾을 수 없습니다. -->
 							<c:if test="${keyBoardList.size() == 0 }">
 								<tr>

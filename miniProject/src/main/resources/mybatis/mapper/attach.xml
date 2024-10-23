@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codingbamboo.miniproject.attach.dao.IAttachDAO">
+	<insert id="insertAttach" parameterType="com.codingbamboo.miniproject.attach.dto.AttachDTO">
+		INSERT INTO attach(
+			atch_no
+			, atch_notice_no
+			, atch_file_name
+			, atch_name
+			, atch_file_size
+			, atch_content_type
+			, atch_path
+		) VALUES (
+			ac_seq.NEXTVAL
+			, #{atchNoticeNo}
+			, #{atchFileName}
+			, #{atchName}
+			, #{atchFileSize}
+			, #{atchContentType}
+			, #{atchPath}
+		)
+	</insert>
+	
+	<select id="getAttachList" parameterType="int" resultType="com.codingbamboo.miniproject.attach.dto.AttachDTO">
+		SELECT
+			atch_no
+			, atch_notice_no
+			, atch_file_name
+			, atch_name
+			, atch_file_size
+			, atch_content_type
+			, atch_path
+		FROM
+			attach
+		WHERE 1=1
+			AND atch_notice_no = #{noNo}
+	</select>
+</mapper>

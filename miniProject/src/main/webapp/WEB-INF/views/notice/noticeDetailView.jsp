@@ -75,6 +75,17 @@
 							<div class="qu-title mb-1">${keyNotice.noTitle }</div>
 							<div class="user-name">시스템 관리자</div>
 						</div>
+						
+					<!-- 첨부파일 목록 -->
+					<div class="mb-3 d-flex">
+						<c:forEach items="${attachList }" var="attach">
+							<div>
+								<a href="<c:url value="/filedownload?fileName=${attach.atchFileName }&fileNoticeName=${attach.atchName}"/>">
+									${attach.atchName }(${attach.atchFancySize })
+								</a>
+							</div>
+						</c:forEach>
+					</div>
 
 						<!-- pre 태그에 적용했던 폰트 스타일은 제거 -->
 						<div class="board-body">${keyNotice.noContent}</div>

@@ -27,6 +27,9 @@
 	
 	<context:component-scan base-package="com.codingbamboo.miniproject" />
 	
+	<!-- 첨부파일 처리하는 bean 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
+	
 	
 	
 </beans:beans>

@@ -58,7 +58,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${keyNoticeList.size() != 0 }">
+							<c:if test="${keyGetNoticeList.size() != 0 }">
 								<!-- 공지 -->
 								<c:forEach items="${keyGetNoticeTopList }" var="noticeDTO">
 									<c:if test="${noticeDTO.noTop == 1 }">
@@ -71,7 +71,7 @@
 										</tr>
 									</c:if>
 								</c:forEach>
-								<c:forEach items="${keyNoticeList }" var="noticeDTO">
+								<c:forEach items="${keyGetNoticeList }" var="noticeDTO">
 									<tr>
 										<td colspan="1" class="text-center">${noticeDTO.noNo }</td>
 										<td class="text-center" colspan="2"><a class="text-decoration-none d-flex"
@@ -83,7 +83,7 @@
 							</c:if>
 							
 							<!-- keyNoticeList 의 사이즈가 0이면 검색 결과를 찾을 수 없습니다. -->
-							<c:if test="${keyNoticeList.size() == 0 }">
+							<c:if test="${keyGetNoticeList.size() == 0 }">
 								<c:forEach items="${keyGetNoticeTopList }" var="NoticeDTO">
 									<c:if test="${NoticeDTO.noTop == 1 }">
 										<tr class="notice">

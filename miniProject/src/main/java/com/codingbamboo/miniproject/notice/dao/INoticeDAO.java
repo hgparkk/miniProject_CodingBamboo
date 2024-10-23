@@ -39,4 +39,7 @@ public interface INoticeDAO {
 	
 	// 공지사항 top 갯수 확인
 	int getNoticeTopCount();
+	
+	// 공지사항의 noNo를 미리 확인
+	int getNoticeNo();
 }

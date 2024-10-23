@@ -1,5 +1,6 @@
 package com.codingbamboo.miniproject.notice.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.codingbamboo.miniproject.attach.dto.AttachDTO;
+import com.codingbamboo.miniproject.attach.service.AttachService;
+import com.codingbamboo.miniproject.common.FileUploadUtils;
 import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 import com.codingbamboo.miniproject.notice.dto.NoticeDTO;
@@ -21,6 +26,12 @@ import com.codingbamboo.miniproject.user.dto.UserDTO;
 public class NoticeController {
 	@Autowired
 	NoticeService noticeService;
+	
+	@Autowired
+	AttachService attachService;
+	
+	@Autowired
+	FileUploadUtils fileUploadUtils;
 	
 	// 공지사항 게시판 가기
 	@RequestMapping("noticeView")
@@ -61,7 +72,25 @@ public class NoticeController {
 	
 	// 공지글 작성하기
 	@PostMapping("/noticeWriteDo")
-	public String noticeWriteDo(NoticeDTO notice, HttpServletRequest request) {
+	public String noticeWriteDo(NoticeDTO notice, HttpServletRequest request, MultipartFile[] boFile) {
+		int atchNoticeNo = noticeService.getNoticeNo();
+		if(boFile != null && boFile.length < 0 && !boFile[0].isEmpty()) {
+			try {
+				List<AttachDTO> attachList = fileUploadUtils.getAttachListByMultiparts(boFile);
+				if(!attachList.isEmpty()) {
+					for(AttachDTO attach : attachList) {
+						attach.setAtchNoticeNo(atchNoticeNo);
+						attachService.insertAttach(attach);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "error/errorPath500";
+			}
+			
+		}
+		
 		noticeService.insertNotice(notice);
 		
 		request.setAttribute("msg", "공지글이 등록되었습니다.");
@@ -78,6 +107,11 @@ public class NoticeController {
 		notice = noticeService.getNotice(no);
 		
 		model.addAttribute("keyNotice", notice);
+		
+		// 해당 게시글의 첨부파일 목록 가져오기
+		List<AttachDTO> attachList = attachService.getAttachList(no);
+		
+		model.addAttribute("keyAttachList", attachList);
 		
 		return "notice/noticeDetailView";
 	}

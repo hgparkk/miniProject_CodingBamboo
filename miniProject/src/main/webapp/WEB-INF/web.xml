@@ -59,5 +59,11 @@
 		<filter-name>xssFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- 첨부파일 설정 추가 -->
+	<multipart-config>
+		<max-file-size>31457280</max-file-size>				<!-- 파일 한 개당 최대 크기(30MB) -->
+		<max-request-size>1004857600</max-request-size>		<!-- 한 번에 최대 100MB 까지 요청 가능 -->
+	</multipart-config>
 
 </web-app>
