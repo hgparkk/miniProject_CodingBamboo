@@ -236,24 +236,42 @@
 			}
 		})
 	
-		document.getElementById("sendEmailBtn").addEventListener("click", () => {
+document.getElementById("sendEmailBtn").addEventListener("click", () => {
     let inputEmailValue = v_inputEmail.value;
 
     $.ajax({
         type: 'POST',
-        url: '${pageContext.request.contextPath}/sendEmail',
+        url: '${pageContext.request.contextPath}/emailDupCheck',  // 이메일 중복 체크 API 호출
         data: { "inputEmail": inputEmailValue },
 
-        success: function(result) {
-            console.log(result);
-            alert("인증 메일이 성공적으로 발송되었습니다."); // 이메일 발송 알림
+        success: function(isDuplicate) {
+            if (isDuplicate) {
+                alert("이미 사용 중인 이메일입니다. 다른 이메일을 입력해 주세요.");
+            } else {
+                // 이메일 중복이 없으면 인증 메일 발송
+                $.ajax({
+                    type: 'POST',
+                    url: '${pageContext.request.contextPath}/sendEmail',
+                    data: { "inputEmail": inputEmailValue },
+
+                    success: function(result) {
+                        console.log(result);
+                        alert("인증 메일이 성공적으로 발송되었습니다."); // 이메일 발송 알림
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Ajax 요청 실패:", error);
+                        alert("이메일 발송 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+                    }
+                });
+            }
         },
         error: function(xhr, status, error) {
             console.error("Ajax 요청 실패:", error);
-            alert("이메일 발송 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+            alert("이메일 중복 체크 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
     });
 });
+
 	</script>
 
 </body>

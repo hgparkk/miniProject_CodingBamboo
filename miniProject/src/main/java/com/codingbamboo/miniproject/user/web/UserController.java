@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,7 +37,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	// ·Î±×ÀÎ Ã¢
+	// ë¡œê·¸ì¸ ì°½
 	@RequestMapping("/loginView")
 	public String loginView(HttpServletRequest request, Model model,
 			@RequestParam(value = "fromUrl", required = false) String fromUrl) {
@@ -47,7 +48,7 @@ public class UserController {
 		return "user/loginView";
 	}
 
-	// ·Î±×ÀÎ
+	// ë¡œê·¸ì¸
 	@PostMapping("/loginDo")
 	public String loginDo(String fromUrl, UserDTO userInfo, HttpSession session, boolean rememberId,
 			HttpServletResponse response, HttpServletRequest request, Model model, RedirectAttributes attr) {
@@ -55,15 +56,15 @@ public class UserController {
 
 		boolean isMatch = passwordEncoder.matches(userInfo.getUserPw(), login.getUserPw());
 		if (!isMatch) {
-			model.addAttribute("errMsg", "¾ÆÀÌµğ³ª ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+			model.addAttribute("errMsg", "ì•„ì´ë””ë‚˜ ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			attr.addAttribute("fromUrl", fromUrl);
 			return "user/loginView";
 		}
 
-		// ·Î±×ÀÎ ¼º°ø ½Ã
+		// ë¡œê·¸ì¸ ì„±ê³µ ì‹œ
 		session.setAttribute("login", login);
 
-		// ¾ÆÀÌµğ ±â¾ïÇÏ±â Ã³¸®
+		// ì•„ì´ë”” ê¸°ì–µí•˜ê¸° ì²˜ë¦¬
 		if (rememberId) {
 			Cookie cookie = new Cookie("rememberId", userInfo.getUserId());
 			response.addCookie(cookie);
@@ -81,13 +82,13 @@ public class UserController {
 		}
 	}
 
-	// È¸¿ø°¡ÀÔ Ã¢
+	// íšŒì›ê°€ì… ì°½
 	@RequestMapping("/registView")
 	public String registView() {
 		return "user/registView";
 	}
 
-	// ¾ÆÀÌµğ Áßº¹Ã¼Å©
+	// ì•„ì´ë”” ì¤‘ë³µì²´í¬
 	@ResponseBody
 	@PostMapping("/idDupCheck")
 	public boolean idDupCheck(String inputId) {
@@ -96,50 +97,50 @@ public class UserController {
 
 		UserDTO checked = userService.idDupCheck(idCheck);
 
-		// null Ã¼Å© ÈÄ inputId¿Í Á¶È¸µÈ ID¸¦ ºñ±³
+		// null ì²´í¬ í›„ inputIdì™€ ì¡°íšŒëœ IDë¥¼ ë¹„êµ
 		return (checked != null && checked.getUserId().equals(inputId));
 	}
 
-	// È¸¿ø°¡ÀÔ
+	// íšŒì›ê°€ì…
 	@PostMapping("/registDo")
 	public String registDo(@Valid UserDTO user, BindingResult result, HttpServletRequest request, HttpSession session) {
 		UserDTO emailCheck = new UserDTO();
 		emailCheck.setUserEmail(user.getUserEmail());
 
-		// À¯È¿¼º °ËÁõ¿¡¼­ ¿À·ù°¡ ¹ß»ıÇÑ °æ¿ì
+		// ìœ íš¨ì„± ê²€ì¦ì—ì„œ ì˜¤ë¥˜ê°€ ë°œìƒí•œ ê²½ìš°
 		if (result.hasErrors()) {
 			StringBuilder errorMessage = new StringBuilder();
 			for (ObjectError error : result.getAllErrors()) {
 				errorMessage.append(error.getDefaultMessage()).append("\\n");
 			}
 
-			// ¿¡·¯ ¸Ş½ÃÁö¸¦ request¿¡ Ãß°¡
+			// ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ requestì— ì¶”ê°€
 			request.setAttribute("msg", errorMessage.toString());
 			request.setAttribute("url", "/registView");
-			return "alert"; // alert ÆäÀÌÁö·Î ÀÌµ¿
+			return "alert"; // alert í˜ì´ì§€ë¡œ ì´ë™
 			
 		} else if (userService.emailDupCheck(emailCheck) != null) {
-			request.setAttribute("msg", "ÀÌ¹Ì µî·ÏµÈ ÀÌ¸ŞÀÏ ÀÔ´Ï´Ù. ´Ù¸¥ ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇÏ¿© ÁÖ¼¼¿ä");
+			request.setAttribute("msg", "ì´ë¯¸ ë“±ë¡ëœ ì´ë©”ì¼ ì…ë‹ˆë‹¤. ë‹¤ë¥¸ ì´ë©”ì¼ì„ ì…ë ¥í•˜ì—¬ ì£¼ì„¸ìš”");
 			request.setAttribute("url", "/registView");
 			return "alert";
 		}
 
-		// ÀÌ¸ŞÀÏ ÀÎÁõ ÄÚµå È®ÀÎ
-		String inputCode = user.getEmailCheckCode(); // »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ÀÎÁõ ÄÚµå
-		String expectedCode = (String) session.getAttribute("emailCheckCode"); // ¼¼¼Ç¿¡¼­ °¡Á®¿Â ÀÎÁõ ÄÚµå
+		// ì´ë©”ì¼ ì¸ì¦ ì½”ë“œ í™•ì¸
+		String inputCode = user.getEmailCheckCode(); // ì‚¬ìš©ìê°€ ì…ë ¥í•œ ì¸ì¦ ì½”ë“œ
+		String expectedCode = (String) session.getAttribute("emailCheckCode"); // ì„¸ì…˜ì—ì„œ ê°€ì ¸ì˜¨ ì¸ì¦ ì½”ë“œ
 
 		if (expectedCode == null || !inputCode.equals(expectedCode)) {
-			// ÀÎÁõ ÄÚµå°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ» °æ¿ì ¿¡·¯ Ã³¸®
-			request.setAttribute("msg", "ÀÎÁõ ÄÚµå°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.");
+			// ì¸ì¦ ì½”ë“œê°€ ì¼ì¹˜í•˜ì§€ ì•Šì„ ê²½ìš° ì—ëŸ¬ ì²˜ë¦¬
+			request.setAttribute("msg", "ì¸ì¦ ì½”ë“œê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.");
 			request.setAttribute("url", "/registView");
-			return "alert"; // alert ÆäÀÌÁö·Î ÀÌµ¿
+			return "alert"; // alert í˜ì´ì§€ë¡œ ì´ë™
 		}
 
-		// ºñ¹Ğ¹øÈ£ ¾ÏÈ£È­
+		// ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™”
 		String encodePw = passwordEncoder.encode(user.getUserPw());
 		user.setUserPw(encodePw);
 
-		// °ü¸®ÀÚÀÎÁö ¿©ºÎ È®ÀÎ ¹× Ã³¸®
+		// ê´€ë¦¬ìì¸ì§€ ì—¬ë¶€ í™•ì¸ ë° ì²˜ë¦¬
 		String ismasterStr = request.getParameter("adminCheck");
 		int ismaster = 0;
 		if (ismasterStr != null && !ismasterStr.isEmpty()) {
@@ -151,20 +152,20 @@ public class UserController {
 		}
 		user.setUserIsmaster(ismaster);
 
-		// »ç¿ëÀÚ µî·Ï
+		// ì‚¬ìš©ì ë“±ë¡
 		userService.insertUser(user);
 
-		// È¸¿ø°¡ÀÔ ¼º°ø ¸Ş½ÃÁö ¼³Á¤
-		request.setAttribute("msg", "È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù\\n·Î±×ÀÎ Ã¢À¸·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+		// íšŒì›ê°€ì… ì„±ê³µ ë©”ì‹œì§€ ì„¤ì •
+		request.setAttribute("msg", "íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤\\në¡œê·¸ì¸ ì°½ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
 		request.setAttribute("url", "/loginView");
 
-		// ¼¼¼Ç¿¡¼­ ÀÎÁõ ÄÚµå Á¦°Å (¼±ÅÃ »çÇ×)
+		// ì„¸ì…˜ì—ì„œ ì¸ì¦ ì½”ë“œ ì œê±° (ì„ íƒ ì‚¬í•­)
 		session.removeAttribute("emailCheckCode");
 
 		return "alert";
 	}
 
-	// ·Î±×¾Æ¿ô
+	// ë¡œê·¸ì•„ì›ƒ
 	@RequestMapping("/logoutDo")
 	public String logoutDo(HttpSession session, HttpServletRequest request) {
 		String fromUrl = request.getHeader("Referer");
@@ -177,13 +178,13 @@ public class UserController {
 		}
 	}
 
-	// È¸¿ø¼öÁ¤ Ã¢
+	// íšŒì›ìˆ˜ì • ì°½
 	@RequestMapping("/userEditView")
 	public String userEditView() {
 		return "user/userEditView";
 	}
 
-	// È¸¿ø¼öÁ¤
+	// íšŒì›ìˆ˜ì •
 	@PostMapping("/userEditDo")
 	public String userEditDo(UserDTO user, HttpSession session, HttpServletRequest request) {
 		String encodePw = passwordEncoder.encode(user.getUserPw());
@@ -194,65 +195,65 @@ public class UserController {
 		UserDTO login = userService.getUser(user.getUserId());
 		session.setAttribute("login", login);
 
-		request.setAttribute("msg", "È¸¿ø¼öÁ¤ µÇ¾ú½À´Ï´Ù");
+		request.setAttribute("msg", "íšŒì›ìˆ˜ì • ë˜ì—ˆìŠµë‹ˆë‹¤");
 		request.setAttribute("url", "/");
 
 		return "alert";
 	}
 
-	// ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ Ã£±â Ã¢
+	// ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° ì°½
 	@RequestMapping("/idpwFindView")
 	public String idpwFindView() {
 		return "user/idpwFindView";
 	}
 
-	// È¸¿øÅ»Åğ
+	// íšŒì›íƒˆí‡´
 	@PostMapping("/userDelDo")
 	public String userDelDo(HttpSession session, HttpServletRequest request) {
 
 		UserDTO login = (UserDTO) session.getAttribute("login");
 		userService.deleteUser(login.getUserId());
 		session.invalidate();
-		request.setAttribute("msg", "È¸¿øÅ»Åğ°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù");
+		request.setAttribute("msg", "íšŒì›íƒˆí‡´ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤");
 		request.setAttribute("url", "/");
 
 		return "alert";
 	}
 
-	// ¾ÆÀÌµğ Ã£±â
+	// ì•„ì´ë”” ì°¾ê¸°
 	@ResponseBody
 	@PostMapping("/idFindDo")
 	public String idFindDo(UserDTO user) {
 		UserDTO result = userService.idFind(user);
 
 		if (result != null) {
-			// À¯Àú ID
+			// ìœ ì € ID
 			String v_userId = result.getUserId();
 
-			// Ã¹ 4±ÛÀÚ¸¸ ÃßÃâ
+			// ì²« 4ê¸€ìë§Œ ì¶”ì¶œ
 			String cutedUserId = v_userId.substring(0, 4);
 
-			// ³ª¸ÓÁö ±ÛÀÚ¼ö¸¦ ±¸ÇØ¼­ ÇØ´ç ±æÀÌ¸¸Å­ '*' Ãß°¡
+			// ë‚˜ë¨¸ì§€ ê¸€ììˆ˜ë¥¼ êµ¬í•´ì„œ í•´ë‹¹ ê¸¸ì´ë§Œí¼ '*' ì¶”ê°€
 			StringBuilder masked = new StringBuilder(cutedUserId);
 			for (int i = 4; i < v_userId.length(); i++) {
 				masked.append("*");
 			}
 
-			// ¸¶½ºÅ·µÈ ID ¹İÈ¯
+			// ë§ˆìŠ¤í‚¹ëœ ID ë°˜í™˜
 			return masked.toString();
 		} else {
-			return ""; // ID¸¦ Ã£Áö ¸øÇßÀ» °æ¿ì ºó ¹®ÀÚ¿­ ¹İÈ¯
+			return ""; // IDë¥¼ ì°¾ì§€ ëª»í–ˆì„ ê²½ìš° ë¹ˆ ë¬¸ìì—´ ë°˜í™˜
 		}
 	}
 
-	// PWreset È­¸éÀ¸·Î ÀÌµ¿
+	// PWreset í™”ë©´ìœ¼ë¡œ ì´ë™
 	@PostMapping("/pwResetView")
 	public String pwResetView(String resetId, Model model) {
 		model.addAttribute("resetId", resetId);
 		return "user/loginView";
 	}
 
-	// PW ÃÊ±âÈ­
+	// PW ì´ˆê¸°í™”
 	@PostMapping("/pwResetDo")
 	public String pwResetDo(@Valid UserDTO user, BindingResult result, HttpServletRequest request) {
 		if (result.hasErrors()) {
@@ -261,7 +262,7 @@ public class UserController {
 				errMsg += error.getDefaultMessage();
 				errMsg += "\\n\\n";
 			}
-			errMsg += "ÇØ´ç ÀÛ¾÷À» ´Ù½Ã ½ÃµµÇÏ¿© ÁÖ¼¼¿ä.";
+			errMsg += "í•´ë‹¹ ì‘ì—…ì„ ë‹¤ì‹œ ì‹œë„í•˜ì—¬ ì£¼ì„¸ìš”.";
 			request.setAttribute("msg", errMsg);
 			request.setAttribute("url", "/idpwFindView");
 			return "alert";
@@ -269,13 +270,13 @@ public class UserController {
 			String encodePw = passwordEncoder.encode(user.getUserPw());
 			user.setUserPw(encodePw);
 			userService.pwReset(user);
-			request.setAttribute("msg", "¼³Á¤ÇÏ½Å ºñ¹Ğ¹øÈ£·Î ºñ¹Ğ¹øÈ£°¡ ÃÊ±âÈ­ µÇ¾ú½À´Ï´Ù.");
+			request.setAttribute("msg", "ì„¤ì •í•˜ì‹  ë¹„ë°€ë²ˆí˜¸ë¡œ ë¹„ë°€ë²ˆí˜¸ê°€ ì´ˆê¸°í™” ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			request.setAttribute("url", "/loginView");
 			return "alert";
 		}
 	}
 
-	// PW Ã£±â
+	// PW ì°¾ê¸°
 	@ResponseBody
 	@PostMapping("/pwFindDo")
 	public String pwFindDo(UserDTO user, String userEmail, HttpSession session) {
@@ -289,35 +290,78 @@ public class UserController {
 			code.append(characters.charAt(randomIndex));
 		}
 
-		String changedPw = code.toString(); // »ı¼ºµÈ ·£´ı ºñ¹ø
+		String changedPw = code.toString(); // ìƒì„±ëœ ëœë¤ ë¹„ë²ˆ
 		System.out.println(userEmail);
 
 		if (user == null) {
-			return "fail"; // ÀÌ¸ŞÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ» °æ¿ì ½ÇÆĞ ¹İÈ¯
+			return "fail"; // ì´ë©”ì¼ì´ ì¡´ì¬í•˜ì§€ ì•Šì„ ê²½ìš° ì‹¤íŒ¨ ë°˜í™˜
 		}
 
-		// ºñ¹Ğ¹øÈ£ ¾ÏÈ£È­
+		// ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™”
 		String encodedPw = passwordEncoder.encode(changedPw);
 		user.setUserPw(encodedPw);
 
-		// ºñ¹Ğ¹øÈ£ ¾÷µ¥ÀÌÆ®
+		// ë¹„ë°€ë²ˆí˜¸ ì—…ë°ì´íŠ¸
 		userService.updateUserPw(user);
 
 		userEmail = userEmail.replace("&#64;", "@");
 		System.out.println(userEmail);
 
-		// ¼¼¼Ç¿¡ ÀÎÁõ ÄÚµå ÀúÀå
+		// ì„¸ì…˜ì— ì¸ì¦ ì½”ë“œ ì €ì¥
 		session.setAttribute("changedPw", changedPw);
 
-		Email email = new SimpleEmail();
+		HtmlEmail email = new HtmlEmail();
 		email.setHostName("smtp.naver.com");
 		email.setSmtpPort(465);
 		email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
 		email.setSSL(true);
+		String msg = "<!DOCTYPE html>\r\n"
+		        + "<html lang=\"en\">\r\n"
+		        + "<head>\r\n"
+		        + "    <meta charset=\"UTF-8\">\r\n"
+		        + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
+		        + "    <title>ì¸ì¦ ë©”ì¼</title>\r\n"
+		        + "</head>\r\n"
+		        + "<body style=\"font-family: Arial, sans-serif;\r\n"
+		        + "background-color: #f4f4f4;\r\n"
+		        + "color: #333;\">\r\n"
+		        + "    <div style=\"max-width: 600px;\r\n"
+		        + "    margin: 0 auto;\r\n"
+		        + "    padding: 20px;\r\n"
+		        + "    background-color: #ffffff;\r\n"
+		        + "    border-radius: 10px;\r\n"
+		        + "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align: center;\" class=\"container\">\r\n"
+		        + "        <div style=\"text-align: center; margin-bottom: 20px;\">\r\n"
+		        + "            <img style=\"width: 100px; \r\n"
+		        + "                margin-bottom: 20px;\r\n"
+		        + "                margin-left: auto; margin-right: auto; display: block;\"\r\n"
+		        + "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\"\r\n"
+		        + "                alt=\"Logo\">\r\n"
+		        + "        </div>\r\n"
+		        + "        <h1 style=\"color: #4CAF50; margin-bottom: 15px;\">ì„ì‹œ ë¹„ë°€ë²ˆí˜¸</h1>\r\n"
+		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">ì•ˆë…•í•˜ì„¸ìš”! ì•„ë˜ì˜ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¡œ ë¡œê·¸ì¸ í•˜ì‹ í›„</p>\r\n"
+		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">íšŒì›ìˆ˜ì •ì„ í†µí•´ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë³€ê²½í•˜ì‹œê¸¸ ë°”ëë‹ˆë‹¤.</p>\r\n"
+		        + "        <div style=\"font-size: 24px;\r\n"
+		        + "        font-weight: bold;\r\n"
+		        + "        color: #4CAF50;\r\n"
+		        + "        padding: 10px;\r\n"
+		        + "        background-color: #f9f9f9;\r\n"
+		        + "        border: 1px solid #ddd;\r\n"
+		        + "        border-radius: 5px;\r\n"
+		        + "        width: 200px;\r\n"
+		        + "        display: inline-block; text-align:center; margin: 0 auto; margin-bottom: 20px;\">" + changedPw + "</div>\r\n"
+		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">ê°ì‚¬í•©ë‹ˆë‹¤!</p>\r\n"
+		        + "        <div style=\"padding-top: 20px;\r\n"
+		        + "        font-size: 12px;\r\n"
+		        + "        color: #aaa; margin-top: 10px;\" class=\"footer\">Â© 2024 CodingBamboo. All rights reserved.</div>\r\n"
+		        + "    </div>\r\n"
+		        + "</body>\r\n"
+		        + "</html>";
 		try {
 			email.setFrom("jm86245@naver.com", "CodingBamboo");
-			email.setSubject("ºñ¹Ğ¹øÈ£°¡ º¯°æµÇ¾ú½À´Ï´Ù");
-			email.setMsg("º¯°æµÈ ºñ¹Ğ¹øÈ£ : " + changedPw + "ÀÔ´Ï´Ù. ÇØ´ç ºñ¹Ğ¹øÈ£·Î ·Î±×ÀÎÈÄ È¸¿ø¼öÁ¤À» ÅëÇØ ºñ¹Ğ¹øÈ£¸¦ ¹Ù²ãÁÖ¼¼¿ä."); // ÀÌ¸ŞÀÏ ³»¿ë¿¡ ÀÎÁõ ÄÚµå¸¦ Æ÷ÇÔ
+			email.setSubject("ë¹„ë°€ë²ˆí˜¸ê°€ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤");
+			email.setCharset("UTF-8");
+			email.setMsg(msg); // ì´ë©”ì¼ ë‚´ìš©ì— ì¸ì¦ ì½”ë“œë¥¼ í¬í•¨
 			email.addTo(userEmail, "");
 			email.send();
 			return "success";
@@ -327,12 +371,12 @@ public class UserController {
 		return "fail";
 	}
 
-	// ÀÎÁõ¸ŞÀÏ Àü¼Û
+	// ì¸ì¦ë©”ì¼ ì „ì†¡
 	@ResponseBody
 	@PostMapping("/sendEmail")
 	public String sendEmail(String inputEmail, HttpSession session) {
-		// ·£´ı ÄÚµå »ı¼º
-		int length = 6; // »ı¼ºÇÒ ÄÚµåÀÇ ±æÀÌ
+		// ëœë¤ ì½”ë“œ ìƒì„±
+		int length = 6; // ìƒì„±í•  ì½”ë“œì˜ ê¸¸ì´
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder code = new StringBuilder();
 		SecureRandom random = new SecureRandom();
@@ -342,24 +386,71 @@ public class UserController {
 			code.append(characters.charAt(randomIndex));
 		}
 
-		String emailCheckCode = code.toString(); // »ı¼ºµÈ ·£´ı ÄÚµå
+		String emailCheckCode = code.toString(); // ìƒì„±ëœ ëœë¤ ì½”ë“œ
 		System.out.println(inputEmail);
 
 		inputEmail = inputEmail.replace("&#64;", "@");
 		System.out.println(inputEmail);
 
-		// ¼¼¼Ç¿¡ ÀÎÁõ ÄÚµå ÀúÀå
+		// ì„¸ì…˜ì— ì¸ì¦ ì½”ë“œ ì €ì¥
 		session.setAttribute("emailCheckCode", emailCheckCode);
 
-		Email email = new SimpleEmail();
+		HtmlEmail email = new HtmlEmail();
 		email.setHostName("smtp.naver.com");
 		email.setSmtpPort(465);
 		email.setAuthenticator(new DefaultAuthenticator("jm86245@naver.com", "GRKNNYCV9QDG"));
 		email.setSSL(true);
+		String msg = "<!DOCTYPE html>\r\n"
+		        + "<html lang=\"en\">\r\n"
+		        + "\r\n"
+		        + "<head>\r\n"
+		        + "    <meta charset=\"UTF-8\">\r\n"
+		        + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
+		        + "    <title>ì¸ì¦ ë©”ì¼</title>\r\n"
+		        + "\r\n"
+		        + "</head>\r\n"
+		        + "\r\n"
+		        + "<body style=\"font-family: Arial, sans-serif;\r\n"
+		        + "background-color: #f4f4f4;\r\n"
+		        + "color: #333;\">\r\n"
+		        + "    <div style=\"max-width: 600px;\r\n"
+		        + "    margin: 0 auto;\r\n"
+		        + "    padding: 20px;\r\n"
+		        + "    background-color: #ffffff;\r\n"
+		        + "    border-radius: 10px;\r\n"
+		        + "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align: center;\" class=\"container\">\r\n"
+		        + "        <div style=\"text-align: center; margin-bottom: 20px;\">\r\n" // Centering the logo with bottom margin
+		        + "            <img style=\"width: 100px; \r\n"
+		        + "                margin-bottom: 20px;\r\n"
+		        + "                margin-left: auto; margin-right: auto; display: block;\"\r\n" // Centering the logo
+		        + "                src=\"https://firebasestorage.googleapis.com/v0/b/study-6b60a.appspot.com/o/bamboo.png?alt=media&token=43c75a02-e6cb-43bd-8fe9-c743ecb224be\"\r\n"
+		        + "                alt=\"Logo\">\r\n"
+		        + "        </div>\r\n"
+		        + "        <h1 style=\"color: #4CAF50; margin-bottom: 15px;\">ì´ë©”ì¼ ì¸ì¦</h1>\r\n" // Margin below the heading
+		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">ì•ˆë…•í•˜ì„¸ìš”! ì•„ë˜ì˜ ì¸ì¦ ì½”ë“œë¥¼ ì…ë ¥í•˜ì—¬ ì´ë©”ì¼ ì¸ì¦ì„ ì™„ë£Œí•´ ì£¼ì„¸ìš”.</p>\r\n" // Margin below the paragraph
+		        + "        <div style=\"font-size: 24px;\r\n"
+		        + "        font-weight: bold;\r\n"
+		        + "        color: #4CAF50;\r\n"
+		        + "        padding: 10px;\r\n"
+		        + "        background-color: #f9f9f9;\r\n"
+		        + "        border: 1px solid #ddd;\r\n"
+		        + "        border-radius: 5px;\r\n"
+		        + "        width: 200px;\r\n"
+		        + "        display: inline-block; text-align:center; margin: 0 auto; margin-bottom: 20px;\">" + emailCheckCode + "</div>\r\n" // Centering the code
+		        + "        <p style=\"font-size: 16px; margin-bottom: 20px;\">ê°ì‚¬í•©ë‹ˆë‹¤!</p>\r\n" // Margin below the thank you message
+		        + "        <div style=\"padding-top: 20px;\r\n"
+		        + "        font-size: 12px;\r\n"
+		        + "        color: #aaa; margin-top: 10px;\" class=\"footer\">Â© 2024 CodingBamboo. All rights reserved.</div>\r\n" // Margin above the footer
+		        + "    </div>\r\n"
+		        + "</body>\r\n"
+		        + "\r\n"
+		        + "</html>";
+		
 		try {
 			email.setFrom("jm86245@naver.com", "CodingBamboo");
-			email.setSubject("ÀÎÁõ¸ŞÀÏ");
-			email.setMsg("ÀÎÁõ ÄÚµå : " + emailCheckCode); // ÀÌ¸ŞÀÏ ³»¿ë¿¡ ÀÎÁõ ÄÚµå¸¦ Æ÷ÇÔ
+			email.setSubject("ì¸ì¦ë©”ì¼");
+			email.setCharset("UTF-8");
+			email.setMsg(msg); // ì´ë©”ì¼ ë‚´ìš©ì— ì¸ì¦ ì½”ë“œë¥¼ í¬í•¨
 			email.addTo(inputEmail, "");
 			email.send();
 			return "success";
@@ -368,4 +459,15 @@ public class UserController {
 		}
 		return "fail";
 	}
+	
+	@PostMapping("/emailDupCheck")
+	@ResponseBody
+	public UserDTO emailDupCheck(@RequestParam String inputEmail) {
+	    UserDTO emailCheck = new UserDTO();
+	    emailCheck.setUserEmail(inputEmail);
+	    
+	    return userService.emailDupCheck(emailCheck);  // ì¤‘ë³µ ì—¬ë¶€ ë°˜í™˜ (ì¤‘ë³µë˜ë©´ true, ì¤‘ë³µ ì•„ë‹ˆë©´ false)
+	}
+	
+	
 }

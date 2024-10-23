@@ -35,6 +35,9 @@
 
     <!-- top part -->
     <%@ include file="/WEB-INF/inc/top.jsp"%>
+    
+    	<div style="height: 150px;"></div>
+    
     <!-- Contact Section-->
     <section class="page-section" id="contact">
     	<!-- 부트스트랩으로 padding-top 을 좀 주고자 한다. -->
@@ -103,11 +106,17 @@
 				        <div class="d-flex flex-column align-items-center">
 				            <!-- 수정 버튼 -->
 				            <button class="btn btn-primary mb-3" id="userEditBtn" type="button" style="width: 70%;">수정</button>
-				
+				        </div>
+				    </form>
+				    <form id="userDelForm" action="${pageContext.request.contextPath }/userDelDo" method="POST">
+				        <div class="d-flex flex-column align-items-center">
 				            <!-- 회원탈퇴 버튼 -->
 				            <button class="btn" id="userDelBtn" type="button" style="background: none; border: none; text-decoration: none; cursor: pointer; color: black;">회원탈퇴</button>
 				        </div>
 				    </form>
+				    
+				    
+				    
 				</div>
                     
                     
@@ -118,48 +127,38 @@
         </div>
     </section>
     
+    	<div style="height: 150px;"></div>
+    
     <!-- footer 부분 -->
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 	<script type="text/javascript">
 		
-		let v_userId = '${sessionScope.login.userId}';
-		
-		document.getElementById("userDelBtn").addEventListener("click", ()=>{
-			let v_input = prompt('정말로 삭제하시겠습니까? 삭제를 원하시면 아이디를 입력해주세요.')
-			
-			console.log(v_input);
-			
-			//입력받은 아이디가 로그인 중인 아이디와 일치하는지 확인 & pwCheck 일치하는지
-			if(v_input == v_userId){
-				// action=/userDelDo인 form 태그의 submit 실행
-				document.getElementById("userDelForm").submit();
-			}
-		});
-		
-		
-		document.getElementById("userDelBtn").addEventListener("click", ()=>{
-			
-			
-				// action=/memDelDo인 form 태그의 submit 실행
-				document.getElementById("userDelForm").submit();
-				
-		});
-		
-		document.getElementById("userEditBtn").addEventListener("click", ()=>{
-			if(v_pwCheck){
-				result = confirm('정말로 수정하시겠습니까?')
-				
-				if(result == true){
-					document.getElementById("userEditForm").submit();
-				}else{
-					
-				}
-				
-			}else{
-				alert("비밀번호 체크를 실행해주세요.")
-			}
+	let v_userId = '${sessionScope.login.userId}';
 
-		});
+	document.getElementById("userDelBtn").addEventListener("click", () => {
+	    // 사용자에게 아이디 입력 요청
+	    let v_input = prompt('정말로 삭제하시겠습니까? 삭제를 원하시면 아이디를 입력해주세요.');
+	    
+	    // 입력된 값이 null (취소 버튼 클릭)인지 확인
+	    if (v_input === null) {
+	        alert('회원 탈퇴가 취소되었습니다.'); // 취소할 경우 알림
+	        return;
+	    }
+
+	    // 입력받은 아이디가 로그인 중인 아이디와 일치하는지 확인
+	    if (v_input.trim() === v_userId.trim()) {
+	        // 삭제 확인
+	        let result = confirm('정말로 삭제하시겠습니까?');
+	        if (result) {
+	            // action=/userDelDo인 form 태그의 submit 실행
+	            document.getElementById("userDelForm").submit();
+	        } else {
+	            alert('회원 탈퇴가 취소되었습니다.'); // 확인을 누르지 않았을 때 알림
+	        }
+	    } else {
+	        alert('입력하신 아이디가 일치하지 않습니다.'); // 아이디가 틀릴 경우 알림
+	    }
+	});
 		
 		//비밀번호 확인
 		// PW 중복 여부
