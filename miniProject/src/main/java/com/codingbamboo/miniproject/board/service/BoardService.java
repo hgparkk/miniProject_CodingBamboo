@@ -62,6 +62,10 @@ public class BoardService {
 		return result;
 	}
 	
+	public List<Integer> getUserBoardList(String userId){
+		return dao.getUserBoardList(userId);	
+	}
+	
 	// 질문 수정
 	public int updateBoard(BoardDTO board) {
 		int result = dao.updateBoard(board);

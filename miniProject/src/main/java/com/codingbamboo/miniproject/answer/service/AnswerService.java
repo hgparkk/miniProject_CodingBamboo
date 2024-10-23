@@ -45,4 +45,10 @@ public class AnswerService {
 		int result = dao.delAnswer(awNo);
 		return result;
 	}
+	
+	public int delAllAnswer(int quNo) {
+		int result = dao.delAllAnswer(quNo);
+		return result;
+	}
+	
 }

@@ -142,7 +142,8 @@ document.getElementById("idFindBtn").addEventListener("click", () => {
 			url:v_url,
 			data: v_data,
 			success: function(data){
-				if(data){
+				console.log(data)
+				if(data == "success"){
 					alert("비밀번호가 성공적으로 변경되었으며, 이메일로 발송되었습니다.");
 					document.getElementById("resetId").value = data
 					document.getElementById("pwResetView").submit()

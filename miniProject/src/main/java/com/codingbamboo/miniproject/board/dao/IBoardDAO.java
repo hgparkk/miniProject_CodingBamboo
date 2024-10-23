@@ -28,6 +28,9 @@ public interface IBoardDAO {
 	// 글삭제
 	int deleteBoard(int quNo);
 	
+	//회원 탈퇴를 위한 게시판리스트 가져오기
+	List<Integer> getUserBoardList(String userId);
+	
 	// 글수정
 	int updateBoard(BoardDTO board);
 
