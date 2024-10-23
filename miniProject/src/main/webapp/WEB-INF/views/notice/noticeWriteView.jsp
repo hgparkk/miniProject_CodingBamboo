@@ -37,14 +37,23 @@
 		 		<div class="col-lg-8 col-xl-7">
 					<c:if test="${sessionScope.login.userId == 'admin'}">
 						<form id="noticeWriteForm" action="${pageContext.request.contextPath }/noticeWriteDo" method="POST">
+							<!-- 제목 -->
 							<div class="mb-3">
 								<input class="form-control" type="text" name="noTitle" id="title" placeholder="제목을 입력해주세요" />
 							</div>
 							
+							<!-- 내용 -->
 							<div class="mb-3">
 								<textarea id="smartEditor" class="form-control" rows="10" name="noContent"></textarea>
 							</div>
 							
+							<!-- 파일 -->
+							<div class="mb-3">
+								<label for="formFileMultiple" class="form-label">파일 첨부</label>
+								<input class="form-control" name="boFile" type="file" id="formFileMultiple" multiple>
+							</div>
+							
+							<!-- 등록 및 취소 -->
 							<div class="d-flex justify-content-end">
 								<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/noticeView">취소</a>
 								<button id="writeBtn" class="btn btn-primary" type="button">등록</button>

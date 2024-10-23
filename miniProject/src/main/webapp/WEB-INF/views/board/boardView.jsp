@@ -20,6 +20,10 @@
 		width: 1200px;
 	}
 	
+	.notice{
+		background-color: #EEEEEE;
+	}
+	
 	.notice-name{
 		border-radius: 5px;
 		background-color: red;

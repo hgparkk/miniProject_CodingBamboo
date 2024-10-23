@@ -46,10 +46,12 @@ public class BoardController {
 		model.addAttribute("keySearch", search);
 		
 		// q&a 게시글 목록 가져오기
+		// 공지사항 top 목록 가져오기
 		List<NoticeDTO> getNoticeTopList = noticeService.getNoticeTopList(search);
 		
 		model.addAttribute("keyGetNoticeTopList", getNoticeTopList);
 		
+		// q&a 게시글 가져오기
 		List<BoardDTO> getBoardList = boardService.getBoardList(search);
 		
 		model.addAttribute("keyBoardList", getBoardList);
@@ -102,6 +104,7 @@ public class BoardController {
 		
 		model.addAttribute("keyBoard", board);
 		
+		// 답변 가져오기
 		List<AnswerDTO> answerList = answerService.getAnswerList(no);
 		
 		model.addAttribute("keyAnswerList", answerList);

@@ -20,6 +20,10 @@
 		width: 1200px;
 	}
 	
+	.notice{
+		background-color: #EEEEEE;
+	}
+	
 	.notice-name{
 		border-radius: 5px;
 		background-color: red;
@@ -51,7 +55,6 @@
 							<tr>
 								<th scope="col" colspan="1" class="text-center">글번호</th>
 								<th scope="col" colspan="2" class="text-center">제목</th>
-								<th scope="col" colspan="1" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -88,6 +91,7 @@
 											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
 												href="${pageContext.request.contextPath }/noticeDetailView?no=${NoticeDTO.noNo }">
 													${NoticeDTO.noTitle } </a></td>
+											<td class="text-center"><span>시스템 관리자</span></td>
 										</tr>
 									</c:if>
 								</c:forEach>
