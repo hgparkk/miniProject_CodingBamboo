@@ -4,9 +4,8 @@
 	<sql id="noticeSearch">
 	  <if test="searchWord != null">
 	  	<choose>
-	  		<when test="searchOption == 'title'">AND a.no_title LIKE '%' || #{searchWord} || '%'</when>
-	  		<when test="searchOption == 'content'">AND a.no_content LIKE '%' || #{searchWord} || '%'</when>
-	  		<when test="searchOption == 'name'">AND b.user_name = #{searchWord}</when>
+	  		<when test="searchOption == 'title'">AND no_title LIKE '%' || #{searchWord} || '%'</when>
+	  		<when test="searchOption == 'content'">AND no_content LIKE '%' || #{searchWord} || '%'</when>
 	  	</choose>
 	  </if>
 	</sql>
@@ -76,6 +75,7 @@
 	<select id="getNoticeCount" resultType="int">
 		SELECT COUNT(*)
 		FROM notice
+		WHERE 1=1
 		  <include refid="noticeSearch"/>
 	</select>
 	

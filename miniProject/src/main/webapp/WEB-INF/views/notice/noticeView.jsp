@@ -55,7 +55,6 @@
 							<tr>
 								<th scope="col" colspan="1" class="text-center">글번호</th>
 								<th scope="col" colspan="2" class="text-center">제목</th>
-								<th scope="col" colspan="1" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -65,7 +64,7 @@
 									<c:if test="${noticeDTO.noTop == 1 }">
 										<tr class="notice">
 											<td class="text-center"><span class="notice-name">공지</span></td>
-											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
+											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold"
 												href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
 													${noticeDTO.noTitle } </a></td>
 											<td class="text-center"><span>시스템 관리자</span></td>
@@ -92,6 +91,7 @@
 											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
 												href="${pageContext.request.contextPath }/noticeDetailView?no=${NoticeDTO.noNo }">
 													${NoticeDTO.noTitle } </a></td>
+											<td class="text-center"><span>시스템 관리자</span></td>
 										</tr>
 									</c:if>
 								</c:forEach>

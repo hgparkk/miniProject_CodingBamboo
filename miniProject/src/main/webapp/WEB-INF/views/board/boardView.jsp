@@ -66,7 +66,7 @@
 									<c:if test='${noticeDTO.noTop == 1 }'>
 										<tr class="notice">
 											<td class="text-center"><span class="notice-name">공지</span></td>
-											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold notice"
+											<td colspan="2"><a class="text-decoration-none d-flex text-danger fw-bold"
 												href="${pageContext.request.contextPath }/noticeDetailView?no=${noticeDTO.noNo }">
 													${noticeDTO.noTitle } </a></td>
 											<td class="text-center">시스템 관리자</td>
