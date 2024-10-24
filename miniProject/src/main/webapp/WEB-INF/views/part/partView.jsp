@@ -15,7 +15,7 @@
 	<div style="height: 200px;"></div>
 
 	<div class="d-flex justify-content-center">
-		<select id="largefield" onchange="setMiddleField()">
+		<select id="largefield" style="width: 100px;" onchange="setMiddleField()">
 			<option value="대분류">대분류</option>
 			<option value="에너지">에너지</option>
 			<option value="산업공정">산업공정</option>
@@ -23,16 +23,20 @@
 			<option value="LULUCF">LULUCF</option>
 			<option value="폐기물">폐기물</option>
 			<option value="별도항목">별도항목</option>
-		</select> <select id="middlefield" onchange="setSmallfield()">
+		</select>
+		<select id="middlefield" style="width:300px;" class="ms-3" onchange="setSmallfield()">
 			<option>중분류</option>
-		</select> <select id="smallfield" onchange="setPart()">
+		</select>
+		<select id="smallfield" style="width:300px;" class="ms-3" onchange="setPart()">
 			<option>소분류</option>
-		</select> <select id="part">
+		</select>
+		<select id="part" style="width:300px;" class="ms-3">
 			<option>분야</option>
 		</select>
+		<button id="reset" type="button" class="ms-5">초기화</button>
 	</div>
 
-	<div class="d-flex justify-content-around">
+	<div class="d-flex justify-content-around mt-3">
 		<div>
 			<select id="yearFrom">
 				<option value="1990">1990</option>
@@ -67,7 +71,9 @@
 				<option value="2019">2019</option>
 				<option value="2020">2020</option>
 				<option value="2021">2021</option>
-			</select> <span>~</span> <select id="yearTo">
+			</select>
+			<span>-</span>
+			<select id="yearTo">
 			</select>
 		</div>
 
@@ -80,6 +86,13 @@
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 
 	<script type="text/javascript">
+	
+	document.getElementById("reset").addEventListener("click",()=>{
+		document.getElementById("largefield").value= "대분류"
+		setMiddleField()
+		document.getElementById("yearFrom").value = "1990"
+		setYearTo()
+	})
 	
 	setYearTo()
 	
