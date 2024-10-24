@@ -23,7 +23,7 @@ public class SearchVO {
 	public SearchVO() {
 	}
 	
-	public void setting() {
+	public void boardSetting() {
 		start = rowSizePerPage * (pageNo - 1) + 1;
 		end = rowSizePerPage * pageNo;
 		
@@ -31,6 +31,20 @@ public class SearchVO {
 		lastPage = firstPage + 29;
 		
 		finalPage = (int)Math.ceil((double)boardCount / rowSizePerPage);
+		
+		if(lastPage > finalPage) {
+			lastPage = finalPage;
+		}
+	}
+	
+	public void noticeSetting() {
+		start = rowSizePerPage * (pageNo - 1) + 1;
+		end = rowSizePerPage * pageNo;
+		
+		firstPage = ((pageNo-1) / 30) * 30 + 1;
+		lastPage = firstPage + 29;
+		
+		finalPage = (int)Math.ceil((double)noticeCount / rowSizePerPage);
 		
 		if(lastPage > finalPage) {
 			lastPage = finalPage;

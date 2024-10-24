@@ -56,11 +56,13 @@ public class FileUploadUtils {
 	private String transferFancySize(long size) {
 		DecimalFormat df = new DecimalFormat("#,###.0");
 		
-		if(size < 1024) return size + "B";
-		if (size < 1024 * 1024) return df.format(size/1024.0) + "KB";
-		if (size < 1024 * 1024 * 1024) return df.format(size/(1024.0 * 1024.0)) + "MB";
-		if (size < 1024 * 1024 * 1024) return df.format(size/(1024.0 * 1024.0 * 1024.0)) + "GB";
-		return "Å« ÆÄÀÏ";
-		
+		if (size < (long) (Math.pow(2.0, 10.0)))
+			return df.format(size) + "Byte";
+		else if (size < (long) (Math.pow(2.0, 20.0)))
+			return df.format((size / (long) (Math.pow(2.0, 10.0)))) + "KB";
+		else if (size < (long) (Math.pow(2.0, 30.0)))
+			return df.format((size / (long) (Math.pow(2.0, 20.0)))) + "MB";
+		else
+			return df.format((size / (long) (Math.pow(2.0, 30.0)))) + "GB";
 	}
 }

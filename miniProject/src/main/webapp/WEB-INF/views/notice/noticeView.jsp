@@ -16,7 +16,7 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-	.Notice-container{
+	.notice-container{
 		width: 1200px;
 	}
 	
@@ -48,13 +48,14 @@
 				게시판</h2>
 			<!-- Contact Section Form-->
 			<div class="mt-5 ">
-				<div class="Notice-container col-lg-8 col-xl-7">
+				<div class="notice-container col-lg-8 col-xl-7">
 					<!-- 게시글 그리기 -->
 					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col" colspan="1" class="text-center">글번호</th>
 								<th scope="col" colspan="2" class="text-center">제목</th>
+								<th scope="col" colspan="1" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -176,7 +177,6 @@
 							<select class="form-select w-25" name="searchOption">
 								<option value="title">제목</option>
 								<option value="content">내용</option>
-								<option value="name">작성자</option>
 							</select> <input type="text" class="form-control w-25" name="searchWord">
 							<button class="btn btn-primary" type="submit">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

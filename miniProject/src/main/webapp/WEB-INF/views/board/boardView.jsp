@@ -53,10 +53,9 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th scope="col" class="text-center">글번호</th>
-								<th scope="col" class="text-center">제목</th>
-								<th scope="col" class="text-center"></th>
-								<th scope="col" class="text-center">작성자</th>
+								<th scope="col" colspan="1" class="text-center">글번호</th>
+								<th scope="col" colspan="2" class="text-center">제목</th>
+								<th scope="col" colspan="1" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>

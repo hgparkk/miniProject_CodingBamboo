@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,25 +24,33 @@ public class AnswerController {
 
 	@Autowired
 	AnswerService answerService;
+	
+	@RequestMapping("/answerWriteView")
+	public String answerWriteView(int quNo, Model model) {
+		model.addAttribute("quNo",quNo);
+		return "answer/answerWriteView";
+	}
 
-	@ResponseBody
 	@RequestMapping("/answerWriteDo")
-	public AnswerDTO answerWriteDo(AnswerDTO answer, int quNo) {
-		// 답변 DB에 등록
-		answerService.insertAnswer(answer);
+	public String answerWriteDo(AnswerDTO answer, int quNo, HttpServletRequest request, BoardDTO board) {
+	    // 답변 DB에 등록
+	    answerService.insertAnswer(answer);
 
-		// 답변 등록 완료
-		boardService.updateBoardAnswer(quNo);
+	    // 답변 등록 완료
+	    boardService.updateBoardAnswer(quNo);
 
-		// 가장 최근에 달립 답변 불러오기
-		AnswerDTO resultAnswer = answerService.getResentAnswer(quNo);
-
-		return resultAnswer;
+	    // 가장 최근에 달린 답변 불러오기
+	    answerService.getResentAnswer(quNo);
+	    
+	    request.setAttribute("msg", "답변이 등록되었습니다.");
+		request.setAttribute("url", "/boardDetailView?no=" + board.getQuNo());
+		
+		return "alert";
 	}
 
 	@ResponseBody
 	@PostMapping("/delAnswerDo")
-	public String delAnswer(int awNo, int quNo) {
+	public String delAnswer(int awNo, int quNo, HttpServletRequest request, BoardDTO board) {
 		String result = "fail";
 
 		int cnt = answerService.delAnswer(awNo);
@@ -51,6 +60,10 @@ public class AnswerController {
 			List<AnswerDTO> answerList = answerService.getAnswerList(quNo);
 			if (answerList.size() == 0) {
 				boardService.deleteBoardAnswer(quNo);
+				
+				request.setAttribute("msg", "답변이 삭제되었습니다.");
+				request.setAttribute("url", "/boardDetailView?no=" + board.getQuNo());
+				return "alert";
 			}
 		}
 

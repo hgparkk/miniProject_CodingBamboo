@@ -123,8 +123,16 @@
 	<!-- 공지사항 번호 가져오기 -->
 	<select id="getNoticeNo" resultType="int">
 		SELECT
-			COUNT(*) + 1
+			*
 		FROM
-			notice
+		(
+			SELECT
+				no_no
+			FROM
+				notice
+			ORDER BY no_no DESC
+		)
+		WHERE
+    		ROWNUM = 1
 	</select>
 </mapper>

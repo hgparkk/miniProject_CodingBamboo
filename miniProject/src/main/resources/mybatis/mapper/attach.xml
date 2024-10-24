@@ -8,14 +8,16 @@
 			, atch_file_name
 			, atch_name
 			, atch_file_size
+			, atch_fancy_size
 			, atch_content_type
 			, atch_path
 		) VALUES (
-			ac_seq.NEXTVAL
+			at_seq.NEXTVAL
 			, #{atchNoticeNo}
 			, #{atchFileName}
 			, #{atchName}
 			, #{atchFileSize}
+			, #{atchFancySize}
 			, #{atchContentType}
 			, #{atchPath}
 		)
@@ -28,6 +30,7 @@
 			, atch_file_name
 			, atch_name
 			, atch_file_size
+			, atch_fancy_size
 			, atch_content_type
 			, atch_path
 		FROM

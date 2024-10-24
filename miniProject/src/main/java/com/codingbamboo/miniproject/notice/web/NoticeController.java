@@ -17,7 +17,6 @@ import com.codingbamboo.miniproject.attach.dto.AttachDTO;
 import com.codingbamboo.miniproject.attach.service.AttachService;
 import com.codingbamboo.miniproject.common.FileUploadUtils;
 import com.codingbamboo.miniproject.common.SearchVO;
-import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 import com.codingbamboo.miniproject.notice.dto.NoticeDTO;
 import com.codingbamboo.miniproject.notice.service.NoticeService;
 import com.codingbamboo.miniproject.user.dto.UserDTO;
@@ -41,7 +40,7 @@ public class NoticeController {
 		
 		search.setNoticeCount(noticeCount);
 		
-		search.setting();
+		search.noticeSetting();
 		
 		model.addAttribute("keySearch", search);
 		
@@ -73,8 +72,10 @@ public class NoticeController {
 	// 공지글 작성하기
 	@PostMapping("/noticeWriteDo")
 	public String noticeWriteDo(NoticeDTO notice, HttpServletRequest request, MultipartFile[] boFile) {
+		noticeService.insertNotice(notice);
 		int atchNoticeNo = noticeService.getNoticeNo();
-		if(boFile != null && boFile.length < 0 && !boFile[0].isEmpty()) {
+		
+		if(boFile != null && boFile.length > 0 && !boFile[0].isEmpty()) {
 			try {
 				List<AttachDTO> attachList = fileUploadUtils.getAttachListByMultiparts(boFile);
 				if(!attachList.isEmpty()) {
@@ -90,8 +91,6 @@ public class NoticeController {
 			}
 			
 		}
-		
-		noticeService.insertNotice(notice);
 		
 		request.setAttribute("msg", "공지글이 등록되었습니다.");
 		request.setAttribute("url", "/noticeView");

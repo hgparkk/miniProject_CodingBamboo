@@ -1,21 +1,42 @@
 package com.codingbamboo.miniproject.attach.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
 
-import com.codingbamboo.miniproject.attach.service.AttachService;
-import com.codingbamboo.miniproject.common.FileUploadUtils;
-import com.codingbamboo.miniproject.notice.service.NoticeService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AttachController {
-	@Autowired
-	AttachService attachService;
 	
-	@Autowired
-	NoticeService noticeService;
+	@Value("#{util['file.upload.path']}")
+	private String uploadPath;
 	
-	@Autowired
-	FileUploadUtils fileUploadUtils;
+	@RequestMapping("/filedownload")
+	public void filedownload(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		String fileName = request.getParameter("fileName");
+		String fileOriName = request.getParameter("fileOriName");
+		
+		File downloadFile = new File(uploadPath + File.separatorChar + fileName);
+		
+		byte[] fileByte = FileUtils.readFileToByteArray(downloadFile);
+		
+		response.setContentType("application/octet-stream");
+		response.setContentLength(fileByte.length);
+		
+		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileOriName, "UTF-8") + "\";");
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		
+		response.getOutputStream().write(fileByte);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+	}
 	
 }

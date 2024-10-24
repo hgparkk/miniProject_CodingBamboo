@@ -17,41 +17,40 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-.board-title {
-	font-weight: bold;
-	font-size: 22px;
-	margin-bottom: 10px;
+.notice-container{
+	padding-right: 0;
+	padding-left: 0;
 }
 
-.board-name {
-	font-size: 20px;
-}
-
-.board-date {
-	font-size: 20px;
-}
-
-.board-head {
+.notice-box{
+	width: 850px;
 	border: 1px solid #CCCCCC;
-	background-color: #DDDDDD;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	padding-right: 0;
+	padding-left: 0;
 }
 
-.board-body {
-	padding-top: 10px;
+.atch-box{
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.notice-head {
+	border-bottom: 1px solid #CCCCCC;
+	background-color: #DDDDDD;
+	padding: 7px;
+}
+
+.notice-body {
+	padding-top: 3px;
+	padding-left: 5px;
 	min-height: 300px;
 }
 
-.answer-box {
-	border-top: 0px solid black;
-	border-bottom: 0px solid #DDDDDD;
-}
-
-.answer{
-	border-radius : 10px;
-	border: 1px solid #DDDDDD;
-	height: 300px;
-	margin: 1px;
-	justify-content: space-between;
+.edit-box{
+	width: 840px;
 }
 </style>
 </head>
@@ -67,30 +66,32 @@
 		<div class="container pt-5">
 
 			<!-- Contact Section Form-->
-			<div class="row justify-content-center">
-				<div class="col-lg-8 col-xl-7">
+			<div class="notice-container d-flex flex-column align-items-center">
+				<div>
 					<!-- 제목, 작성자, 작성일, 내용 -->
-					<div>
-						<div class="board-head d-flex justify-content-between">
+					<div class="notice-box">
+						<div class="notice-head d-flex justify-content-between">
 							<div class="qu-title mb-1">${keyNotice.noTitle }</div>
-							<div class="user-name">시스템 관리자</div>
+							<div class="user-name">작성자 : 시스템 관리자</div>
 						</div>
 						
-					<!-- 첨부파일 목록 -->
-					<div class="mb-3 d-flex">
-						<c:forEach items="${attachList }" var="attach">
-							<div>
-								<a href="<c:url value="/filedownload?fileName=${attach.atchFileName }&fileNoticeName=${attach.atchName}"/>">
-									${attach.atchName }(${attach.atchFancySize })
-								</a>
+						<!-- 첨부파일 목록 -->
+						<c:if test="${keyAttachList != null}">
+							<div class="d-flex atch-box">
+								<c:forEach items="${keyAttachList}" var="attach">
+									<div class="p-2">
+										<a href="<c:url value="/filedownload?fileName=${attach.atchFileName }&fileOriName=${attach.atchName}"/>">
+											첨부파일: ${attach.atchName }(${attach.atchFancySize })
+										</a>
+									</div>
+								</c:forEach>
 							</div>
-						</c:forEach>
-					</div>
+						</c:if>
 
 						<!-- pre 태그에 적용했던 폰트 스타일은 제거 -->
-						<div class="board-body">${keyNotice.noContent}</div>
+						<div class="notice-body">${keyNotice.noContent}</div>
 					</div>
-					<div class="d-flex justify-content-end">
+					<div class="d-flex edit-box justify-content-end mt-2">
 						<c:if test="${sessionScope.login.userId eq 'admin'}">
 							<!-- POST 요청을 위해 버튼을 form 태그로 감쌈 -->
 							<form action="${pageContext.request.contextPath }/registTopNoticeDo"

@@ -41,7 +41,7 @@ public class BoardController {
 		
 		search.setBoardCount(boardCount);
 		
-		search.setting();
+		search.boardSetting();
 		
 		model.addAttribute("keySearch", search);
 		
@@ -89,16 +89,12 @@ public class BoardController {
 		try {
 			board = boardService.getBoard(no);
 		} catch (BizNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// 에러 발생 시 넣은 에러코드와 에러메시지 확인
 			String errCode = e.getErrCode();
 			String errMsg = e.getMessage();
 			
-			// 에러페이지에 에러메시지를 보여주고자 한다면 모델에 추가 
 			model.addAttribute("errMsg", errMsg);
 			
-			// 에러페이지로 보내기
 			return "errPage";
 		}
 		
@@ -130,11 +126,10 @@ public class BoardController {
 			board = boardService.getBoard(no);
 			model.addAttribute("keyBoard", board);
 		} catch (BizNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return "board/boardEditView";
+		return "redirect:/boardEditView";
 	}
 	
 	// 질문 수정하기
