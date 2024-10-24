@@ -27,7 +27,7 @@
 				<div class="container d-flex align-items-center justify-content-center" style="margin-top:100px; margin-bottom:100px;">
 					<img class="mb-5" src="assets/img/bamboo.png" alt="..." />
 					<div style="margin-right: 100px;">
-						<p class="text-uppercase mb-3 fw-bold" style="font-size:80px; width:846.3px;">탄소 배출량 계산 시스템</p>
+						<p class="text-uppercase mb-3 fw-bold" style="font-size:80px; width:900px;">탄소 배출량 계산 시스템</p>
 						<p class="font-weight-light mb-0">Coding Bamboo</p>
 					</div>
 				</div>
