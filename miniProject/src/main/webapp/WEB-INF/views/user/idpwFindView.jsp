@@ -26,10 +26,13 @@
 	<!-- top part -->
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
 
+	<div style="height: 150px;"></div>
+
 	<!-- Contact Section-->
 	<section class="page-section">
 		<div class="container pt-5">
 			<div class="row justify-content-center">
+			<h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">아이디/비밀번호 찾기</h2>
 				<jsp:include page="/WEB-INF/inc/top.jsp">
 					<jsp:param value="ID/PW찾기" name="title" />
 					<jsp:param value="false" name="borderShow" />
@@ -146,7 +149,8 @@ document.getElementById("idFindBtn").addEventListener("click", () => {
 				if(data == "success"){
 					alert("비밀번호가 성공적으로 변경되었으며, 이메일로 발송되었습니다.");
 					document.getElementById("resetId").value = data
-					document.getElementById("pwResetView").submit()
+					
+
 				}else{
 					alert("해당 정보와 일치하는 정보가 없습니다.")
 				}

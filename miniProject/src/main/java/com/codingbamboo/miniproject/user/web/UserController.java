@@ -206,6 +206,14 @@ public class UserController {
 	// 회원수정
 	@PostMapping("/userEditDo")
 	public String userEditDo(UserDTO user, HttpSession session, HttpServletRequest request) {
+		
+		if (user.getUserPw() == null || user.getUserPw().trim().isEmpty()) {
+	        // 알림 메시지 설정
+	        request.setAttribute("msg", "비밀번호를 입력해주세요.");
+	        request.setAttribute("url", "/userEditView");  // 다시 회원 수정 페이지로 이동
+	        return "alert";  // alert.jsp 페이지를 리턴하여 알림 메시지 표시
+	    }
+		
 		String encodePw = passwordEncoder.encode(user.getUserPw());
 		user.setUserPw(encodePw);
 
