@@ -184,6 +184,14 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.5</version>
 		</dependency>
+		
+		<!-- 첨부파일 다운로드시 upload 폴더 내 파일 읽어서 사용자에게 전달 -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.16.1</version>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>
