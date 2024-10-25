@@ -163,6 +163,7 @@ p {
 										삭제</button>
 								</form>
 							</c:if>
+									<button id="quDelBtn" style="display:none;"></button>
 							<c:if test="${sessionScope.login.userId == 'admin'}">
 								<form id="answerForm"
 									action="${pageContext.request.contextPath }/answerWriteView"
