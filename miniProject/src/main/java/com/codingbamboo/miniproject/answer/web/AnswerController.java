@@ -10,13 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.codingbamboo.miniproject.answer.dto.AnswerDTO;
 import com.codingbamboo.miniproject.answer.service.AnswerService;
 import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.board.service.BoardService;
-import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 
 @Controller
 public class AnswerController {

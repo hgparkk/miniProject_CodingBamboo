@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.common.SearchVO;
 import com.codingbamboo.miniproject.notice.dto.NoticeDTO;
 

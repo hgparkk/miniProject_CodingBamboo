@@ -90,7 +90,6 @@ public class BoardController {
 			board = boardService.getBoard(no);
 		} catch (BizNotFoundException e) {
 			e.printStackTrace();
-			String errCode = e.getErrCode();
 			String errMsg = e.getMessage();
 			
 			model.addAttribute("errMsg", errMsg);

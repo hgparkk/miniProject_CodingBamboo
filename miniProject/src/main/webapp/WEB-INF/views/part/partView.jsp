@@ -33,7 +33,7 @@
 		<select id="part" style="width:300px;" class="ms-3">
 			<option>분야</option>
 		</select>
-		<button id="reset" type="button" class="ms-5">초기화</button>
+		<button id="reset" type="button" class="btn btn-secondary ms-5">초기화</button>
 	</div>
 
 	<div class="d-flex justify-content-around mt-3">
@@ -79,7 +79,7 @@
 
 		<span></span>
 
-		<button id="resultSearchButton" type="button">검색</button>
+		<button id="resultSearchButton" type="button" class="btn btn-secondary">검색</button>
 	</div>
 	<div id="searchResult" class="overflow-scroll" style="height: 700px;"></div>
 
