@@ -17,12 +17,17 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-.notice-container{
+
+p {
+	margin: 0;
+}
+
+.notice-container {
 	padding-right: 0;
 	padding-left: 0;
 }
 
-.notice-box{
+.notice-box {
 	width: 850px;
 	border: 1px solid #CCCCCC;
 	border-top-left-radius: 3px;
@@ -33,7 +38,7 @@
 	padding-left: 0;
 }
 
-.atch-box{
+.atch-box {
 	border-bottom: 1px solid #CCCCCC;
 }
 
@@ -43,6 +48,14 @@
 	padding: 7px;
 }
 
+.notice-title {
+	font-size: 20px;
+}
+
+.user-name {
+	font-size: 15px;
+}
+
 .notice-body {
 	padding-top: 3px;
 	padding-left: 5px;
@@ -50,7 +63,7 @@
 	overflow-y: auto;
 }
 
-.edit-box{
+.edit-box {
 	width: 840px;
 }
 </style>
@@ -72,18 +85,18 @@
 					<!-- 제목, 작성자, 작성일, 내용 -->
 					<div class="notice-box">
 						<div class="notice-head d-flex justify-content-between">
-							<div class="qu-title mb-1">${keyNotice.noTitle }</div>
-							<div class="user-name">작성자 : 시스템 관리자</div>
+							<div class="notice-title mb-1">${keyNotice.noTitle }</div>
+							<div class="user-name pt-1">작성자 : 시스템 관리자</div>
 						</div>
-						
+
 						<!-- 첨부파일 목록 -->
 						<c:if test="${keyAttachList != null}">
 							<div class="d-flex atch-box">
 								<c:forEach items="${keyAttachList}" var="attach">
 									<div class="p-2">
-										<a href="<c:url value="/filedownload?fileName=${attach.atchFileName }&fileOriName=${attach.atchName}"/>">
-											첨부파일: ${attach.atchName }(${attach.atchFancySize })
-										</a>
+										<a
+											href="<c:url value="/filedownload?fileName=${attach.atchFileName }&fileOriName=${attach.atchName}"/>">
+											첨부파일: ${attach.atchName }(${attach.atchFancySize }) </a>
 									</div>
 								</c:forEach>
 							</div>
@@ -95,31 +108,35 @@
 					<div class="d-flex edit-box justify-content-end mt-2">
 						<c:if test="${sessionScope.login.userId eq 'admin'}">
 							<!-- POST 요청을 위해 버튼을 form 태그로 감쌈 -->
-							<form action="${pageContext.request.contextPath }/registTopNoticeDo"
+							<form
+								action="${pageContext.request.contextPath }/registTopNoticeDo"
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /noticeEditDo에 같이 보냄 -->
 								<input type="hidden" value="${keyNotice.noNo }" name="no">
 								<c:if test="${keyNotice.noTop != 1 }">
-									<button class="btn btn-warning me-2" type="submit">top 등록</button>
+									<button class="btn btn-warning me-2" type="submit">top
+										등록</button>
 								</c:if>
 							</form>
-							
-							<form action="${pageContext.request.contextPath }/deleteTopNoticeDo"
+
+							<form
+								action="${pageContext.request.contextPath }/deleteTopNoticeDo"
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /noticeEditView에 같이 보냄 -->
 								<input type="hidden" value="${keyNotice.noNo }" name="no">
 								<c:if test="${keyNotice.noTop == 1 }">
-									<button class="btn btn-warning me-2" type="submit">top 삭제</button>
+									<button class="btn btn-warning me-2" type="submit">top
+										삭제</button>
 								</c:if>
 							</form>
-							
+
 							<form action="${pageContext.request.contextPath }/noticeEditView"
 								method="POST">
 								<!-- 현재 페이지의 글번호를 /noticeEditView에 같이 보냄 -->
 								<input type="hidden" value="${keyNotice.noNo }" name="no">
 								<button class="btn btn-warning me-2" type="submit">수정</button>
 							</form>
-	
+
 							<form id="delForm"
 								action="${pageContext.request.contextPath }/noticeDelDo"
 								method="POST">

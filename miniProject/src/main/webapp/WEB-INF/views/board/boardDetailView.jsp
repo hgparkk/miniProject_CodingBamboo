@@ -20,6 +20,11 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
+
+p {
+	margin: 0;
+}
+
 .container {
 	width: 1200px;
 }
@@ -47,6 +52,14 @@
 	border-bottom: 1px solid #CCCCCC;
 	background-color: #DDDDDD;
 	padding: 7px;
+}
+
+.qu-title{
+	font-size: 20px;
+}
+
+.user-name{
+	font-size: 15px;
 }
 
 .board-body {
@@ -105,7 +118,7 @@
 					<div>
 						<div class="board-head d-flex justify-content-between">
 							<div class="qu-title mb-1">${keyBoard.quTitle }</div>
-							<div class="user-name">작성자: ${keyBoard.userName }</div>
+							<div class="user-name pt-1">작성자: ${keyBoard.userName }</div>
 						</div>
 
 						<!-- pre 태그에 적용했던 폰트 스타일은 제거 -->
@@ -159,7 +172,7 @@
 									<input type="hidden" value="${keyAnswerList[0]['awNo']}"
 										name="awNo">
 									<button id="answerBtn" class="btn btn-secondary ms-2"
-										type="button">답변 등록</button>
+										type="submit">답변 등록</button>
 								</form>
 							</c:if>
 						</c:if>

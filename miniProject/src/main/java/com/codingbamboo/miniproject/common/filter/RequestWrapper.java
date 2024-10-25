@@ -3,7 +3,7 @@ package com.codingbamboo.miniproject.common.filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.codingbamboo.miniproject.util.XSSDestroy;
+import com.codingbamboo.miniproject.common.util.XSSDestroy;
 
 public class RequestWrapper extends HttpServletRequestWrapper{
 

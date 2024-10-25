@@ -22,6 +22,8 @@
 
 	<!-- navigation 부분 -->
 	<%@ include file="/WEB-INF/inc/top.jsp"%>
+	
+	<div style="height:100px;"></div>
 
 	<!-- Contact Section-->
 	<section class="page-section" id="contact">
@@ -29,15 +31,7 @@
 		<div class="container pt-5">
 			<!-- Contact Section Heading-->
 			<h2
-				class="page-section-heading text-center text-uppercase text-secondary mb-0">질문 수정</h2>
-			<!-- Icon Divider-->
-			<div class="divider-custom">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+				class="page-section-heading text-center text-uppercase text-secondary mb-3">질문 수정</h2>
 			<!-- Contact Section Form-->
 			<div class="row justify-content-center">
 		 		<div class="col-lg-8 col-xl-7">
