@@ -37,6 +37,7 @@
 			material_emissions
 		WHERE
 			me_name LIKE '%'||#{searchWord}||'%'
+		ORDER BY me_no ASC
 	</select>
 	
 	<!-- 자재 수정하기 -->
