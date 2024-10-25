@@ -91,8 +91,10 @@ public class UserController {
 			response.addCookie(cookie);
 		}
 
-		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView")
-				|| fromUrl.contains("/materialCalculation") || fromUrl.contains("/electricCalculation")) {
+		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView") || fromUrl.contains("/noticeView")
+				|| fromUrl.contains("/noticeDetailView") || fromUrl.contains("/materialCalculation")
+				|| fromUrl.contains("/electricCalculation") || fromUrl.contains("partView")
+				|| fromUrl.contains("/adminCoefficientView") || fromUrl.contains("/adminMaterialView")) {
 			fromUrl = fromUrl.replace("&#61;", "=");
 			return "redirect:" + fromUrl;
 		} else {
@@ -188,8 +190,10 @@ public class UserController {
 	public String logoutDo(HttpSession session, HttpServletRequest request) {
 		String fromUrl = request.getHeader("Referer");
 		session.invalidate();
-		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView")
-				|| fromUrl.contains("/materialCalculation") || fromUrl.contains("/electricCalculation")) {
+		if (fromUrl.contains("/boardView") || fromUrl.contains("/boardDetailView") || fromUrl.contains("/noticeView")
+				|| fromUrl.contains("/noticeDetailView") || fromUrl.contains("/materialCalculation")
+				|| fromUrl.contains("/electricCalculation") || fromUrl.contains("partView")
+				|| fromUrl.contains("/adminCoefficientView") || fromUrl.contains("/adminMaterialView")) {
 			fromUrl = fromUrl.replace("&#61;", "=");
 			return "redirect:" + fromUrl;
 		} else {
@@ -199,21 +203,24 @@ public class UserController {
 
 	// 회원수정 창
 	@RequestMapping("/userEditView")
-	public String userEditView() {
+	public String userEditView(HttpSession session) {
+		if (session.getAttribute("login") == null) {
+			return "redirect:/";
+		}
 		return "user/userEditView";
 	}
 
 	// 회원수정
 	@PostMapping("/userEditDo")
 	public String userEditDo(UserDTO user, HttpSession session, HttpServletRequest request) {
-		
+
 		if (user.getUserPw() == null || user.getUserPw().trim().isEmpty()) {
-	        // 알림 메시지 설정
-	        request.setAttribute("msg", "비밀번호를 입력해주세요.");
-	        request.setAttribute("url", "/userEditView");  // 다시 회원 수정 페이지로 이동
-	        return "alert";  // alert.jsp 페이지를 리턴하여 알림 메시지 표시
-	    }
-		
+			// 알림 메시지 설정
+			request.setAttribute("msg", "비밀번호를 입력해주세요.");
+			request.setAttribute("url", "/userEditView"); // 다시 회원 수정 페이지로 이동
+			return "alert"; // alert.jsp 페이지를 리턴하여 알림 메시지 표시
+		}
+
 		String encodePw = passwordEncoder.encode(user.getUserPw());
 		user.setUserPw(encodePw);
 
@@ -314,7 +321,7 @@ public class UserController {
 	public String pwFindDo(UserDTO user, HttpSession session) {
 
 		UserDTO getUser = userService.getUser(user.getUserId());
-		
+
 		System.out.println(user);
 		System.out.println(getUser);
 

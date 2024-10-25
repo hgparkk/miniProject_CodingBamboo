@@ -42,7 +42,6 @@
 	<c:if test="${sessionScope.login != null and sessionScope.login.userId == 'admin'}">
 		<div class="d-flex justify-content-center">
 			<ul class="navbar-nav ms-auto">
-				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/">페이지 소개</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle py-3 px-0 px-lg-3 rounded" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 계산 시스템 관리 </a>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item" href="${pageContext.request.contextPath }/adminMaterialView">자재 관리</a></li>

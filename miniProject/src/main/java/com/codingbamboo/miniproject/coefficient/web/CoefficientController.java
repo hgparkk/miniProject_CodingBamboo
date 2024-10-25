@@ -36,7 +36,13 @@ public class CoefficientController {
 	}
 	
 	@RequestMapping(value="/updateCoefficient", method=RequestMethod.GET)
-	public String updateCoefficient(int aecNo, double aecCoefficient, HttpServletRequest request) {
+	public String updateCoefficient(int aecNo, double aecCoefficient, HttpServletRequest request, HttpSession session) {
+		
+		UserDTO login = (UserDTO)session.getAttribute("login");
+		if (login == null || !login.getUserId().equals("admin")) {
+			return "redirect:/";
+		}
+		
 		CoefficientDTO updatedCoefficient = new CoefficientDTO(aecNo,"",aecCoefficient);
 		coefficientService.updateCoefficient(updatedCoefficient);
 		

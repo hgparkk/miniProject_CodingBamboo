@@ -24,19 +24,19 @@
 			<option value="폐기물">폐기물</option>
 			<option value="별도항목">별도항목</option>
 		</select>
-		<select id="middlefield" style="width:300px;" class="ms-3" onchange="setSmallfield()">
+		<select id="middlefield" style="width: 300px;" class="ms-3" onchange="setSmallfield()">
 			<option>중분류</option>
 		</select>
-		<select id="smallfield" style="width:300px;" class="ms-3" onchange="setPart()">
+		<select id="smallfield" style="width: 300px;" class="ms-3" onchange="setPart()">
 			<option>소분류</option>
 		</select>
-		<select id="part" style="width:300px;" class="ms-3">
+		<select id="part" style="width: 300px;" class="ms-3">
 			<option>분야</option>
 		</select>
 		<button id="reset" type="button" class="btn btn-secondary ms-5">초기화</button>
 	</div>
 
-	<div class="d-flex justify-content-around mt-3">
+	<div class="d-flex justify-content-around mt-3 mb-3">
 		<div>
 			<select id="yearFrom">
 				<option value="1990">1990</option>
@@ -81,12 +81,18 @@
 
 		<button id="resultSearchButton" type="button" class="btn btn-secondary">검색</button>
 	</div>
-	<div id="searchResult" class="overflow-scroll" style="height: 700px;"></div>
+	<div id="searchResult" class="overflow-scroll" style="height: 500px;"></div>
+
+	<div class="d-flex justify-content-end">
+		<button id="downloadAsCSV" class="btn btn-sm btn-primary m-2">csv 다운로드</button>
+		<button id="downloadAsXslx" class="btn btn-sm btn-primary m-2">엑셀 다운로드</button>
+	</div>
 
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
 
 	<script type="text/javascript">
 	
+	// 초기화 버튼
 	document.getElementById("reset").addEventListener("click",()=>{
 		document.getElementById("largefield").value= "대분류"
 		setMiddleField()
@@ -94,6 +100,7 @@
 		setYearTo()
 	})
 	
+	// 검색 끝 년도 설정
 	setYearTo()
 	
 	document.getElementById("yearFrom").addEventListener("change",setYearTo)
@@ -109,9 +116,11 @@
 		
 		document.getElementById("yearTo").innerHTML = yearToString
 	}
-    	
+	
+	// url 설정
     let url = "${pageContext.request.contextPath }"
     
+    // 중분류 설정
    	function setMiddleField(){
    		let largefield = document.getElementById("largefield").value;
    		
@@ -136,6 +145,7 @@
    		})
    	}
    	
+    // 소분류 설정
    	function setSmallfield(){
    		let largefield = document.getElementById("largefield").value;
    		let middlefield = document.getElementById("middlefield").value;
@@ -160,6 +170,7 @@
 	   	})
    	}
    	
+    // 분야 설정
    	function setPart(){
    		let largefield =  document.getElementById("largefield").value;
    		let middlefield = document.getElementById("middlefield").value;
@@ -181,6 +192,7 @@
    	   	})
    	}
    	
+    // 검색
    	document.getElementById("resultSearchButton").addEventListener("click",()=>{
    		let largefield =  document.getElementById("largefield").value;
    		let middlefield = document.getElementById("middlefield").value;
@@ -215,32 +227,77 @@
    	   	   	data: { "peLargeField" : largefield , "peMiddleField" : middlefield , "peSmallField" : smallfield ,
    	   	   		"pePart" : part , "yearFrom" : yearFrom, "yearTo" : yearTo},
    	   	   	success: function(result){
-   	   	  		document.getElementById("searchResult").innerHTML = ""
-   	   	  		let makeTable = '<table class="table table-bordered" style="table-layout: fixed; width:' + (1200 + yearLength*120) +'px;">'
-   	   	  		+ '<thead>'
-   	   	  		+ '<th scope="col" style="width:100px;">대분류</th>'
-   	   	  		+ '<th scope="col" style="width:300px;">중분류</th>'
-				+ '<th scope="col" style="width:400px;">소분류</th>'
-				+ '<th scope="col" style="width:400px;">분야</th>'
-				for(let j = 0; j < yearLength; j++){
-					makeTable += '<th style="width:120px;" scope="col">'+(yearFrom+j)+'</th>'
-	   	  		}
-				+ '</thead>' + '<tbody>'
-   	   	  		for(let i = 0; i < result.length; i = i+yearLength){
-   	   	  			let oneLine = '<tr><td>'+ result[i]["peLargeField"] +'</td>'
-   	   	  			+ '<td>' + result[i]["peMiddleField"] + '</td>'
-   	   	  			+ '<td>' + result[i]["peSmallField"] + '</td>'
-   	   	  			+ '<td>' + result[i]["pePart"] + '</td>'
-   	   	  			for(let j = 0; j < yearLength; j++){
-   	   	  				oneLine += '<td>' + result[i+j]["peEmission"] + '</td>'
-   	   	  			}
-   	   	  			oneLine += '</tr>'
-   	   	  		    makeTable += oneLine
-   	   	  		}
-				makeTable += '</tbody> </table>'
-				document.getElementById("searchResult").innerHTML = makeTable
+				document.getElementById("searchResult").innerHTML = "";
+				let makeTable = '<table class="table table-bordered" style="table-layout: fixed; width:' + (1200 + yearLength * 120) + 'px;">'
+				    + '<thead><tr>'
+				    + '<th scope="col" style="width:100px;">대분류</th>'
+				    + '<th scope="col" style="width:300px;">중분류</th>'
+				    + '<th scope="col" style="width:400px;">소분류</th>'
+				    + '<th scope="col" style="width:400px;">분야</th>';
+				
+				for (let j = 0; j < yearLength; j++) {
+				    makeTable += '<th style="width:120px;" scope="col">' + (yearFrom + j) + '</th>';
+				}
+				
+				makeTable += '</tr></thead><tbody>';
+				
+				for (let i = 0; i < result.length; i = i + yearLength) {
+				    let oneLine = '<tr><td>' + result[i]["peLargeField"] + '</td>'
+				        + '<td>' + result[i]["peMiddleField"] + '</td>'
+				        + '<td>' + result[i]["peSmallField"] + '</td>'
+				        + '<td>' + result[i]["pePart"] + '</td>';
+				        
+				    for (let j = 0; j < yearLength; j++) {
+				        oneLine += '<td>' + result[i + j]["peEmission"] + '</td>';
+				    }
+				
+				    oneLine += '</tr>';
+				    makeTable += oneLine;
+				}
+				
+				makeTable += '</tbody></table>';
+				document.getElementById("searchResult").innerHTML = makeTable;
    	   	   	}
    	   	})
+   	})
+   	
+   	document.getElementById("downloadAsCSV").addEventListener("click",()=>{
+   		let table = document.querySelector(".table-bordered")
+   		if(table == null){
+   			alert("검색 결과가 없습니다.")
+   			return
+   		}
+        let rows = table.rows
+        let csvContent = "\uFEFF"
+
+        for (let i = 0; i < rows.length; i++) {
+            let row = []
+            for (let j = 0; j < rows[i].cells.length; j++) {
+                row.push(rows[i].cells[j].innerText)
+            }
+            csvContent += row.join(",") + "\n"
+        }
+
+        let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+        let link = document.createElement("a")
+        let url = URL.createObjectURL(blob)
+        link.setAttribute("href", url)
+        link.setAttribute("download", "emission_data.csv")
+        link.style.visibility = 'hidden'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+   	})
+
+   	document.getElementById("downloadAsXslx").addEventListener("click",()=>{
+   		let table = document.querySelector(".table-bordered")
+   		if(table == null){
+   			alert("검색 결과가 없습니다.")
+   			return
+   		}
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" })
+
+        XLSX.writeFile(workbook, "emission_data.xlsx")
    	})
    	
     </script>

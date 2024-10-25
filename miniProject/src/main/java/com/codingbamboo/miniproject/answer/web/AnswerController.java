@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import com.codingbamboo.miniproject.answer.dto.AnswerDTO;
 import com.codingbamboo.miniproject.answer.service.AnswerService;
 import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.board.service.BoardService;
+import com.codingbamboo.miniproject.user.dto.UserDTO;
 
 @Controller
 public class AnswerController {
@@ -26,7 +28,12 @@ public class AnswerController {
 	AnswerService answerService;
 	
 	@RequestMapping("/answerWriteView")
-	public String answerWriteView(int quNo, Model model) {
+	public String answerWriteView(int quNo, Model model, HttpSession session) {
+		UserDTO login = (UserDTO)session.getAttribute("login");
+		if (login == null || !login.getUserId().equals("admin")) {
+			return "redirect:/";
+		}
+		
 		model.addAttribute("quNo",quNo);
 		return "answer/answerWriteView";
 	}
