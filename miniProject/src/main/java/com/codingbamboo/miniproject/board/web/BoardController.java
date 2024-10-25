@@ -128,7 +128,7 @@ public class BoardController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/boardEditView";
+		return "board/boardEditView";
 	}
 	
 	// 질문 수정하기

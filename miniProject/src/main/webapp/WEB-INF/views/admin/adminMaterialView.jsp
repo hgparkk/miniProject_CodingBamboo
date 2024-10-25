@@ -31,7 +31,7 @@
 			<form class="d-flex mb-3"
 				action="${pageContext.request.contextPath }/adminMaterialView"
 				method="GET">
-				<input type="text" class="form-control" name="searchWord">
+				<input type="text" placeholder="자재 검색" style="width:300px;" class="form-control ms-4" name="searchWord">
 				<button class="btn btn-secondary ms-2" type="submit">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 						fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
