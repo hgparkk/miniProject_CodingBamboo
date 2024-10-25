@@ -38,25 +38,23 @@
 			<!-- Contact Section Form-->
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-xl-7">
-					<c:if test="${sessionScope.login.userId == admin}">
-						<form id="answerWriteForm"
-							action="${pageContext.request.contextPath }/answerWriteDo"
-							method="POST">
-							
-							<input type="hidden" value="${quNo}" name="quNo">
+					<form id="answerWriteForm"
+						action="${pageContext.request.contextPath }/answerWriteDo"
+						method="POST">
+						
+						<input type="hidden" value="${quNo}" name="quNo">
 
-							<div class="mb-3">
-								<textarea id="smartEditor" class="form-control" rows="10"
-									name="awContent"></textarea>
-							</div>
+						<div class="mb-3">
+							<textarea id="smartEditor" class="form-control" rows="10"
+								name="awContent"></textarea>
+						</div>
 
-							<div class="d-flex justify-content-end">
-								<a class="btn btn-secondary me-2"
-									href="${pageContext.request.contextPath }/boardDetailView?no=${quNo}">취소</a>
-								<button id="writeBtn" class="btn btn-primary" type="button">등록</button>
-							</div>
-						</form>
-					</c:if>
+						<div class="d-flex justify-content-end">
+							<a class="btn btn-secondary me-2"
+								href="${pageContext.request.contextPath }/boardDetailView?no=${quNo}">취소</a>
+							<button id="writeBtn" class="btn btn-primary" type="button">등록</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

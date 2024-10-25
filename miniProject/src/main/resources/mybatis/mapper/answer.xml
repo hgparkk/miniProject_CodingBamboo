@@ -68,4 +68,13 @@
 		WHERE 1=1 
 			AND qu_no = #{quNo}
 	</delete>
+	
+	<!-- 답변 수정 -->
+	<update id="updateAnswer" parameterType="AnswerDTO">
+		UPDATE answer
+		SET
+			aw_content = #{awContent}
+		WHERE 1=1
+			AND qu_no = #{quNo}
+	</update>
 </mapper>

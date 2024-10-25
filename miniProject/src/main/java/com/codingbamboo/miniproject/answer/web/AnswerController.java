@@ -1,5 +1,6 @@
 package com.codingbamboo.miniproject.answer.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import com.codingbamboo.miniproject.answer.dto.AnswerDTO;
 import com.codingbamboo.miniproject.answer.service.AnswerService;
 import com.codingbamboo.miniproject.board.dto.BoardDTO;
 import com.codingbamboo.miniproject.board.service.BoardService;
+import com.codingbamboo.miniproject.common.exception.BizNotFoundException;
 
 @Controller
 public class AnswerController {
@@ -47,8 +49,26 @@ public class AnswerController {
 		
 		return "alert";
 	}
+	
+	@PostMapping("/answerEditView")
+	public String answerEditView(int quNo, Model model) {
+		List<AnswerDTO> answer = new ArrayList<>();
+		
+		answer = answerService.getAnswerList(quNo);
+		model.addAttribute("keyAnswer", answer);
+		
+		return "answer/answerEditView";
+	}
+	
+	@PostMapping("/answerEditDo")
+	public String answerEdidDo(AnswerDTO answer, HttpServletRequest request, BoardDTO board) {
+		answerService.updateAnswer(answer);
+		
+		request.setAttribute("msg", "답변이 수정되었습니다.");
+		request.setAttribute("url", "/boardDetailView?no=" + board.getQuNo());
+		return "alert";
+	}
 
-	@ResponseBody
 	@PostMapping("/delAnswerDo")
 	public String delAnswer(int awNo, int quNo, HttpServletRequest request, BoardDTO board) {
 		String result = "fail";

@@ -23,6 +23,9 @@ public interface IAnswerDAO {
 	// 답변 삭제
 	int delAnswer(int awNo);
 	
+	// 답변 수정
+	int updateAnswer(AnswerDTO answer);
+	
 	//모든 답변삭제
 	int delAllAnswer(int quNo);
 }

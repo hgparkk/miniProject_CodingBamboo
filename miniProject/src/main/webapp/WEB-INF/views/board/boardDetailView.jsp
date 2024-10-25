@@ -50,20 +50,32 @@
 }
 
 .board-body {
-	padding-top: 10px;
+	padding-top: 7px;
+	padding-left: 7px;
 	min-height: 300px;
+	overflow-y: auto;
 }
 
 .answer-box {
 	border-top: 1px solid #CCCCCC;
 	border-bottom: 0px solid #DDDDDD;
 	height: 300px;
+	overflow-y: auto;
 }
 
-.answer {
-	margin: 1px;
+.answerDelForm {
 	justify-content: space-between;
-	padding: 3px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.answer-content {
+	padding-top: 7px;
+	padding-left: 7px;
+}
+
+.delAnswerBtn {
+	margin-bottom: 10px;
 }
 
 .regist-box {
@@ -99,73 +111,81 @@
 						<!-- pre 태그에 적용했던 폰트 스타일은 제거 -->
 						<div class="board-body">${keyBoard.quContent}</div>
 					</div>
-					<div class="d-flex justify-content-end">
-						<c:if
-							test="${sessionScope.login.userId eq keyBoard.userId and sessionScope.login.userId ne null}">
-							<!-- POST 요청을 위해 버튼을 form 태그로 감싼다 -->
-							<form action="${pageContext.request.contextPath }/boardEditView"
-								method="POST">
-								<!-- 현재 페이지의 글번호를 /boardEditView에 같이 보냄 -->
-								<input type="hidden" value="${keyBoard.quNo }" name="no">
-								<c:if test="${keyBoard.quIsread != 1}">
-									<button class="btn btn-warning me-2" type="submit">수정</button>
-								</c:if>
-							</form>
-						</c:if>
-						<c:if
-							test="${sessionScope.login.userId ne null and (sessionScope.login.userId eq 'admin' or sessionScope.login.userId eq keyBoard.userId)}">
-							<form id="delForm"
-								action="${pageContext.request.contextPath }/boardDelDo"
-								method="POST">
-								<!-- 현재 페이지의 글번호를 /boardDeleteDo에 같이 보냄 -->
-								<input type="hidden" value="${keyBoard.quNo }" name="no">
-								<!-- 삭제버튼 클릭시 삭제확인 메시지를 띄움 -->
-								<c:if test="${keyBoard.quIsread != 1}">
-									<button id="delBtn" class="btn btn-danger" type="button">삭제</button>
-								</c:if>
-								<c:if test="${keyBoard.quIsread == 1}">
-									<button id="delBtn" class="btn btn-danger"
-										style="display: none;" type="button">삭제</button>
-								</c:if>
-							</form>
-						</c:if>
-					</div>
 
 					<!-- 답변 -->
 					<c:if test="${keyAnswerList.size() != 0}">
-						<div>
-							<div class="answer-box">
-								<c:forEach items="${keyAnswerList }" var="answerDTO">
-									<c:if test="${answerDTO.awNo != null}"></c:if>
-									<div class="answer d-flex">
-										<input type="hidden" value="${answerDTO.awNo }">
-										<div class="col-9">${answerDTO.awContent }</div>
-										<div class="col-1">
-											<!-- 관리자 계정으로 로그인하면 삭제버튼 표시 -->
-											<c:if test="${sessionScope.login.userId == 'admin'}">
-												<button onclick="f_delete()"
-													class="delAnswerBtn btn btn-danger">삭제</button>
-											</c:if>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
+						<div class="answer-box">
+							<c:if test="${keyAnswerList[0]['awNo'] != null}">
+								<div class="answer-content">${keyAnswerList[0]['awContent']}</div>
+							</c:if>
 						</div>
 					</c:if>
 				</div>
-				<div>
+				<div class="regist-box">
 					<!-- 답변 등록 -->
-					<form class="row" id="answerForm"
-						action="${pageContext.request.contextPath }/answerWriteView"
-						method="POST">
+					<div class="d-flex mt-2 justify-content-end">
+						<c:if test="${keyAnswerList[0]['awNo'] == null }">
+							<c:if
+								test="${sessionScope.login.userId eq keyBoard.userId and sessionScope.login.userId ne null}">
+								<form action="${pageContext.request.contextPath }/boardEditView"
+									method="POST">
+									<!-- 현재 페이지의 글번호를 /boardEditView에 같이 보냄 -->
+									<input type="hidden" value="${keyBoard.quNo }" name="no">
+									<c:if test="${keyBoard.quIsread != 1}">
+										<button class="btn btn-warning me-2" type="submit">질문
+											수정</button>
+									</c:if>
+								</form>
+							</c:if>
+							<c:if
+								test="${sessionScope.login.userId eq 'admin' or sessionScope.login.userId eq keyBoard.userId}">
+								<form id="delForm"
+									action="${pageContext.request.contextPath }/boardDelDo"
+									method="POST">
+									<!-- 현재 페이지의 글번호를 /boardDeleteDo에 같이 보냄 -->
+									<input type="hidden" value="${keyBoard.quNo }" name="no">
+									<input type="hidden" value="${keyAnswerList[0]['awNo'] }"
+										name="awNo">
+									<!-- 삭제버튼 클릭시 삭제확인 메시지를 띄움 -->
+									<button id="quDelBtn" class="btn btn-danger me-2" type="button">질문
+										삭제</button>
+								</form>
+							</c:if>
+							<c:if test="${sessionScope.login.userId == 'admin'}">
+								<form id="answerForm"
+									action="${pageContext.request.contextPath }/answerWriteView"
+									method="POST">
+									<input type="hidden" value="${keyBoard.quNo}" name="quNo">
+									<input type="hidden" value="${keyAnswerList[0]['awNo']}"
+										name="awNo">
+									<button id="answerBtn" class="btn btn-secondary ms-2"
+										type="button">답변 등록</button>
+								</form>
+							</c:if>
+						</c:if>
+					</div>
+					<c:if test="${keyAnswerList[0]['awNo'] != null }">
 						<c:if test="${sessionScope.login.userId == 'admin'}">
-							<input type="hidden" value="${keyBoard.quNo}" name="quNo">
-							<div class="regist-box d-flex mt-2 justify-content-end">
-								<button id="answerBtn" class="btn btn-secondary col-2"
-									type="submit">답변 등록</button>
+							<div class="d-flex mt-2 justify-content-end">
+								<form id="editForm"
+									action="${pageContext.request.contextPath }/answerEditView"
+									method="POST">
+									<input type="hidden" value="${keyBoard.quNo}" name="quNo">
+									<button id="editBtn" class="btn btn-secondary me-2"
+										type="submit">답변 수정</button>
+								</form>
+								<form id="answerDelForm"
+									action="${pageContext.request.contextPath }/delAnswerDo"
+									method="POST">
+									<input type="hidden" value="${keyAnswerList[0]['quNo']}"
+										name="quNo"> <input type="hidden"
+										value="${keyAnswerList[0]['awNo']}" name="awNo">
+									<button id="ansDelBtn" class="btn btn-danger ms-2"
+										type="button">답변 삭제</button>
+								</form>
 							</div>
 						</c:if>
-					</form>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -176,7 +196,7 @@
 
 	<script type="text/javascript">
 		// 질문 삭제
-		document.getElementById('delBtn').addEventListener('click', ()=>{
+		document.getElementById('quDelBtn').addEventListener('click', ()=>{
 			// 삭제 확인 메시지를 띄움
 			if(confirm("정말로 삭제하시겠습니까?")){
 				document.getElementById('delForm').submit();
@@ -184,6 +204,14 @@
 		});
 		
 		let v_answerBox = document.querySelector('.answer-box');
+		
+		// 답변 삭제
+		document.getElementById('ansDelBtn').addEventListener('click', ()=>{
+			if(confirm("정말로 삭제하시겠습니까?")){
+				document.getElementById('answerDelForm').submit();
+			}
+		});
+		
 	</script>
 </body>
 </html>

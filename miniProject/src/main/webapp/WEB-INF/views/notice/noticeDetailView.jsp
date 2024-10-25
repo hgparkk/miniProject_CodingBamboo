@@ -47,6 +47,7 @@
 	padding-top: 3px;
 	padding-left: 5px;
 	min-height: 300px;
+	overflow-y: auto;
 }
 
 .edit-box{

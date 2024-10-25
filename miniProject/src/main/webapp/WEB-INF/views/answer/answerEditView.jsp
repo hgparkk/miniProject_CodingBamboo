@@ -30,29 +30,22 @@
 			<!-- Contact Section Heading-->
 			<h2
 				class="page-section-heading text-center text-uppercase text-secondary mb-0">답변 수정</h2>
-			<!-- Icon Divider-->
-			<div class="divider-custom">
-				<div class="divider-custom-line"></div>
-				<div class="divider-custom-icon">
-					<i class="fas fa-star"></i>
-				</div>
-				<div class="divider-custom-line"></div>
-			</div>
+			
 			<!-- Contact Section Form-->
 			<div class="row justify-content-center">
 		 		<div class="col-lg-8 col-xl-7">
 					
-					<form id="boardWriteForm" action="${pageContext.request.contextPath }/answerEditDo" method="POST">
-						<input type="hidden" name="quNo" value="${keyBoard.quNo }">
-					
+					<form id="answerWriteForm" action="${pageContext.request.contextPath }/answerEditDo" method="POST">
+						<input type="hidden" name="quNo" value="${keyAnswer[0]['quNo']}">
+						
 						<div class="mb-3">
-							<textarea id="smartEditor" class="form-control" rows="10" name="quContent">${keyBoard.quContent }</textarea>					
+							<textarea id="smartEditor" class="form-control" rows="10" name="awContent">${keyAnswer[0]['awContent'] }</textarea>
 						</div>
 						
 						<div class="d-flex justify-content-end">
-							<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/boardDetailView?no=${keyBoard.quNo}">취소</a>
+							<a class="btn btn-secondary me-2" href="${pageContext.request.contextPath }/boardDetailView?no=${keyAnswer[0]['quNo']}">취소</a>
 							<!-- form 태그의 submit 역할을 함 -> type=submit 넣어주기 -->
-							<button id="writeBtn" class="btn btn-primary" type="submit">등록</button>
+							<button id="writeBtn" class="btn btn-primary" type="submit">수정</button>
 						</div>
 					</form>
 					
@@ -79,7 +72,7 @@
 			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
 			
 			// form 태그의 submit 실행
-			document.getElementById('boardWriteForm').submit();
+			document.getElementById('answerWriteForm').submit();
 		});
 	</script>
 

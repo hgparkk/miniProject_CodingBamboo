@@ -51,4 +51,10 @@ public class AnswerService {
 		return result;
 	}
 	
+	// 답변 수정
+	public int updateAnswer(AnswerDTO answer) {
+		int result = dao.updateAnswer(answer);
+		return result;
+	}
+	
 }
