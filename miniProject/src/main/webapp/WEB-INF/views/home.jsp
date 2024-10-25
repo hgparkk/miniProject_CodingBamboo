@@ -53,14 +53,14 @@
 			</div>
 		</div>
 		
-		<!-- 미완성시 제거 할 코드 -->
+<!-- 		<!-- 미완성시 제거 할 코드 -->
 		<div class=" container mx-auto my-auto d-flex align-items-center flex-column" style="margin-top: 100px; margin-bottom: 100px;">
 			<div class="text-uppercase mb-3 fw-bold" style="font-size: 40px; height: 170px; margin-top: 70px;">우리가 추구하는 가치</div>
 			<div class="font-weight-light" style="font-size: 20px; margin-bottom: 50px; padding-bottom: 50px;">Coding Bamboo는 지속 가능한 발전을 추구하며 탄소 절약을 위해 노력하고 있습니다.</div>
 		</div>
 		<div class="mx-auto my-auto d-flex align-items-center flex-column">
 			<div style="margin-bottom: 50px;">자연계에서 등을 돌리는 것은 결국 우리 행복에서 등을 돌리는 것과 같다. - Samuel johnson</div>
-		</div>
+		</div> -->
 	</div>
 	<!-- 끝 -->
 	<%@ include file="/WEB-INF/inc/footer.jsp"%>
