@@ -20,7 +20,6 @@
 <%@ include file="/WEB-INF/inc/header.jsp"%>
 
 <style type="text/css">
-
 p {
 	margin: 0;
 }
@@ -54,11 +53,11 @@ p {
 	padding: 7px;
 }
 
-.qu-title{
+.qu-title {
 	font-size: 20px;
 }
 
-.user-name{
+.user-name {
 	font-size: 15px;
 }
 
@@ -178,6 +177,7 @@ p {
 						</c:if>
 					</div>
 					<c:if test="${keyAnswerList[0]['awNo'] != null }">
+						<button id="quDelBtn" style="display: none">질문 삭제</button>
 						<c:if test="${sessionScope.login.userId == 'admin'}">
 							<div class="d-flex mt-2 justify-content-end">
 								<form id="editForm"
