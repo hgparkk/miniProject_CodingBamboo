@@ -53,9 +53,9 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th scope="col" colspan="1" class="text-center">글번호</th>
-								<th scope="col" colspan="2" class="text-center">제목</th>
-								<th scope="col" colspan="1" class="text-center">작성자</th>
+								<th scope="col" colspan="1" width="220px;" class="text-center">글번호</th>
+								<th scope="col" colspan="2" width="590px;" class="text-center">제목</th>
+								<th scope="col" colspan="1" width="390px;" class="text-center">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -174,10 +174,10 @@
 						<form class="d-flex justify-content-center"
 							action="${pageContext.request.contextPath }/noticeView"
 							method="GET">
-							<select class="form-select w-25" name="searchOption">
+							<select class="form-select me-2" style="width:130px;" name="searchOption">
 								<option value="title">제목</option>
 								<option value="content">내용</option>
-							</select> <input type="text" class="form-control w-25" name="searchWord">
+							</select> <input type="text" class="form-control w-25 me-1" name="searchWord">
 							<button class="btn btn-primary" type="submit">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 									fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
